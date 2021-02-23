@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+
+[Part 1]
+
+<link rel='shortcut icon' href='images/lk_favicon.jpg' />
+<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+<style>
+/* Eric Meyer's CSS Reset */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+/* End of Eric Meyer's CSS Reset */
+
+/* Local fonts
+-----------------------------------------------------------------------*/
+/* roboto-regular - latin */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  src: url('fonts/roboto-v16-latin-regular.eot'); /* IE9 Compat Modes */
+  src: local('Roboto'), local('Roboto-Regular'),
+       url('fonts/roboto-v16-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('fonts/roboto-v16-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+       url('fonts/roboto-v16-latin-regular.woff') format('woff'), /* Modern Browsers */
+       url('fonts/roboto-v16-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('fonts/roboto-v16-latin-regular.svg#Roboto') format('svg'); /* Legacy iOS */
+}
+
+/* roboto-700 - latin */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  src: url('fonts/roboto-v16-latin-700.eot'); /* IE9 Compat Modes */
+  src: local('Roboto Bold'), local('Roboto-Bold'),
+       url('fonts/roboto-v16-latin-700.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('fonts/roboto-v16-latin-700.woff2') format('woff2'), /* Super Modern Browsers */
+       url('fonts/roboto-v16-latin-700.woff') format('woff'), /* Modern Browsers */
+       url('fonts/roboto-v16-latin-700.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('fonts/roboto-v16-latin-700.svg#Roboto') format('svg'); /* Legacy iOS */
+}
+
+/* roboto-condensed-regular - latin */
+@font-face {
+  font-family: 'Roboto Condensed';
+  font-style: normal;
+  font-weight: 400;
+  src: url('fonts/roboto-condensed-v14-latin-regular.eot'); /* IE9 Compat Modes */
+  src: local('Roboto Condensed'), local('RobotoCondensed-Regular'),
+       url('fonts/roboto-condensed-v14-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('fonts/roboto-condensed-v14-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+       url('fonts/roboto-condensed-v14-latin-regular.woff') format('woff'), /* Modern Browsers */
+       url('fonts/roboto-condensed-v14-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('fonts/roboto-condensed-v14-latin-regular.svg#RobotoCondensed') format('svg'); /* Legacy iOS */
+}
+
+/* roboto-condensed-700 - latin */
+@font-face {
+  font-family: 'Roboto Condensed';
+  font-style: normal;
+  font-weight: 700;
+  src: url('fonts/roboto-condensed-v14-latin-700.eot'); /* IE9 Compat Modes */
+  src: local('Roboto Condensed Bold'), local('RobotoCondensed-Bold'),
+       url('fonts/roboto-condensed-v14-latin-700.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('fonts/roboto-condensed-v14-latin-700.woff2') format('woff2'), /* Super Modern Browsers */
+       url('fonts/roboto-condensed-v14-latin-700.woff') format('woff'), /* Modern Browsers */
+       url('fonts/roboto-condensed-v14-latin-700.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('fonts/roboto-condensed-v14-latin-700.svg#RobotoCondensed') format('svg'); /* Legacy iOS */
+}
+
+/* General settings
+-----------------------------------------------------------------------*/
+article, aside, details, figcaption, figure, footer, header, hgroup, main, nav, section, summary {
+	display: block;
+}
+body {
+	font-family:Roboto,Helvetica,Arial,sans-serif;
+	font-weight:400;
+	font-size:14px;
+	color:#555;
+}
+
+/* Wrapper
+-----------------------------------------------------------------------*/
+.wrapper_outer {
+	display: table;
+	position: absolute;
+	height: 100%;
+	width: 100%;
+}
+.wrapper_middle {
+	display: table-cell;
+	vertical-align: middle;
+}
+.wrapper_inner {
+	margin-left: auto;
+	margin-right: auto;
+	width: 80%;
+}
+
+/* Header
+-----------------------------------------------------------------------*/
+.header {
+	position: relative;
+	height: 46px;
+	background:url("images/bg_banner_index.jpg");
+	background-position: right bottom; 
+	border-bottom: solid #4D7296; 
+	border-bottom-width: 9px;
+}
+#header-content {
+	position: absolute;
+	bottom: 0;
+	left: 10;
+}
+
+/* Middle
+-----------------------------------------------------------------------*/
+.middle {
+	width: 100%;
+	position: relative;
+}
+.middle:after {
+	display: table;
+	clear: both;
+	content: '';
+}
+.container {
+	width: 100%;
+	float: left;
+	overflow: hidden;
+}
+.content {
+	padding: 0 0 0 150px;
+}
+
+/* Video frame
+-----------------------------------------------------------------------*/
+#video {
+	width: 100%;
+}
+
+/* Course index
+-----------------------------------------------------------------------*/
+.course-index {
+	float: left;
+	width: 150px;
+	position: absolute;
+	overflow-y: scroll;
+	top:0;
+	bottom:0;
+}
+
+/* Tables
+-----------------------------------------------------------------------*/
+table
+{
+	width: 100%;
+	overflow:hidden
+}
+table tr:nth-child(even)
+{
+  background-color:#f5f5f5
+}
+table tr:hover
+{
+  background-color:#efefef
+}
+.child-row {
+	padding-left:10px;
+}
+
+/* Footer
+-----------------------------------------------------------------------*/
+.footer {
+	height: 50px;
+	position: relative;
+}
+#footer-content {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+}
+
+/* Special text
+-----------------------------------------------------------------------*/
+a,a:active,a:visited
+{
+  font-size:inherit;
+  font-family:inherit;
+  color:#4d7296;
+  text-decoration:none;
+  font-weight:inherit
+}
+a:hover
+{
+  font-size:inherit;
+  font-family:inherit;
+  color:#4d7296;
+  text-decoration:underline;
+  font-weight:inherit
+}
+h1
+{
+  
+	font-family:"Roboto Condensed",Helvetica,Arial,sans-serif;
+	width:auto;
+	font-weight:700;
+	text-transform:uppercase;
+	margin-top:10px;
+	margin-bottom:0;
+	color:#FFF;
+	font-size:32px
+}
+h2
+{
+  font-weight:400;
+  margin-top:0;
+  margin-bottom:0;
+  color:#FFF;
+  font-size:16px
+}
+</style>
+<script language='javascript' type='text/javascript'>
+var video_directory = "./videos";
+
+[Part 2]
+
+var selected_color = "#444"
+var index = -1;
+var selected = -1;
+
+[Part 3]
+
+var watched = Array.apply(null, Array(videos.length)).map(Boolean.prototype.valueOf,false);
+
+function initialize() {
+	var temp_string = "";
+	document._video = document.getElementById("video");
+	document._video.addEventListener("ended", mark_complete, false);
+	for (var i = 0; i < videos.length; i++) {
+		temp_string += (videos[i][1] !== "" ? '<tr><td class="' + (videos[i][0] !== "" ? 'child' : 'parent') + '-row" id="row' + i + '"><a href="#" onClick="set_and_play(' + i + ');return false">' + videos[i][1] + '</a></td></tr>' : '');
+	}
+	document.getElementById("playlist").innerHTML = temp_string;
+	play_next();
+}
+
+function windowClose() {
+window.open('','_parent','');
+window.close();
+}
+
+function goBack() {
+window.history.back();
+}
+
+function mark_complete() {
+	watched[index] = true;
+	console.log(watched);
+	/* document.getElementById("row" + index).class = "watched";
+	check mark: &#10004; */
+	play_next();
+}
+
+function play_next() {
+	index++;
+	if (index >= videos.length) {
+		/* document._video.stop(); */
+	} else {
+		set_and_play(index);
+	}
+}
+
+function set_and_play(i) {
+	index = i;
+	console.log(i + ": " + videos[i]);
+	if (videos[i][0] == "") {
+		play_next();
+		return false;
+	}
+	if (videos[i][1] !== "") {
+		if (selected >= 0) {
+			document.getElementById("row" + selected).style.backgroundColor = "";
+		}
+		document.getElementById("row" + i).style.backgroundColor = selected_color;
+		selected = i;
+	}
+	document._video.setAttribute("src", video_directory + "/" + session_ID + "/CD/WinFlash/" + videos[i][0] + ".mp4");
+	document._video.load();
+	document._video.play();
+}
+
+document.addEventListener("DOMContentLoaded", initialize, false);
+
+</script>
+</head>
+
+<body>
+
+<span style="float:right;position:relative;z-index:100">
+	<input type="button" value="&#x2b05;" onClick="goBack();">
+	<input type="button" value="&#x274c;" onClick="windowClose();">
+</span>
+
+<div class="wrapper_outer"><div class="wrapper_middle"><div class="wrapper_inner">
+
+	<p>
+		<img style="height: 46px; width: auto;" alt="LearnKey logo" src="images/lklogo_2015.png">
+	</p>
+	
+	<div class="header">
+		<div id="header-content">
+
+[Part 4]   
+      
+		</div><!-- #header-content -->
+	</div><!-- .header -->
+	
+	<div class="middle">
+		
+		<div class="container">
+			<main class="content">
+				<video id="video" controls="true" autoplay="true">
+					<source src="[]" type='video/mp4'>
+					</source>
+					video not supported
+				</video>
+			</main><!-- .content -->
+		</div><!-- .container -->
+					
+		<aside class="course-index">
+			<table>
+				<tbody id = "playlist">
+				</tbody>
+			</table>
+		</aside><!-- .course-index" -->
+
+	</div><!-- .middle -->
+	
+	<footer class="footer">
+		<div id="footer-content">
+
+[Part 5]
+      
+		</div><!-- #footer-content -->
+	</footer><!-- .footer -->
+	
+</div></div></div><!-- .wrapper -->
+</body>
+</html>
