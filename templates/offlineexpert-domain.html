@@ -330,7 +330,7 @@ function set_and_play(i) {
 		document.getElementById("row" + i).style.backgroundColor = selected_color;
 		selected = i;
 	}
-	document._video.setAttribute("src", video_directory + "/" + session_ID + "/CD/WinFlash/" + videos[i][0] + ".mp4");
+	document._video.setAttribute("src", video_directory + "/" + domain_ID + "/CD/WinFlash/" + videos[i][0] + ".mp4");
 	document._video.load();
 	document._video.play();
 }
