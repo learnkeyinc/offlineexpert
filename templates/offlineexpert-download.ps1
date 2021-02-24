@@ -199,8 +199,8 @@ try {
 } catch {
   $move = $false
 }
-Write-Host "`nPress any key to create course-specific assets" -ForegroundColor Cyan
 Write-Result($move)
+Write-Host "`nPress any key to create course-specific assets" -ForegroundColor Cyan
 Wait-AnyKey
 
 ##### Create course-specific assets #####
