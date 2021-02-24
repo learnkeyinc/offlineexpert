@@ -231,7 +231,7 @@ Write-Host "`nScript complete. Assets have been created in the " -NoNewLine
 Write-Host $destinationResolved -ForegroundColor Cyan -NoNewLine
 Write-Host " directory."
 Write-Host "`nTo open all the course-specific assets for editing, choose an option below."
-Write-Host "`n(1) Open in Notepad++ tabs"
+Write-Host "`n1: Open in Notepad++ tabs"
 Write-Host "2: Open in Notepad windows"
 Write-Host "3: Open in Sublime Text 3 tabs"
 Write-Host "4: Exit"
