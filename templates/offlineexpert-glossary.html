@@ -1,0 +1,122 @@
+<html>
+<head>
+[Part 1]
+<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+<style>
+/* Local fonts
+-----------------------------------------------------------------------*/
+/* roboto-regular - latin */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/roboto-v16-latin-regular.eot'); /* IE9 Compat Modes */
+  src: local('Roboto'), local('Roboto-Regular'),
+       url('../fonts/roboto-v16-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('../fonts/roboto-v16-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+       url('../fonts/roboto-v16-latin-regular.woff') format('woff'), /* Modern Browsers */
+       url('../fonts/roboto-v16-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('../fonts/roboto-v16-latin-regular.svg#Roboto') format('svg'); /* Legacy iOS */
+}
+
+/* roboto-700 - latin */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  src: url('../fonts/roboto-v16-latin-700.eot'); /* IE9 Compat Modes */
+  src: local('Roboto Bold'), local('Roboto-Bold'),
+       url('../fonts/roboto-v16-latin-700.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('../fonts/roboto-v16-latin-700.woff2') format('woff2'), /* Super Modern Browsers */
+       url('../fonts/roboto-v16-latin-700.woff') format('woff'), /* Modern Browsers */
+       url('../fonts/roboto-v16-latin-700.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('../fonts/roboto-v16-latin-700.svg#Roboto') format('svg'); /* Legacy iOS */
+}
+
+/* roboto-condensed-regular - latin */
+@font-face {
+  font-family: 'Roboto Condensed';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/roboto-condensed-v14-latin-regular.eot'); /* IE9 Compat Modes */
+  src: local('Roboto Condensed'), local('RobotoCondensed-Regular'),
+       url('../fonts/roboto-condensed-v14-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('../fonts/roboto-condensed-v14-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+       url('../fonts/roboto-condensed-v14-latin-regular.woff') format('woff'), /* Modern Browsers */
+       url('../fonts/roboto-condensed-v14-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('../fonts/roboto-condensed-v14-latin-regular.svg#RobotoCondensed') format('svg'); /* Legacy iOS */
+}
+
+/* roboto-condensed-700 - latin */
+@font-face {
+  font-family: 'Roboto Condensed';
+  font-style: normal;
+  font-weight: 700;
+  src: url('../fonts/roboto-condensed-v14-latin-700.eot'); /* IE9 Compat Modes */
+  src: local('Roboto Condensed Bold'), local('RobotoCondensed-Bold'),
+       url('../fonts/roboto-condensed-v14-latin-700.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('../fonts/roboto-condensed-v14-latin-700.woff2') format('woff2'), /* Super Modern Browsers */
+       url('../fonts/roboto-condensed-v14-latin-700.woff') format('woff'), /* Modern Browsers */
+       url('../fonts/roboto-condensed-v14-latin-700.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('../fonts/roboto-condensed-v14-latin-700.svg#RobotoCondensed') format('svg'); /* Legacy iOS */
+}
+@media screen { #footer { position: fixed; bottom: 0; width: 88%; text-align: right; font-size: 12px; background-color: white; } }
+@media print { #footer { position: fixed; bottom: 0; width: 88%; text-align: right; font-size: 12px; } }
+table { border-collapse: collapse; border: 0; width: 100%; padding: 10px; text-align: left; }
+body { font-family: "Roboto",Helvetica,Arial,sans-serif; font-weight: 400; font-size: 14px; color: #555; margin-left: 0; margin-right: 0; margin: auto; width: 88% }
+#header { background:url("../images/bg_banner_index.jpg"); background-position: right top; border-bottom: solid #4D7296; border-bottom-width: 9px; }
+table { overflow: hidden; }
+table thead { font-family: "Roboto Condensed",Helvetica,Arial,sans-serif; width: auto; }
+table thead td { padding: 10px; }
+table tbody tr td { padding: 10px; }
+table tbody tr:nth-child(even) {background-color: #f5f5f5; }
+table tbody tr:hover { background-color: #efefef; }
+table tbody tr:first-child { font-weight: bold; text-align: center; }
+table tbody tr td:first-child { font-weight: bold; }
+h1 { font-weight: 700; text-transform: uppercase; margin-top: 10px; margin-bottom:0px; color: white; font-size: 32px;}
+h2 { font-weight: 400; margin-top: 0px; margin-bottom: 0px; color: white; font-size:16px;}
+</style>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<script>
+var glossary = [PS];
+
+document.addEventListener("DOMContentLoaded", fillGlossary, false);
+
+function fillGlossary() {
+  
+  var glossaryTable = document.getElementById("glossary");
+  var glossaryText = "<table><tbody><tr><td>Term</td><td>Definition</td></tr>"
+  glossary.forEach(function (e) {
+    glossaryText += "<tr><td>" + e.def + "</td><td>" + e.con + "</td></tr>"
+  })
+  document.getElementById("glossary").innerHTML = glossaryText + "</tbody></table>";
+}
+
+function windowClose() {
+window.open('','_parent','');
+window.close();
+}
+
+function goBack() {
+window.history.back();
+}
+</script>
+</head>
+<body>
+<span style="float:right;position:relative;z-index:100">
+	<input type="button" value="&#x2b05;" onClick="goBack();">
+	<input type="button" value="&#x274c;" onClick="windowClose();">
+</span>
+<p><img style="height: 46px; width: auto;" alt="LearnKey logo" src="../images/lklogo_2015.png"></p>
+<div id="header">
+<table>
+<thead>
+<td><img style="box-shadow: #666 0px 10px 15px 0px; border: 5px solid #e6e6e6; width: auto; height: 200px;" alt="LearnKey logo" src="../images/lk_square.jpg"></td>
+<td><p><h2>Glossary to accompany</h2>[Part 2]</p></td></thead>
+</table>
+</div>
+<div id="glossary"></div>
+[Part 3]
+</body>
+</html>
