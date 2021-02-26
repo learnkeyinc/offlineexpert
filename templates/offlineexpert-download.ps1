@@ -37,12 +37,6 @@ function Wait-Y {
   }
 }
 
-function Wait-Skip {
-  Write-Host "`n`nEnter S to skip or press any key to continue"
-  $pressed = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown').Character
-  return ($pressed -eq "s")
-}
-
 # Pre-main global variables
 
 <# Part 1: 
@@ -104,6 +98,16 @@ $fso = New-Object -ComObject scripting.filesystemobject
 $client = New-Object System.Net.WebClient
 $year = (Get-Date).year
 
+##### Choose simulation mode #####
+Clear-Host
+Write-Host "Choose simulation mode"
+Write-Host "`nS" -ForegroundColor Cyan -NoNewLine
+Write-Host "`tSimulation mode: media folders will not be replaced or downloaded"
+Write-Host "N" -ForegroundColor Cyan -NoNewLine
+Write-Host "`tNormal mode: all actions will occur as otherwise described"
+$pressed = Read-Host -Prompt "`nMode"
+$simulate = ($pressed -eq "s")
+
 ##### Delete existing subdirectories and create new ones #####
 Clear-Host
 Write-Host "Deleting media subdirectories belonging to this course and creating new ones.`n"
@@ -116,7 +120,9 @@ Do {
     $delete = $true
     try {
       # This is the only delete method that works with OneDrive
-      $fso.DeleteFolder("$destination\$ID*")
+      if (!$simulate) {
+        $fso.DeleteFolder("$destination\$ID*")
+      }
     } catch {
       $delete = $false
     }
@@ -124,7 +130,9 @@ Do {
     
     $create = $true
     try {
-      $null = New-Item -ItemType "directory" -Path "$destination\$ID\CD\WinFlash"
+      if (!$simulate) {
+        $null = New-Item -ItemType "directory" -Path "$destination\$ID\CD\WinFlash"
+      }
     } catch {
       $create = $false
     }
@@ -159,7 +167,7 @@ Do {
       
       $download = $true
       try {
-        if ($simulate) {
+        if (!$simulate) {
           $client.DownloadFile($url,$destinationFilename)
         }
       } catch {
@@ -240,8 +248,9 @@ $glossaryPath = ""
 
 do {
   foreach ($asset in $courseAssets) {
+    $asset = $asset -replace "\\\\",'\'
     if ($asset.substring(0,13) -eq ".\glossaries\") {
-      $glossaryPath = (Resolve-Path $asset)
+      $glossaryPath = $asset
     }
     $new = $true
     try {
@@ -294,14 +303,14 @@ Do {
 } 
 Until (Wait-Y)
 
-Write-Host "`n`tIMPORTANT`t" -BackgroundColor Red -ForegroundColor Black
+Write-Host "`nIMPORTANT" -BackgroundColor Red -ForegroundColor Black
 Write-Host "Before continuing, ensure that the following file has the correct contents from Google Drive:" -ForegroundColor Red
-Write-Host $glossaryPath -ForegroundColor Red
+Write-Host (Resolve-Path $glossaryPath) -ForegroundColor Red
 Write-Host "Press any key to continue." -ForegroundColor Red
 Wait-AnyKey
 Do {
   Write-Host "`nWriting to " -NoNewLine
-  Write-Host $glossaryPath -ForegroundColor Cyan
+  Write-Host (Resolve-Path $glossaryPath) -ForegroundColor Cyan
 
   $glossaryReplace = $true
   try {
