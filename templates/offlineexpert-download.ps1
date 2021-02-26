@@ -150,8 +150,6 @@ Write-Host "Downloading media."
    $fileNames = @(("H0001","M0001"),("H0001","FM001","C0001")) #>
 [Part 3]
 
-$simulate = Wait-Skip
-
 Do {
   Write-Host "`n`tDomain`tPrefix`tResult`tSize"
   Write-Host "`t------`t------`t-------`t--------"
