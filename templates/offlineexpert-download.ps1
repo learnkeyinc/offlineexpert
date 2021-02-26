@@ -289,7 +289,7 @@ Do {
 
   $glossaryReplace = $true
   try {
-    ((Get-Content -Path $glossaryPath -Raw) -replace "\[PS\]",$glossaryJSON
+    ((Get-Content -Path $glossaryPath -Raw) -replace "\[PS\]",$glossaryJSON) | Set-Content -Path $glossaryPath
   } catch {
     $glossaryReplace = $false
   }
