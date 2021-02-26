@@ -225,7 +225,7 @@ $glossaryPath = ""
 do {
   foreach ($asset in $courseAssets) {
     if ($asset.substring(0,13) -eq ".\glossaries\") {
-      $glossaryPath = (Resolve-Path ".\$asset")
+      $glossaryPath = (Resolve-Path $asset)
     }
     $new = $true
     try {
