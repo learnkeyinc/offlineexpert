@@ -25,6 +25,12 @@ function Wait-Number($min, $max) {
   }
 }
 
+function Wait-Y {
+  Write-Host "`nPress Y to continue or any other key to try again." -ForegroundColor Cyan
+  $pressed = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown').Character
+  return ($pressed -eq "y")
+}
+
 # Pre-main global variables
 
 <# Part 1: 
@@ -39,6 +45,12 @@ $destination = ".\media"
 $destinationResolved = Resolve-Path $destination -ErrorAction SilentlyContinue -ErrorVariable _destinationTemp
 if (!$destinationResolved) {
   $destinationResolved = $_destinationTemp[0].TargetObject
+}
+
+$root = "."
+$rootResolved = Resolve-Path $root -ErrorAction SilentlyContinue -ErrorVariable _rootTemp
+if (!$rootResolved) {
+  $rootResolved = $_rootTemp[0].TargetObject
 }
 
 ##### Notice to user #####
@@ -60,10 +72,7 @@ Wait-AnyKey
 
 # Global functions
 
-function Write-Result { # Write a cyan or red success or failure to screen
-  param (
-    $bool
-  )
+function Write-Result([bool]$bool) { # Write a cyan or red success or failure to screen
   $result = "Failure"
   $color = "Red"
   if ($bool) {
@@ -86,33 +95,32 @@ $year = (Get-Date).year
 ##### Delete existing subdirectories and create new ones #####
 Clear-Host
 Write-Host "Deleting media subdirectories belonging to this course and creating new ones.`n"
+Do {
+  Write-Host "`n`tSession`tDelete`tCreate"
+  Write-Host   "`t-------`t------`t------"
 
-Write-Host "`n`tSession`tDelete`tCreate"
-Write-Host   "`t-------`t------`t------"
-
-foreach ($ID in $domainIDs) {  
-  Write-Host "`t$ID" -NoNewLine
-  $delete = $true
-  try {
-    # This is the only delete method that works with OneDrive
-    $fso.DeleteFolder("$destination\$ID*")
-  } catch {
-    $delete = $false
+  foreach ($ID in $domainIDs) {  
+    Write-Host "`t$ID" -NoNewLine
+    $delete = $true
+    try {
+      # This is the only delete method that works with OneDrive
+      $fso.DeleteFolder("$destination\$ID*")
+    } catch {
+      $delete = $false
+    }
+    Write-Result $delete
+    
+    $create = $true
+    try {
+      $null = New-Item -ItemType "directory" -Path "$destination\$ID\CD\WinFlash"
+    } catch {
+      $create = $false
+    }
+    Write-Result $create
+    Write-Host
   }
-  Write-Result($delete)
-  
-  $create = $true
-  try {
-    $null = New-Item -ItemType "directory" -Path "$destination\$ID\CD\WinFlash"
-  } catch {
-    $create = $false
-  }
-  Write-Result($create)
-  Write-Host
 }
-
-Write-Host "`nPress any key to begin downloading media" -ForegroundColor Cyan -NoNewLine
-Wait-AnyKey
+Until (Wait-Y)
 
 ##### Download media #####
 Clear-Host
@@ -122,86 +130,87 @@ Write-Host "Downloading media."
    $fileNames = @(("H0001","M0001"),("H0001","FM001","C0001")) #>
 [Part 3]
 
-Write-Host "`n`tDomain`tPrefix`tResult`tSize"
-Write-Host "`t------`t------`t-------`t--------"
+Do {
+  Write-Host "`n`tDomain`tPrefix`tResult`tSize"
+  Write-Host "`t------`t------`t-------`t--------"
 
-$i = 0
-foreach ($ID in $domainIDs) {
-  foreach ($file in $fileNames[$i]) {
-    
-    $url = "https://media-aws.onlineexpert.com/realcbt/$ID/CD/WinFlash/$file.mp4"
-    $destinationFilename = "$destination\$ID\CD\WinFlash\$file.mp4"
-    
-    Write-Host "`t$ID`t$file" -NoNewLine
-    
-    $download = $true
-    try {
-      $client.DownloadFile($url,$destinationFilename)
-    } catch {
-      $download = $false
+  $i = 0
+  foreach ($ID in $domainIDs) {
+    foreach ($file in $fileNames[$i]) {
+      
+      $url = "https://media-aws.onlineexpert.com/realcbt/$ID/CD/WinFlash/$file.mp4"
+      $destinationFilename = "$destination\$ID\CD\WinFlash\$file.mp4"
+      
+      Write-Host "`t$ID`t$file" -NoNewLine
+      
+      $download = $true
+      try {
+        $client.DownloadFile($url,$destinationFilename)
+      } catch {
+        $download = $false
+      }
+      Write-Result $download
+          
+      $filesize = "N/A"
+      try {
+        $destinationFile = Get-ChildItem $destinationFilename -ErrorAction Stop
+        $filesize = "$(% {([int]($destinationFile.length / 104857.6))/10}) MB"
+      } catch {}    
+      Write-Host "`t$filesize`n"
     }
-    Write-Result($download)
-        
-    $filesize = "N/A"
-    try {
-      $destinationFile = Get-ChildItem $destinationFilename -ErrorAction Stop
-      $filesize = "$(% {([int]($destinationFile.length / 104857.6))/10}) MB"
-    } catch {}    
-    Write-Host "`t$filesize`n"
+    $i = $i + 1
   }
-  $i = $i + 1
 }
-Write-Host "`nPress any key to begin downloading other assets" -ForegroundColor Cyan -NoNewLine
-Wait-AnyKey
+Until (Wait-Y)
 
 ##### Download common assets #####
 Clear-Host
 Write-Host "`nDownloading and extracting assets."
+do {
+  try {
+    $fso.DeleteFolder("C:\Temp\OfflineExpert")
+  } catch {}
 
-try {
-  $fso.DeleteFolder("C:\Temp\OfflineExpert")
-} catch {}
+  $zipPath = "C:\Temp\OfflineExpert\assets.zip"
+  New-Item $zipPath -Force
 
-$zipPath = "C:\Temp\OfflineExpert\assets.zip"
-New-Item $zipPath -Force
+  $global:ProgressPreference = "SilentlyContinue"
 
-$global:ProgressPreference = "SilentlyContinue"
+  $download = $true
+  try {  
+    Invoke-RestMethod -Uri "https://api.github.com/repos/learnkeyinc/offlineexpert/zipball/" -OutFile $zipPath 
+  } catch {
+    $download = $false
+  }
 
-$download = $true
-try {  
-  Invoke-RestMethod -Uri "https://api.github.com/repos/learnkeyinc/offlineexpert/zipball/" -OutFile $zipPath 
-} catch {
-  $download = $false
+  Write-Host
+  Write-Result $download
+  Write-Host
+
+  Write-Host "`nUnzipping." -ForegroundColor Cyan -NoNewLine
+  $unzip = $true
+
+  try {
+    Expand-Archive -Path $zipPath -DestinationPath "C:\Temp\OfflineExpert"
+    Move-Item "C:\Temp\OfflineExpert\learnkeyinc-offlineexpert-*\*" "C:\Temp\OfflineExpert" -Force
+  } catch {
+    $unzip = $false
+  }
+  Write-Result $unzip
+
+  $global:ProgressPreference = "Continue"
+
+  Write-Host "`nMoving.`t" -ForegroundColor Cyan -NoNewLine
+  $move = $true
+
+  try {
+    Move-Item "C:\Temp\OfflineExpert\assets\*" "." -Force
+  } catch {
+    $move = $false
+  }
+  Write-Result $move
 }
-
-Write-Host
-Write-Result($download)
-Write-Host
-
-Write-Host "`nUnzipping." -ForegroundColor Cyan -NoNewLine
-$unzip = $true
-
-try {
-  Expand-Archive -Path $zipPath -DestinationPath "C:\Temp\OfflineExpert"
-  Move-Item "C:\Temp\OfflineExpert\learnkeyinc-offlineexpert-*\*" "C:\Temp\OfflineExpert" -Force
-} catch {
-  $unzip = $false
-}
-Write-Result($unzip)
-
-$global:ProgressPreference = "Continue"
-
-Write-Host "`nMoving.`t" -ForegroundColor Cyan -NoNewLine
-$move = $true
-
-try {
-  Move-Item "C:\Temp\OfflineExpert\assets\*" "." -Force
-} catch {
-  $move = $false
-}
-Write-Result($move)
-Write-Host "`nPress any key to create course-specific assets" -ForegroundColor Cyan
-Wait-AnyKey
+Until (Wait-Y)
 
 ##### Create course-specific assets #####
 Clear-Host
@@ -211,24 +220,87 @@ Write-Host "Creating and opening course-specific assets"
    $courseAssets = @("ic3-gs5-start.html","ic3-gs5-domain-1.html") #>
 [Part 4]
 
-foreach ($asset in $courseAssets) {
-  $new = $true
-  try {
-    New-Item ".\$asset"
-  } catch {
-    $new = $false
+$glossaryPath = ""
+
+do {
+  foreach ($asset in $courseAssets) {
+    if ($asset.substring(0,13) -eq ".\glossaries\") {
+      $glossaryPath = (Resolve-Path ".\$asset")
+    }
+    $new = $true
+    try {
+      New-Item ".\$asset"
+    } catch {
+      $new = $false
+    }
+    Write-Host (Resolve-Path ".\$asset")
+    Write-Result $new  
   }
-  Write-Host (Resolve-Path ".\$asset")
-  Write-Result($new)  
 }
+Until (Wait-Y)
 
-Write-Host "`nFiles created. Press any key to continue."
+##### Glossary edit #####
+Clear-Host
+Write-Host "OnlineExpert Course ID needed" -Foregroundcolor Cyan
+Write-Host "`n`tExample: https://lms.onlineexpert.com/Student/Home#/course/home/12345/" -NoNewLine
+Write-Host "126" -BackgroundColor Cyan -ForegroundColor Black -NoNewLine
+Write-Host "/12"
+Write-Host "`nGo to https://lms.learnkey.com and log in as a student. Open the course and paste the entire URL below. Or, if you already know the ID, simply enter it below:"
+Do {
+  $lmsURL = Read-Host "`nURL or course ID"
+  if ($lmsURL.length -lt 10) {
+    $lmsID = $lmsURL
+  } else {
+    $lmsID = $lmsURL.Split("/")[-2]
+  }
+  Write-Host "`nOnlineExpert Course ID: " -NoNewLine
+  Write-Host $lmsID -ForegroundColor Cyan
+  
+  Write-Host "`nRetrieving glossary." -NoNewLine
+  $request = $true
+  try {
+    $webrequest = Invoke-WebRequest "https://lms.onlineexpert.com" -SessionVariable websession
+
+    $response = Invoke-RestMethod "https://lms.onlineexpert.com/student/coursehomeapi/GetGlossary?Origin=https://lms.onlineexpert.com&Referer=https://lms.onlineexpert.com/Student/Home&courseId=$lmsID" -Method 'POST' -WebSession $websession
+  } catch {
+    $request = $false
+  }
+  Write-Result $request
+
+  $entries = $response.result
+
+  $glossary = $entries | Group-Object 'def','con' | % { $_.Group | Select 'def','con' -First 1 } | Sort 'def' 
+  
+  $glossaryJSON = $glossary | ConvertTo-Json
+
+  Write-Host "`n$($glossary.Length)" -NoNewLine -ForegroundColor Cyan
+  Write-Host " terms found."
+} 
+Until (Wait-Y)
+
+Write-Host "`n`tIMPORTANT`t" -BackgroundColor Red -ForegroundColor Black
+Write-Host "Before continuing, ensure that the following file has the correct contents from Google Drive:" -ForegroundColor Red
+Write-Host $glossaryPath -ForegroundColor Red
+Write-Host "Press any key to continue." -ForegroundColor Red
 Wait-AnyKey
+Do {
+  Write-Host "`nWriting to " -NoNewLine
+  Write-Host $glossaryPath -ForegroundColor Cyan
 
-##### Complete notice #####
+  $glossaryReplace = $true
+  try {
+    ((Get-Content -Path $glossaryPath -Raw) -replace "\[PS\]",$glossaryJSON
+  } catch {
+    $glossaryReplace = $false
+  }
+  Write-Result $glossaryReplace
+}
+Until (Wait-Y)
+
+##### Completed notice #####
 Clear-Host
 Write-Host "`nScript complete. Assets have been created in the " -NoNewLine
-Write-Host $destinationResolved -ForegroundColor Cyan -NoNewLine
+Write-Host $rootResolved -ForegroundColor Cyan -NoNewLine
 Write-Host " directory."
 Write-Host "`nTo open all the course-specific assets for editing, choose an option below."
 Write-Host "`n1: Open in Notepad++ tabs"
@@ -240,17 +312,17 @@ $choice = Wait-Number 1 4
 switch ($choice) {
   1 { 
       foreach ($asset in $courseAssets) {
-        start notepad++ ".\$asset"
+        start notepad++ "`".\$asset`""
       }
     }
   2 {
       foreach ($asset in $courseAssets) {
-        start notepad ".\$asset"
+        start notepad "`".\$asset`""
       }
     }
   3 {
       foreach ($asset in $courseAssets) {
-        start "c:\program files\sublime text 3\sublime_text.exe" ".\Start.bat"
+        start "c:\program files\sublime text 3\sublime_text.exe" "`".\$asset`""
       }
     } 
 }
