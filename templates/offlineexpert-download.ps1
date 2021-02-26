@@ -26,9 +26,21 @@ function Wait-Number($min, $max) {
 }
 
 function Wait-Y {
-  Write-Host "`nPress Y to continue or any other key to try again." -ForegroundColor Cyan
+  Write-Host "`n`nEnter Y to continue or N to try again." -ForegroundColor Cyan
   $pressed = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown').Character
-  return ($pressed -eq "y")
+  if ($pressed -eq "y") {
+    return $true
+  } elseif ($pressed -eq "n") {
+    return $false
+  } else {
+    return Wait-Y
+  }
+}
+
+function Wait-Skip {
+  Write-Host "`n`nEnter S to skip or press any key to continue"
+  $pressed = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown').Character
+  return ($pressed -eq "s")
 }
 
 # Pre-main global variables
@@ -130,6 +142,8 @@ Write-Host "Downloading media."
    $fileNames = @(("H0001","M0001"),("H0001","FM001","C0001")) #>
 [Part 3]
 
+$simulate = Wait-Skip
+
 Do {
   Write-Host "`n`tDomain`tPrefix`tResult`tSize"
   Write-Host "`t------`t------`t-------`t--------"
@@ -145,7 +159,9 @@ Do {
       
       $download = $true
       try {
-        $client.DownloadFile($url,$destinationFilename)
+        if ($simulate) {
+          $client.DownloadFile($url,$destinationFilename)
+        }
       } catch {
         $download = $false
       }
