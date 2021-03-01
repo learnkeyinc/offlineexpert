@@ -47,7 +47,7 @@ function Wait-Y {
    $domainIDs = @("281119","281129") #>
 [Part 2]
 
-$destination = ".\media"
+$destination = ".\videos"
 $destinationResolved = Resolve-Path $destination -ErrorAction SilentlyContinue -ErrorVariable _destinationTemp
 if (!$destinationResolved) {
   $destinationResolved = $_destinationTemp[0].TargetObject
@@ -156,8 +156,7 @@ Do {
 
   $i = 0
   foreach ($ID in $domainIDs) {
-    foreach ($file in $fileNames[$i]) {
-      
+    foreach ($file in $fileNames[$i]) {      
       $url = "https://media-aws.onlineexpert.com/realcbt/$ID/CD/WinFlash/$file.mp4"
       $destinationFilename = "$destination\$ID\CD\WinFlash\$file.mp4"
       
