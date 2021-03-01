@@ -230,6 +230,11 @@ do {
   } catch {
     $move = $false
   }
+  
+  try {
+    $fso.DeleteFile(".\glossaries\.gitignore")
+  } catch {}
+  
   Write-Result $move
 }
 Until (Wait-Y)
