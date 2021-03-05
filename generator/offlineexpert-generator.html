@@ -18,6 +18,11 @@
       
         $(document).ready(function () {
           let domainIDs, details, shell, fileTemplates;
+          
+          var Promise = window.Promise;
+            if (!Promise) {
+                Promise = JSZip.external.Promise;
+            }
         
         let year = (new Date()).getFullYear();
         
