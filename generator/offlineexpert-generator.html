@@ -211,13 +211,7 @@
               $("#files").append($(`<p class="alert alert-success">${text}</p>`))
             }, function error(e) {
               $("#files").append($(`<p class="alert alert-danger>${e}</p>`))
-            })
-
-            if (f.folder) {
-              zip.folder(f.folder).file(filename, fileContent);
-            } else {
-              zip.file(filename);
-            }            
+            })           
           })
 
           console.log(zip);
