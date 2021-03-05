@@ -108,8 +108,8 @@
           let files = [
             {
               host: "../templates/offlineexpert.ahk", 
-              filename: `OfflineExpert for ${courseName}.ahk`, 
-              parts: [courseName, year, courseName, courseID, offlineExpertPrefix]                
+              filename: `OfflineExpert for ${courseName}.ahk`,
+              parts: [courseName, year, courseName, courseID, offlineExpertPrefix]
             },
             {
               host: "../templates/offlineexpert.iss",
@@ -134,37 +134,37 @@
               parts: [courseName, courseName, details.Summary, expertBios, outlineTable, year]
             },
             // Fonts
-            {host:"../assets/fonts/roboto-condensed-v14-latin-700.eot", folder:"fonts"},
+            {host:"../assets/fonts/roboto-condensed-v14-latin-700.eot", binary:true, folder:"fonts"},
             {host:"../assets/fonts/roboto-condensed-v14-latin-700.svg", folder:"fonts"},
-            {host:"../assets/fonts/roboto-condensed-v14-latin-700.ttf", folder:"fonts"},
-            {host:"../assets/fonts/roboto-condensed-v14-latin-700.woff", folder:"fonts"},
-            {host:"../assets/fonts/roboto-condensed-v14-latin-700.woff2", folder:"fonts"},
-            {host:"../assets/fonts/roboto-condensed-v14-latin-regular.eot", folder:"fonts"},
+            {host:"../assets/fonts/roboto-condensed-v14-latin-700.ttf", binary:true, folder:"fonts"},
+            {host:"../assets/fonts/roboto-condensed-v14-latin-700.woff", binary:true, folder:"fonts"},
+            {host:"../assets/fonts/roboto-condensed-v14-latin-700.woff2", binary:true, folder:"fonts"},
+            {host:"../assets/fonts/roboto-condensed-v14-latin-regular.eot", binary:true, folder:"fonts"},
             {host:"../assets/fonts/roboto-condensed-v14-latin-regular.svg", folder:"fonts"},
-            {host:"../assets/fonts/roboto-condensed-v14-latin-regular.ttf", folder:"fonts"},
-            {host:"../assets/fonts/roboto-condensed-v14-latin-regular.woff", folder:"fonts"},
-            {host:"../assets/fonts/roboto-condensed-v14-latin-regular.woff2", folder:"fonts"},
-            {host:"../assets/fonts/roboto-v16-latin-700.eot", folder:"fonts"},
+            {host:"../assets/fonts/roboto-condensed-v14-latin-regular.ttf", binary:true, folder:"fonts"},
+            {host:"../assets/fonts/roboto-condensed-v14-latin-regular.woff", binary:true, folder:"fonts"},
+            {host:"../assets/fonts/roboto-condensed-v14-latin-regular.woff2", binary:true, folder:"fonts"},
+            {host:"../assets/fonts/roboto-v16-latin-700.eot", binary:true, folder:"fonts"},
             {host:"../assets/fonts/roboto-v16-latin-700.svg", folder:"fonts"},
-            {host:"../assets/fonts/roboto-v16-latin-700.ttf", folder:"fonts"},
-            {host:"../assets/fonts/roboto-v16-latin-700.woff", folder:"fonts"},
-            {host:"../assets/fonts/roboto-v16-latin-700.woff2", folder:"fonts"},
+            {host:"../assets/fonts/roboto-v16-latin-700.ttf", binary:true, folder:"fonts"},
+            {host:"../assets/fonts/roboto-v16-latin-700.woff", binary:true, folder:"fonts"},
+            {host:"../assets/fonts/roboto-v16-latin-700.woff2", binary:true, folder:"fonts"},
             {host:"../assets/fonts/roboto-v16-latin-regular.eot", folder:"fonts"},
             {host:"../assets/fonts/roboto-v16-latin-regular.svg", folder:"fonts"},
-            {host:"../assets/fonts/roboto-v16-latin-regular.ttf", folder:"fonts"},
-            {host:"../assets/fonts/roboto-v16-latin-regular.woff", folder:"fonts"},
-            {host:"../assets/fonts/roboto-v16-latin-regular.woff2", folder:"fonts"},
+            {host:"../assets/fonts/roboto-v16-latin-regular.ttf", binary:true, folder:"fonts"},
+            {host:"../assets/fonts/roboto-v16-latin-regular.woff", binary:true, folder:"fonts"},
+            {host:"../assets/fonts/roboto-v16-latin-regular.woff2", binary:true, folder:"fonts"},
             // Help
-            {host:"../assets/help/OfflineExpert v1.2.doc",folder:"help"},
-            {host:"../assets/help/OfflineExpert v1.2.pdf",folder:"help"},
+            {host:"../assets/help/OfflineExpert v1.2.doc", binary:true, folder:"help"},
+            {host:"../assets/help/OfflineExpert v1.2.pdf", binary:true, folder:"help"},
             // Images
-            {host:"../assets/images/bg_banner_index.jpg",folder:"images"},
-            {host:"../assets/images/lk_favicon.jpg",folder:"images"},
-            {host:"../assets/images/LK_logo_200.jpg",folder:"images"},
-            {host:"../assets/images/lk_square_icon.ico",folder:"images"},
-            {host:"../assets/images/lk_square_small.bmp",folder:"images"},
-            {host:"../assets/images/lk_square.jpg",folder:"images"},
-            {host:"../assets/images/lklogo_2015.png",folder:"images"},
+            {host:"../assets/images/bg_banner_index.jpg", binary:true, folder:"images"},
+            {host:"../assets/images/lk_favicon.jpg", binary:true, folder:"images"},
+            {host:"../assets/images/LK_logo_200.jpg", binary:true, folder:"images"},
+            {host:"../assets/images/lk_square_icon.ico", binary:true, folder:"images"},
+            {host:"../assets/images/lk_square_small.bmp", binary:true, folder:"images"},
+            {host:"../assets/images/lk_square.jpg", binary:true, folder:"images"},
+            {host:"../assets/images/lklogo_2015.png", binary:true, folder:"images"},
             // Text
             {host:"../assets/text/EULA.rtf",folder:"text"},
             {host:"../assets/text/INFO.rtf",folder:"text"},
@@ -177,6 +177,7 @@
           $.each(assets, (i, asset) => {
             files.push({
               host: asset.host,
+              binary: true,
               folder: "assets"
             });
           });
@@ -212,7 +213,7 @@
               filename = f.host.replace(/.*\//,"");
             }
             
-            zip.folder(f.folder || "").file(filename, urlToPromise(f.host), {binary:true});
+            zip.folder(f.folder || "").file(filename, urlToPromise(f.host), {binary:f.binary || false});
           });
 
           console.log(zip);
