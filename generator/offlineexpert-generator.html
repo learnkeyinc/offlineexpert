@@ -213,7 +213,9 @@
               filename = f.host.replace(/.*\//,"");
             }
             
-            zip.folder(f.folder || "").file(filename, f.binary ? urlToPromiseBinary(f.host) : urlToPromiseString(f.host), {binary:f.binary || false});
+            if (f.binary) {
+              zip.folder(f.folder || "").file(filename, urlToPromiseBinary(f.host), {binary: true});
+            }
           });
 
           console.log(zip);
