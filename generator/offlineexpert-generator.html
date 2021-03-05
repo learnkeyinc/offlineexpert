@@ -213,14 +213,14 @@
               filename = f.host.replace(/.*\//,"");
             }
             
-            zip.folder(f.folder || "").file(filename, urlToPromise(f.host), {binary:f.binary || false});
+            zip.folder(f.folder || "").file(filename, f.binary ? urlToPromiseBinary(f.host) : urlToPromiseString(f.host), {binary:f.binary || false});
           });
 
           console.log(zip);
 
         }
 
-        function urlToPromise(url) {
+        function urlToPromiseBinary(url) {
           return new Promise(function(resolve, reject) {
               JSZipUtils.getBinaryContent(url, function (err, data) {
                   if(err) {
@@ -230,6 +230,18 @@
                   }
               });
           });
+      }
+
+      function urlToPromiseString(url) {
+        return new Promise(function(resolve, reject) {
+          fetch(url).then(function (response) {
+            if (response.status === 200 || response.status === 0) {
+              resolve(text)
+            } else {
+              reject(new Error(response.statusText))
+            }
+          })
+        })
       }
     
         
