@@ -10,6 +10,7 @@
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
       <!-- JSZip -->
       <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.6.0/jszip.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip-utils/0.1.0/jszip-utils.min.js"></script>
       
       <script>
       // test info 
@@ -18,7 +19,7 @@
       
         $(document).ready(function () {
           let domainIDs, details, shell, fileTemplates;
-          
+
           var Promise = window.Promise;
             if (!Promise) {
                 Promise = JSZip.external.Promise;
