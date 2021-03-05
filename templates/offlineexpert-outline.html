@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>[Part 1] Outline</title>
+
+<link rel='shortcut icon' href='./images/lk_favicon.jpg' />
+<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+<style>
+/* Eric Meyer's CSS Reset */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+/* End of Eric Meyer's CSS Reset */
+
+/* Local fonts
+-----------------------------------------------------------------------*/
+/* roboto-regular - latin */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  src: url('./fonts/roboto-v16-latin-regular.eot'); /* IE9 Compat Modes */
+  src: local('Roboto'), local('Roboto-Regular'),
+       url('./fonts/roboto-v16-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('./fonts/roboto-v16-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+       url('./fonts/roboto-v16-latin-regular.woff') format('woff'), /* Modern Browsers */
+       url('./fonts/roboto-v16-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('./fonts/roboto-v16-latin-regular.svg#Roboto') format('svg'); /* Legacy iOS */
+}
+
+/* roboto-700 - latin */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  src: url('./fonts/roboto-v16-latin-700.eot'); /* IE9 Compat Modes */
+  src: local('Roboto Bold'), local('Roboto-Bold'),
+       url('./fonts/roboto-v16-latin-700.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('./fonts/roboto-v16-latin-700.woff2') format('woff2'), /* Super Modern Browsers */
+       url('./fonts/roboto-v16-latin-700.woff') format('woff'), /* Modern Browsers */
+       url('./fonts/roboto-v16-latin-700.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('./fonts/roboto-v16-latin-700.svg#Roboto') format('svg'); /* Legacy iOS */
+}
+
+/* roboto-condensed-regular - latin */
+@font-face {
+  font-family: 'Roboto Condensed';
+  font-style: normal;
+  font-weight: 400;
+  src: url('./fonts/roboto-condensed-v14-latin-regular.eot'); /* IE9 Compat Modes */
+  src: local('Roboto Condensed'), local('RobotoCondensed-Regular'),
+       url('./fonts/roboto-condensed-v14-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('./fonts/roboto-condensed-v14-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+       url('./fonts/roboto-condensed-v14-latin-regular.woff') format('woff'), /* Modern Browsers */
+       url('./fonts/roboto-condensed-v14-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('./fonts/roboto-condensed-v14-latin-regular.svg#RobotoCondensed') format('svg'); /* Legacy iOS */
+}
+
+/* roboto-condensed-700 - latin */
+@font-face {
+  font-family: 'Roboto Condensed';
+  font-style: normal;
+  font-weight: 700;
+  src: url('./fonts/roboto-condensed-v14-latin-700.eot'); /* IE9 Compat Modes */
+  src: local('Roboto Condensed Bold'), local('RobotoCondensed-Bold'),
+       url('./fonts/roboto-condensed-v14-latin-700.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('./fonts/roboto-condensed-v14-latin-700.woff2') format('woff2'), /* Super Modern Browsers */
+       url('./fonts/roboto-condensed-v14-latin-700.woff') format('woff'), /* Modern Browsers */
+       url('./fonts/roboto-condensed-v14-latin-700.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('./fonts/roboto-condensed-v14-latin-700.svg#RobotoCondensed') format('svg'); /* Legacy iOS */
+}
+
+/* General settings
+-----------------------------------------------------------------------*/
+article, aside, details, figcaption, figure, footer, header, hgroup, main, nav, section, summary {
+	display: block;
+}
+body {
+	font-family:Roboto,Helvetica,Arial,sans-serif;
+	font-weight:400;
+	font-size:14px;
+	color:#555;
+}
+
+/* Wrapper
+-----------------------------------------------------------------------*/
+.wrapper_outer {
+	display: table;
+	position: absolute;
+	height: 100%;
+	width: 100%;
+}
+.wrapper_middle {
+	display: table-cell;
+	vertical-align: middle;
+}
+.wrapper_inner {
+	margin-left: auto;
+	margin-right: auto;
+	width: 80%;
+}
+
+/* Header
+-----------------------------------------------------------------------*/
+.header {
+	position: relative;
+	height: 46px;
+	background:url("./images/bg_banner_index.jpg");
+	background-position: right bottom; 
+	border-bottom: solid #4D7296; 
+	border-bottom-width: 9px;
+}
+#header-content {
+	position: absolute;
+	bottom: 0;
+	left: 10;
+}
+
+/* Middle
+-----------------------------------------------------------------------*/
+.middle {
+	width: 100%;
+	position: relative;
+}
+.middle:after {
+	display: table;
+	clear: both;
+	content: '';
+}
+.container {
+	width: 100%;
+	float: left;
+	overflow: hidden;
+}
+.content {
+	padding: 0 0 0 150px;
+}
+
+/* Video frame
+-----------------------------------------------------------------------*/
+#video {
+	width: 100%;
+}
+
+/* Course index
+-----------------------------------------------------------------------*/
+.course-index {
+	float: left;
+	width: 150px;
+	position: absolute;
+	overflow-y: scroll;
+	top:0;
+	bottom:0;
+}
+
+/* Tables
+-----------------------------------------------------------------------*/
+table
+{
+	width: 100%;
+	overflow:hidden
+}
+table tr:nth-child(even)
+{
+  background-color:#f5f5f5
+}
+table tr:hover
+{
+  background-color:#efefef
+}
+.child-row {
+	padding-left:10px;
+}
+
+/* Footer
+-----------------------------------------------------------------------*/
+.footer {
+	height: 50px;
+	position: relative;
+}
+#footer-content {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+}
+
+/* Special text
+-----------------------------------------------------------------------*/
+a,a:active,a:visited
+{
+  font-size:inherit;
+  font-family:inherit;
+  color:#4d7296;
+  text-decoration:none;
+  font-weight:inherit
+}
+a:hover
+{
+  font-size:inherit;
+  font-family:inherit;
+  color:#4d7296;
+  text-decoration:underline;
+  font-weight:inherit
+}
+h1
+{  
+	font-family:"Roboto Condensed",Helvetica,Arial,sans-serif;
+	width:auto;
+	font-weight:700;
+	text-transform:uppercase;
+	margin-top:10px;
+	margin-bottom:0;
+	color:#FFF;
+	font-size:32px;
+}
+h2
+{
+  font-weight:400;
+  margin-top:0;
+  margin-bottom:0;
+  color:#FFF;
+  font-size:16px
+}
+h3
+{
+	margin-top:20px;
+	font-size:16pt;
+}
+h4
+{
+  font-weight: 700;
+}
+/* Create three unequal columns that floats next to each other */
+.column {
+  float: left;
+  padding: 10px;
+}
+
+.left {
+  width: 25%;
+}
+
+.left p {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.leftgradient {
+  background: rgb(2,0,36);
+  background: -moz-linear-gradient(135deg, rgba(2,0,36,1) 0%, rgba(24,79,127,1) 100%);
+  background: -webkit-linear-gradient(135deg, rgba(2,0,36,1) 0%, rgba(24,79,127,1) 100%);
+  background: linear-gradient(135deg, rgba(2,0,36,1) 0%, rgba(24,79,127,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#020024",endColorstr="#184f7f",GradientType=1);
+
+  color: white;
+}
+
+.right {
+  width: 50%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.right table {
+  text-align: left;
+}
+
+.right tr td:nth-child(2) {
+  text-align: center;
+}
+
+.right .domain td {
+  font-weight:700;
+  font-size:24px;
+  padding:12px 0 8px 0;
+}
+
+.right .module td {
+  font-weight:700;
+  font-size:16px;
+  padding: 8px 0 4px 0;
+}
+.right .module td:first-child {
+  padding-left: 2em;
+}
+
+.right .button td:first-child {
+  padding-left: 4em;
+}
+
+
+
+</style>
+<script>
+  function windowClose() {
+    window.open('','_parent','');
+    window.close();
+  }
+
+  function goBack() {
+    window.history.back();
+  }
+</script>
+</head>
+<body>
+
+  <span style="float:right;position:relative;z-index:100">
+    <input type="button" value="&#x2b05;" onClick="goBack();">
+    <input type="button" value="&#x274c;" onClick="windowClose();">
+  </span>
+
+  <div class="wrapper_outer">
+    <div class="wrapper_middle">
+      <div class="wrapper_inner">
+        <p>
+          <img style="height: 46px; width: auto;" alt="LearnKey logo" src="images/lklogo_2015.png">
+        </p>
+        <div class="header">
+          <div id="header-content">
+            <h1>[Part 2]</h1>
+          </div>
+        </div>
+        <div class="row">
+          <div class="column left leftgradient">
+            <h4>Course description</h4>
+            <p>[Part 3]</p>            
+            <h4>About the author</h4>
+            <p>[Part 4]</p>
+          </div>
+          <div class="column right">
+            [Part 5]<table>
+              <tr class="domain"><td>Domain 1 - Describe Basic Communication Principles</td><td>38:12</td></tr>
+              <tr class="module"><td>Identify Professional Communication Skills</td><td>19:00</td></tr>
+              <tr class="button"><td colspan="2">Introduction</td></tr>
+              <tr class="button"><td colspan="2">Characteristics of Professionals</td></tr>
+              <tr class="button"><td colspan="2">Online Presence</td></tr>
+              <tr class="module"><td>Identify Effective Verbal, Nonverbal, and Listening Skills</td><td>19:12</td></tr>
+              <tr class="button"><td colspan="2">Nonverbal Communication</td></tr>
+              <tr class="button"><td colspan="2">Public Speaking Tips</td></tr>
+              <tr class="button"><td colspan="2">Listening Tips</td></tr>
+              <tr class="domain"><td>Domain 2 - Plan for Effective Communication</td><td>33:23</td></tr>
+              <tr class="module"><td>Analyze the Effect of the Audience on a Message</td><td>05:27</td></tr>
+              <tr class="button"><td colspan="2">Audience Demographics</td></tr>
+              <tr class="button"><td colspan="2">Collecting Demographic Data</td></tr>
+              <tr class="module"><td>Analyze the Effect of the Environment on a Message</td><td>10:38</td></tr>
+              <tr class="button"><td colspan="2">Ergonomics</td></tr>
+              <tr class="button"><td colspan="2">Room Arrangements</td></tr>
+              <tr class="button"><td colspan="2">Virtual Meetings</td></tr>
+              <tr class="module"><td>Given a Communication Scenario, Identify the Specific Purpose</td><td>03:54</td></tr>
+              <tr class="button"><td colspan="2">Four Purposes</td></tr>
+              <tr class="button"><td colspan="2">Ethos, Pathos, and Logos</td></tr>
+              <tr class="module"><td>Given a Communication Scenario, Address Ethical and Legal Issues</td><td>05:30</td></tr>
+              <tr class="button"><td colspan="2">Ethical Standards</td></tr>
+              <tr class="button"><td colspan="2">Legal Standards</td></tr>
+              <tr class="module"><td>Given a Business Scenario, Select the Most Appropriate Communication Medium</td><td>04:51</td></tr>
+              <tr class="button"><td colspan="2">Communication Methods</td></tr>
+              <tr class="module"><td>Effectively Outline and Summarize Your Message</td><td>03:03</td></tr>
+              <tr class="button"><td colspan="2">Communication Planning</td></tr>
+              <tr class="button"><td colspan="2">Creating an Outline</td></tr>
+              <tr class="domain"><td>Domain 3 - Apply Best Practices for Creating Business Deliverables</td><td>45:44</td></tr>
+              <tr class="module"><td>Assemble Accurate Business Communication Deliverables</td><td>30:33</td></tr>
+              <tr class="button"><td colspan="2">Document Accuracy</td></tr>
+              <tr class="button"><td colspan="2">Resume Details</td></tr>
+              <tr class="button"><td colspan="2">Emails and Letters</td></tr>
+              <tr class="button"><td colspan="2">Meeting Agenda and Minutes</td></tr>
+              <tr class="module"><td>Apply Visual Design Standards to Business Communications</td><td>11:34</td></tr>
+              <tr class="button"><td colspan="2">Design Terms</td></tr>
+              <tr class="button"><td colspan="2">Professional Slide Presentations</td></tr>
+              <tr class="module"><td>Identify Effective Uses of Data Visualization to Present Complex Information</td><td>03:37</td></tr>
+              <tr class="button"><td colspan="2">Graphics, Charts, and Illustrations</td></tr>
+              <tr class="button"><td colspan="2">Infographics</td></tr>
+              <tr class="domain"><td>Domain 4 - Deliver Your Message</td><td>14:11</td></tr>
+              <tr class="module"><td>Describe the Variables Involved in Delivering an Effective Message</td><td>08:38</td></tr>
+              <tr class="button"><td colspan="2">Professional Interactions</td></tr>
+              <tr class="button"><td colspan="2">Language and Dialect</td></tr>
+              <tr class="button"><td colspan="2">Perception</td></tr>
+              <tr class="module"><td>Identify Methods of Adapting a Message Based on Audience Feedback</td><td>05:33</td></tr>
+              <tr class="button"><td colspan="2">Considering Context</td></tr>
+              <tr class="domain"><td>Domain 5 - Receive Communications</td><td>07:12</td></tr>
+              <tr class="module"><td>Given a Business Communication, Restate the Key Points of the Message</td><td>02:08</td></tr>
+              <tr class="button"><td colspan="2">Summarizing Messages</td></tr>
+              <tr class="module"><td>Given a Message, Identify Appropriate Responses or Clarifying Questions</td><td>05:04</td></tr>
+              <tr class="button"><td colspan="2">Responding to Others</td></tr>
+              <tr class="domain"><td>Domain 6 - Analyze Communication Scenarios</td><td>30:35</td></tr>
+              <tr class="module"><td>Analyze Important Factors of Obtaining Employment</td><td>11:49</td></tr>
+              <tr class="button"><td colspan="2">Job Interview Tips</td></tr>
+              <tr class="module"><td>Analyze Expressions of and Responses to Feedback</td><td>04:51</td></tr>
+              <tr class="button"><td colspan="2">Constructive Criticism</td></tr>
+              <tr class="module"><td>Analyze Communication Etiquette Within a Business Hierarchy</td><td>07:53</td></tr>
+              <tr class="button"><td colspan="2">Etiquette Rules</td></tr>
+              <tr class="button"><td colspan="2">Upward, Downward, and Lateral Communication</td></tr>
+              <tr class="module"><td>Given a Customer Service Request, Identify the Problem, Solution, and Appropriate Action</td><td>06:02</td></tr>
+              <tr class="button"><td colspan="2">Resolving Customer Complaints</td></tr>
+              <tr class="button"><td colspan="2">Conclusion</td></tr>
+            </table>
+            
+          </div>
+        </div>
+        <footer class="footer">
+          <div id="footer-content">
+          
+            <p>&#169; Copyright [Part 7] LearnKey, a Better Learning Systems company. All rights reserved.</p>
+      
+          </div>
+        </footer>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

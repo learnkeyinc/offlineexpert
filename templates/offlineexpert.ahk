@@ -1,6 +1,10 @@
 #SingleInstance force
 
-[Part 1]
+; [Part 1] OfflineExpert v1.2 by Benjamin Lee, [Part 2]
+
+CourseTitle := "[Part 3]"
+CourseID := "[Part 4]"
+CourseIdentifier := "[Part 5]"
 
 ;Program begins 
 Start:

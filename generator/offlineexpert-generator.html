@@ -35,36 +35,33 @@
         
         // When the user clicks "Create files," individual download links are created.
         $("#create").click(createFiles);
-            
-        function verify() {
-            removeValidation();
-            let result = true;
-          $.each(["#shell","#details"], (i,e) => {
-              try {
-                console.log("try")
-              console.log($(e).val())
-              JSON.parse($(e).val());
-              $(e+"-container").addClass("has-success");
-            } catch {
-                console.log("Catch")
-              $(e+"-container").addClass("has-error");
-              result = false;
-            }
-          });
-          if (result) {
-              $("#create").attr("disabled", false);
-            $("#shell,#details").attr("disabled",true);
-            shell = $.parseJSON($("#shell").val())
-            details = $.parseJSON($("#details").val())
-          }
-        }
         
         function reset() {
             $("#shell,#details").val("").attr("disabled",false);
           removeValidation();
           $("#create").attr("disabled", true);      
         }
-        
+
+        function verify() {
+            removeValidation();
+            let result = true;
+          $.each(["#shell","#details"], (i,e) => {
+              try {
+                JSON.parse($(e).val());
+              $(e+"-container").addClass("has-success");
+            } catch {
+              $(e+"-container").addClass("has-error");
+              result = false;
+            }
+          });
+          if (result) {
+            $("#create").attr("disabled", false);
+            $("#shell,#details").attr("disabled",true);
+            shell = $.parseJSON($("#shell").val());
+            details = $.parseJSON($("#details").val());
+          }
+        }
+
         function removeValidation() {
             $("#shell-container,#details-container").removeClass((i,c) => {return (c.match(/(^|\s)has-\S+/g) || []).join(" ")});
         }
@@ -78,74 +75,280 @@
           let courseName = details.Name;
           let offlineExpertPrefix = courseName.toLowerCase().replace(/[\(\)\+]/g,"").split(" ").join("-");
           let courseID = details.CourseNumber;
+          let [assets, curriculum, videos2d, ISSMedia, domainIDs, videos] = parseShell();
           
-          let types = {
-            1:"download",
-            2: "",
-          3: "Assessment"}
-            
-                
-          $.forEach(shell.Lesson, (i, lesson) => {
-            $.forEach(lesson.Section, (j, section) => {
-              $.forEach(section.File, (k, file) => {
-                            
+          // For iterations of offlineexpert-domain.html
+          let domainGalleries = domainIDs.reduce((s,v,i) => s + `<div class="gallery"><a href="./domains/${offlineExpertPrefix}-domain-${i+1}.html"><img src="./images/${offlineExpertPrefix}-domain-${i+1}.jpg" alt="Domain ${i+1}" width="300" height="auto"></a><div class="desc">${v.name}<br><a href="./glossaries/${offlineExpertPrefix}.html">Glossary</a></div></div>\r`,``)
+          let assetGalleries = assets.reduce((s,v) => s + `<div class="gallery"><a href="./assets/${v.name}" title="${v.title}">${v.title}</a></div>\r`, ``)
+
+          // For offlineexpert-glossary.html
+          let glossary = getGlossary(GKanID);
+          let glossaryJSON = JSON.stringify(glossary.map((v,i) => {return {def:v.def.trim(), con:v.con.trim()}}));
+
+          // For offlineexpert-outline.html
+          let expertBios = details.ExpertList.reduce((s,v) => s + `<p>${v.Bio}</p>`, "");
+          let outlineTable = "<table>\n";
+          $.each(curriculum, (iDomain,domain) => {
+            outlineTable += `\t<tr class="domain"><td>${domain.name}</td><td>${secondsToHMS(domain.time)}</td></tr>\n`;
+            $.each(domain.modules, (iModule,module) => {
+              outlineTable += `\t<tr class="module"><td>${module.name}</td><td>${secondsToHMS(module.time)}</td></tr>\n`;
+              $.each(module.buttons, (iButton,button) => {
+                outlineTable += `\t<tr class="button"><td colspan="2">${button.name}</td></tr>\n`;
               });
             });
           });
-          
-          
-          
-          let glossary = $.ajax({
-              "async": false,
-            "url": `https://lms.onlineexpert.com/student/coursehomeapi/GetGlossary?Origin=https://lms.onlineexpert.com&Referer=https://lms.onlineexpert.com/Student/Home&courseId=${GKanID}`,
-            "method": "POST"
-          }).responseJSON.result;
-               
+          outlineTable += `<tr class="domain"><td>Total</td><td>${secondsToHMS(curriculum.time)}</td></tr></table>`;
+                 
           let files = [
-          {
-            host: "https://learnkeyinc.github.io/offlineexpert/templates/offlineexpert.ahk",
-            filename: `OfflineExpert for ${courseName}.ahk`,
-            parts: [
-              `; ${courseName} OfflineExpert v1.2 by Benjamin Lee, ${year}\r\rCourseTitle := "${courseName}"\rCourseID := "${courseID}"\rCourseIdentifier := "${offlineExpertPrefix}"\r`
-            ]
-          },
-          {
-            host: "https://learnkeyinc.github.io/offlineexpert/templates/offlineexpert.iss",
-            filename: `${courseName}.iss`,
-            parts: [
-              `#define MyAppName "OfflineExpert for ${courseName}"\r#define MyAppVersion "1.2"\r#define MyAppPublisher "LearnKey, Inc."\r#define MyAppURL "https://www.learnkey.com"\r#define MyAppExeName "OfflineExpert for ${courseName}.exe"\r#define MyAppIdentifier "${offlineExpertPrefix}"\r`,
-              `AppID={{ABCD1234-5678-EFGH-9012-IJKL3456}\r`,
-              ISSMediaFiles
-            ]
-          },
-          {
-            host:"https://learnkeyinc.github.io/offlineexpert/templates/offlineexpert-start.html",
-            filename: `${offlineExpertPrefix}-start.html`,
-            parts: [
-              `<title>${courseName} OfflineExpert</title>\r`,
-              `<input type="button" id="promo_video" value="&#x1f39e; Preview" onClick="onVideoClick('./videos/${offlineExpertPrefix}-promo.mp4');">\r`,
-              `<h1>OfflineExpert for ${courseName}</h1>\r`,
-              `<h3>Welcome to OfflineExpert for ${courseName}! Please select a domain to begin viewing the training videos.</h3>\r`,
-              offlineExpertStartThumbnails,
-              `<p>&#169; Copyright ${year} LearnKey, a Better Learning Systems company. All rights reserved.</p>\r`
-            ]
-          }
-        ]
+            {
+              host: "../templates/offlineexpert.ahk", 
+              filename: `OfflineExpert for ${courseName}.ahk`, 
+              parts: [courseName, year, courseName, courseID, offlineExpertPrefix]                
+            },
+            {
+              host: "../templates/offlineexpert.iss",
+              filename: `${courseName}.iss`,
+              parts: [courseName, courseName, offlineExpertPrefix, ISSMedia]
+            },
+            {
+              host:"../templates/offlineexpert-start.html",
+              filename: `${offlineExpertPrefix}-start.html`,
+              parts: [courseName, offlineExpertPrefix, courseName, courseName, domainGalleries, offlineExpertPrefix, assetGalleries, year]
+            },
+            {
+              host:"../templates/offlineexpert-glossary.html",
+              filename: `${offlineExpertPrefix}-glossary.html`,
+              folder: "glossaries",
+              parts: [courseName, glossaryJSON, courseName, year]
+            },
+            {
+              host:"../templates/offlineexpert-outline.html",
+              filename:`${offlineExpertPrefix}-outline.html`,
+              folder: "outlines",
+              parts: [courseName, courseName, details.Summary, expertBios, outlineTable, year]
+            },
+            // Fonts
+            {host:"../assets/fonts/roboto-condensed-v14-latin-700.eot", folder:"fonts"},
+            {host:"../assets/fonts/roboto-condensed-v14-latin-700.svg", folder:"fonts"},
+            {host:"../assets/fonts/roboto-condensed-v14-latin-700.ttf", folder:"fonts"},
+            {host:"../assets/fonts/roboto-condensed-v14-latin-700.woff", folder:"fonts"},
+            {host:"../assets/fonts/roboto-condensed-v14-latin-700.woff2", folder:"fonts"},
+            {host:"../assets/fonts/roboto-condensed-v14-latin-regular.eot", folder:"fonts"},
+            {host:"../assets/fonts/roboto-condensed-v14-latin-regular.svg", folder:"fonts"},
+            {host:"../assets/fonts/roboto-condensed-v14-latin-regular.ttf", folder:"fonts"},
+            {host:"../assets/fonts/roboto-condensed-v14-latin-regular.woff", folder:"fonts"},
+            {host:"../assets/fonts/roboto-condensed-v14-latin-regular.woff2", folder:"fonts"},
+            {host:"../assets/fonts/roboto-v16-latin-700.eot", folder:"fonts"},
+            {host:"../assets/fonts/roboto-v16-latin-700.svg", folder:"fonts"},
+            {host:"../assets/fonts/roboto-v16-latin-700.ttf", folder:"fonts"},
+            {host:"../assets/fonts/roboto-v16-latin-700.woff", folder:"fonts"},
+            {host:"../assets/fonts/roboto-v16-latin-700.woff2", folder:"fonts"},
+            {host:"../assets/fonts/roboto-v16-latin-regular.eot", folder:"fonts"},
+            {host:"../assets/fonts/roboto-v16-latin-regular.svg", folder:"fonts"},
+            {host:"../assets/fonts/roboto-v16-latin-regular.ttf", folder:"fonts"},
+            {host:"../assets/fonts/roboto-v16-latin-regular.woff", folder:"fonts"},
+            {host:"../assets/fonts/roboto-v16-latin-regular.woff2", folder:"fonts"},
+            // Help
+            {host:"../assets/help/OfflineExpert v1.2.doc",folder:"help"},
+            {host:"../assets/help/OfflineExpert v1.2.pdf",folder:"help"},
+            // Images
+            {host:"../assets/images/bg_banner_index.jpg",folder:"images"},
+            {host:"../assets/images/lk_favicon.jpg",folder:"images"},
+            {host:"../assets/images/LK_logo_200.jpg",folder:"images"},
+            {host:"../assets/images/lk_square_icon.ico",folder:"images"},
+            {host:"../assets/images/lk_square_small.bmp",folder:"images"},
+            {host:"../assets/images/lk_square.jpg",folder:"images"},
+            {host:"../assets/images/lklogo_2015.png",folder:"images"},
+            // Text
+            {host:"../assets/text/EULA.rtf",folder:"text"},
+            {host:"../assets/text/INFO.rtf",folder:"text"},
+            {host:"../assets/text/SUCCESS.rtf",folder:"text"},
+            // Videos
+            ...videos
+          ];
+
+          // Add other assets
+          $.each(assets, (i, asset) => {
+            files.push({
+              host: asset.host,
+              folder: "assets"
+            });
+          });
           
+          // Add domain HTML and video files
+          $.each(curriculum, (i, domain) => {
+            files.push({
+              host:"../templates/offlineexpert-domain.html",
+              title: `${offlineExpertPrefix}-domain-${i+1}.html`,
+              folder: "domains",
+              parts: [courseName, i+1, domain.id, JSON.stringify(videos2d[i]), domain.name, year]
+            });          
+          });
+
+          console.log(files);
+          
+          // Zip the files
+
+          var zip = JSZip();
+
+          $.each(files, (i,f) => {
+            fetch(f.host).then(function (response) {
+              if (response.status === 200 || response.status === 0) {
+                return Promise.resolve(response.blob());
+              } else {
+                return Promise.reject(new Error(response.statusText));
+              }
+            }).then(JSZip.loadAsync).then(function (zip) {
+              let filename;
+            
+              if (f.filename) {
+                filename = f.filename;
+              } else {
+                filename = f.host.replace(/.*\//,"");
+              }
+              return zip.folder(f.folder || "").file(filename).async("string");
+            }).then(function success(text) {
+              $("#files").append($(`<p class="alert alert-success">${text}</p>`))
+            }, function error(e) {
+              $("#files").append($(`<p class="alert alert-danger>${e}</p>`))
+            })
+
+            if (f.folder) {
+              zip.folder(f.folder).file(filename, fileContent);
+            } else {
+              zip.file(filename);
+            }            
+          })
+
+          console.log(zip);
+
+
         }
     
         
         function generateFile(file) {
           
         }
+
+        function secondsToHMS(seconds) {
+          let s = seconds%60;
+          let m = Math.floor(seconds/60)%60;
+          let h = Math.floor(seconds/(60*60));
+          let hms = [m,s];
+          if (h > 0) {
+            hms.unshift(h)
+          }          
+          let hmsString = hms.map(v => v.toString().padStart(2,0)).join(":");
+          return hmsString;
+        }        
+
+        function getGlossary(id) {
+          return $.ajax({
+              "async": false,
+            "url": `https://lms.onlineexpert.com/student/coursehomeapi/GetGlossary?Origin=https://lms.onlineexpert.com&Referer=https://lms.onlineexpert.com/Student/Home&courseId=${id}`,
+            "method": "POST"
+          }).responseJSON.result;
+        }
         
-    
+        function parseShell() {
+          /*
+            Types:
+              Section:
+              1: Download 
+                0:
+              
+              3: Assessment
+                1: Assessment
+
+              4: Videos
+                1: Multiple videos
+
+              Content:
+              1:  Video
+                3: Single video
+                16: Multiple videos
+          */
+          let assets = [];
+          let videos2d = [];
+          let curriculum = [];
+          let ISSMedia = [];
+          let domainIDs = [];
+          let videos = [];
           
-        let files = 
+          $.each(shell.Lesson, (i, domain) => {  // 1 lesson = 1 domain
+            videos2d.push([]);
+            curriculum.push({
+              name: domain.Name,
+              modules:[],
+              time:0
+            })            
+            $.each(domain.Section, (j, module) => { // 1 section = 1 module
+              switch (module.Type) {
+                case "1": // File downloads
+                  $.each(module.Download, (k, download) => {
+                    assets.push({
+                      title: download.Title,
+                      host: download.Url,
+                      name: download.Url.replace(/.*\//,""),
+                    });
+                  });
+                  break;
+                case "3": // Assessment
+                  // Do nothing for now. Future implementation of assessments.
+                  break;
+                case "4":  // Videos
+                  videos2d[i].push(["",module.Name]);
+                  curriculum[i].modules.push({
+                    name: module.Name,
+                    buttons:[],
+                    time:0
+                  });
+                  let m = curriculum[i].modules.length - 1
+                  $.each(module.Content, (k, button) => { // 1 content = 1 button
+                    curriculum[i].modules[m].buttons.push({
+                      name: button.Name,
+                      videos: [],
+                      time:0
+                    });
+                    let b = curriculum[i].modules[m].buttons.length - 1;
+                    $.each(button.File, (l, file) => {
+                      if (l == 0) {
+                        videos2d[i].push([file.Name,button.Name]);
+                      } else {
+                        videos2d[i].push([file.Name,""]);
+                      }
+                      let domainID = file.Url.replace(/^.*realcbt\/(\d{6})\/.*$/,"$1");
+                      videos.push({
+                        host: file.Url,
+                        folder: `videos\\${domainID}\\CD\\WinFlash`
+                      })
+                      if (!domainIDs.includes(domainID)) {
+                        domainIDs.push(domainID);
+                        curriculum[i].id = domainID;
+                        ISSMedia += `Source: "..\\videos\\${domainID}\\*"; DestDir: "{app}\\videos\\${domainID}"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: media\r`;
+                      }
+                      curriculum[i].modules[m].buttons[b].videos.push({
+                        prefix: file.Name,
+                        time: +file.Time,
+                        url: file.Url
+                      });
+                      curriculum[i].modules[m].buttons[b].time += +file.Time;
+                      curriculum[i].modules[m].time += +file.Time;
+                      curriculum[i].time += +file.Time;
+                    });
+                  });
+                  break;
+              }
+            });
+          });
+          return ([assets, curriculum, videos2d, ISSMedia, domainIDs, videos])
+        }    
+          
+        // let files = 
     
-        offlineExpertDomains.forEach((e,i) => {
+        /*offlineExpertDomains.forEach((e,i) => {
           files.push({
-            host:"https://learnkeyinc.github.io/offlineexpert/templates/offlineexpert-domain.html",
+            host:"../templates/offlineexpert-domain.html",
             filename: `${offlineExpertPrefix}-domain-${i+1}.html`,
             parts: e
           });
@@ -155,6 +358,10 @@
     </head>
     <body>
       <div class="container">
+        <div class="jumbotron">
+          <h1>OfflineExpert generator</h1>
+          <p>This web app will create the files required to generate an OfflineExpert course.</p>
+        </div>
         <div class="row">
           <div class="col-xs-12">
             <button id="reset" type="button" class="btn btn-warning btn-block">Reset</button>
