@@ -226,26 +226,13 @@
           return new Promise(function(resolve, reject) {
               JSZipUtils.getBinaryContent(url, function (err, data) {
                   if(err) {
-                      reject(err);
+                    reject(err);
                   } else {
-                      resolve(data);
+                    resolve(data);
                   }
               });
           });
-      }
-
-      function urlToPromiseString(url) {
-        return new Promise(function(resolve, reject) {
-          fetch(url).then(function (response) {
-            if (response.status === 200 || response.status === 0) {
-              resolve(text)
-            } else {
-              reject(new Error(response.statusText))
-            }
-          })
-        })
-      }
-    
+      }    
         
         function generateFile(file) {
           
