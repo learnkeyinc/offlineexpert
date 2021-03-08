@@ -51,9 +51,10 @@
         
         function reset() {
           $("#shell,#details").val("").attr("disabled",false);
+          $("#verify").attr("disabled",false);
           removeValidation();
           $("#categories").empty();
-          $("#prepare,#categories,#create").attr("disabled", true);      
+          $("#prepare,#categories,#prepare,#create").attr("disabled", true);     
         }
 
         function verify() {
