@@ -69,7 +69,7 @@
           });
           if (result) {
             $("#prepare").attr("disabled", false);
-            $("#shell,#details").attr("disabled",true);
+            $("#shell,#details,$verify").attr("disabled",true);
             shell = $.parseJSON($("#shell").val());
             details = $.parseJSON($("#details").val());
           }
@@ -349,6 +349,7 @@
                       let domainID = file.Url.replace(/^.*realcbt\/(\d{6})\/.*$/,"$1");
                       fn_videos.push({
                         host: file.Url,
+                        category: "videos",
                         folder: `videos\\${domainID}\\CD\\WinFlash`
                       })
                       if (!fn_domainIDs.includes(domainID)) {
