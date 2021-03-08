@@ -22,6 +22,8 @@
 
         let GKanID, courseName, offlineExpertPrefix, courseID, assets, curriculum, videos2d, ISSMedia, domainIDs, videos, domainGalleries, assetGalleries, glossary, glossaryJSON, expertBios, outlineTable, files;
 
+        let categories;
+
         var Promise = window.Promise;
           if (!Promise) {
               Promise = JSZip.external.Promise;
@@ -184,7 +186,7 @@
             // Assets
             ...assets
           ];
-          
+                    
           // Add domain HTML and video files
           $.each(curriculum, (i, domain) => {
             files.push({
@@ -197,6 +199,15 @@
           });
 
           console.log(files);
+
+          // get unique category values from files
+          categories = [...new Set(files.map((i,v) => v.category))];
+
+          // Make checkboxes
+          $.each(categories, (i,v) => {
+            let categoryCount = files.reduce((t,f) => {if (t.category == v) t++},0);
+            $("#categories").append($(`<label class="checkbox-inline"><input id="checkbox-${v}" type="checkbox" value="" checked>${v} <span class="badge">${categoryCount}</span></label>`))
+          })
           
           $("#categories,#create").attr("disabled",false);
         }
@@ -422,14 +433,6 @@
               <div class="panel-body">
                 <div class="form-group">
                   <fieldset id="categories" disabled>
-                    <label class="checkbox-inline"><input id="checkbox-assets" type="checkbox" value="" checked>assets</label>
-                    <label class="checkbox-inline"><input id="checkbox-fonts" type="checkbox" value="" checked>fonts</label>
-                    <label class="checkbox-inline"><input id="checkbox-glossaries" type="checkbox" value="" checked>glossaries</label>
-                    <label class="checkbox-inline"><input id="checkbox-help" type="checkbox" value="" checked>help</label>
-                    <label class="checkbox-inline"><input id="checkbox-main" type="checkbox" value="" checked>main</label>
-                    <label class="checkbox-inline"><input id="checkbox-outlines" type="checkbox" value="" checked>outlines</label>
-                    <label class="checkbox-inline"><input id="checkbox-text" type="checkbox" value="" checked>text</label>
-                    <label class="checkbox-inline"><input id="checkbox-videos" type="checkbox" value="" checked>videos</label>
                   </fieldset>
                 </div>
                 <button disabled id="create" type="button" class="btn btn-primary btn-block">Create</button>
