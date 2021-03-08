@@ -69,7 +69,7 @@
           });
           if (result) {
             $("#prepare").attr("disabled", false);
-            $("#shell,#details,$verify").attr("disabled",true);
+            $("#shell,#details,#verify").attr("disabled",true);
             shell = $.parseJSON($("#shell").val());
             details = $.parseJSON($("#details").val());
           }
