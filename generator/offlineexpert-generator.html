@@ -52,6 +52,7 @@
         function reset() {
           $("#shell,#details").val("").attr("disabled",false);
           removeValidation();
+          $("#categories").empty();
           $("#prepare,#categories,#create").attr("disabled", true);      
         }
 
@@ -206,9 +207,10 @@
           // Make checkboxes
           $.each(categories, (i,v) => {
             let categoryCount = files.reduce((t,f) => t += (f.category == v) ? 1 : 0, 0);
-            $("#categories").append($(`<label class="checkbox-inline"><input id="checkbox-${v}" type="checkbox" value="" checked>${v} <span class="badge">${categoryCount}</span></label>`))
+            $("#categories").append($(`<label class="checkbox-inline"><input id="checkbox-${v}" type="checkbox" value="" checked>${v} <span class="badge">${categoryCount}</span></label>`));
           })
           
+          $("#prepare").attr("disabled",true);
           $("#categories,#create").attr("disabled",false);
         }
 
