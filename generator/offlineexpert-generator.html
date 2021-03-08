@@ -47,7 +47,7 @@
         $("#prepare").click(prepareFiles);
 
         // When the user clicks "Create"
-        $("#create").click(zipFiles);
+        $("#create").click(createZipFiles);
         
         function reset() {
           $("#shell,#details").val("").attr("disabled",false);
@@ -215,11 +215,12 @@
           $("#categories,#create").attr("disabled",false);
         }
 
-        function zipFiles() {
-          let categoriesToZip = 0;
+        function createZipFiles() {
+          let categoriesToZip = $("#categories [id^=checkbox-]:checked").map((_,e) => $(e).val()).get();
           
-          let filesToZip = 0;
+          let filesToZip = files.filter((e) => categoriesToZip.includes(e.category));
           
+          console.log(categoriesToZip, filesToZip);
           debugger;
 
           // Fill in the content when parts exist
