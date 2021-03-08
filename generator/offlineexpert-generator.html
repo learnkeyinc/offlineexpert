@@ -201,7 +201,7 @@
           console.log(files);
 
           // get unique category values from files
-          categories = [...new Set(files.map((v) => v.category))];
+          categories = [...new Set(files.map((v) => v.category))].sort();
 
           // Make checkboxes
           $.each(categories, (i,v) => {
