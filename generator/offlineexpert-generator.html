@@ -382,55 +382,76 @@
         </div>
         <div class="row">
           <div class="col-xs-12">
-            <button id="reset" type="button" class="btn btn-warning btn-block">Reset</button>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-xs-12">
-            <div id="shell-container" class="form-group">
-              <label for="shell">Results of <em>GetCourseShellById</em></label>
-              <textarea id="shell" class="form-control" rows="5"></textarea>
-            </div>
-            <div id="details-container" class="form-group">
-              <label for="details">Results of <em>GetCourseDetailsById</em></label>
-              <textarea id="details" class="form-control" rows="5"></textarea>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-xs-12">
-            <button id="verify" type="button" class="btn btn-primary btn-block">Verify JSON</button>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-xs-12">
-            <button disabled id="prepare" type="button" class="btn btn-primary btn-block">Prepare assets</button>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-xs-12">
-            <div class="form-group">
-              <fieldset id="categories" disabled>
-                <label class="checkbox-inline"><input id="checkbox-assets" type="checkbox" value="" checked>assets</label>
-                <label class="checkbox-inline"><input id="checkbox-fonts" type="checkbox" value="" checked>fonts</label>
-                <label class="checkbox-inline"><input id="checkbox-glossaries" type="checkbox" value="" checked>glossaries</label>
-                <label class="checkbox-inline"><input id="checkbox-help" type="checkbox" value="" checked>help</label>
-                <label class="checkbox-inline"><input id="checkbox-main" type="checkbox" value="" checked>main</label>
-                <label class="checkbox-inline"><input id="checkbox-outlines" type="checkbox" value="" checked>outlines</label>
-                <label class="checkbox-inline"><input id="checkbox-text" type="checkbox" value="" checked>text</label>
-                <label class="checkbox-inline"><input id="checkbox-videos" type="checkbox" value="" checked>videos</label>
-              </fieldset>
+            <div class="panel panel-info">
+              <div class="panel-heading">
+                Step 1: Paste results of GKan API calls
+              </div>
+              <div class="panel-body">
+                <button id="reset" type="button" class="btn btn-warning btn-block">Reset</button>
+                <div id="shell-container" class="form-group">
+                  <label for="shell">Results of <em>GetCourseShellById</em></label>
+                  <textarea id="shell" class="form-control" rows="5"></textarea>
+                </div>
+                <div id="details-container" class="form-group">
+                  <label for="details">Results of <em>GetCourseDetailsById</em></label>
+                  <textarea id="details" class="form-control" rows="5"></textarea>
+                </div>
+                <button id="verify" type="button" class="btn btn-primary btn-block">Verify JSON</button>
+              </div>
             </div>
           </div>
         </div>
         <div class="row">
           <div class="col-xs-12">
-            <button disabled id="create" type="button" class="btn btn-primary btn-block">Create</button>
+            <div class="panel panel-info">
+              <div class="panel-heading">
+                Step 2: Prepare the assets
+              </div>
+              <div class="panel-body">
+                <button disabled id="prepare" type="button" class="btn btn-primary btn-block">Prepare assets</button>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="row" id="status">          
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="panel panel-info">
+              <div class="panel-heading">
+                Step 3: Download a zip file with the selected components
+              </div>
+              <div class="panel-body">
+                <div class="form-group">
+                  <fieldset id="categories" disabled>
+                    <label class="checkbox-inline"><input id="checkbox-assets" type="checkbox" value="" checked>assets</label>
+                    <label class="checkbox-inline"><input id="checkbox-fonts" type="checkbox" value="" checked>fonts</label>
+                    <label class="checkbox-inline"><input id="checkbox-glossaries" type="checkbox" value="" checked>glossaries</label>
+                    <label class="checkbox-inline"><input id="checkbox-help" type="checkbox" value="" checked>help</label>
+                    <label class="checkbox-inline"><input id="checkbox-main" type="checkbox" value="" checked>main</label>
+                    <label class="checkbox-inline"><input id="checkbox-outlines" type="checkbox" value="" checked>outlines</label>
+                    <label class="checkbox-inline"><input id="checkbox-text" type="checkbox" value="" checked>text</label>
+                    <label class="checkbox-inline"><input id="checkbox-videos" type="checkbox" value="" checked>videos</label>
+                  </fieldset>
+                </div>
+                <button disabled id="create" type="button" class="btn btn-primary btn-block">Create</button>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="row" id="files">
+        <div class="row">
+          <div class="col-xs-12"></div>
+            <div class="panel panel-primary">
+              <div class="panel-heading">Status</div>
+              <div class="panel-body" id="status"></div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12"></div>
+            <div class="panel panel-primary">
+              <div class="panel-heading">Files</div>
+              <div class="panel-body" id="files"></div>
+            </div>
+          </div>
         </div>
       </div>
     
