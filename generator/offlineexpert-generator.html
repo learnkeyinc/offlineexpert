@@ -205,7 +205,7 @@
 
           // Make checkboxes
           $.each(categories, (i,v) => {
-            let categoryCount = files.reduce((t,f) => {if (t.category == v) t++},0);
+            let categoryCount = files.reduce((t,f) => {if (f.category == v) t++},0);
             $("#categories").append($(`<label class="checkbox-inline"><input id="checkbox-${v}" type="checkbox" value="" checked>${v} <span class="badge">${categoryCount}</span></label>`))
           })
           
