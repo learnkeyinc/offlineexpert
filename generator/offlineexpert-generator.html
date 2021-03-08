@@ -221,10 +221,9 @@
           let filesToZip = files.filter((e) => categoriesToZip.includes(e.category));
           
           console.log(categoriesToZip, filesToZip);
-          debugger;
 
           // Fill in the content when parts exist
-          $.each(files, (i,f) => {
+          $.each(filesToZip, (i,f) => {
 
           })
 
@@ -232,7 +231,7 @@
 
           var zip = JSZip();
 
-          $.each(files, (i,f) => {
+          $.each(filesToZip, (i,f) => {
             let filename;
             
             if (f.filename) {
@@ -247,6 +246,7 @@
           });
 
           console.log(zip);
+          debugger;
 
         }
 
