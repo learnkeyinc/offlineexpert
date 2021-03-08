@@ -47,7 +47,7 @@
         $("#prepare").click(prepareFiles);
 
         // When the user clicks "Create"
-
+        $("#create").click(zipFiles);
         
         function reset() {
           $("#shell,#details").val("").attr("disabled",false);
@@ -189,7 +189,7 @@
             ...assets
           ];
                     
-          // Add domain HTML and video files
+          // Add domain HTML files
           $.each(curriculum, (i, domain) => {
             files.push({
               host:"../templates/offlineexpert-domain.html",
@@ -208,7 +208,7 @@
           // Make checkboxes
           $.each(categories, (i,v) => {
             let categoryCount = files.reduce((t,f) => t += (f.category == v) ? 1 : 0, 0);
-            $("#categories").append($(`<label class="checkbox-inline"><input id="checkbox-${v}" type="checkbox" value="" checked>${v} <span class="badge">${categoryCount}</span></label>`));
+            $("#categories").append($(`<label class="checkbox-inline"><input id="checkbox-${v}" type="checkbox" value="${v}" checked>${v} <span class="badge">${categoryCount}</span></label>`));
           })
           
           $("#prepare").attr("disabled",true);
@@ -216,8 +216,13 @@
         }
 
         function zipFiles() {
-          // Fill in the content when parts exist
+          let categoriesToZip = 0;
+          
+          let filesToZip = 0;
+          
+          debugger;
 
+          // Fill in the content when parts exist
           $.each(files, (i,f) => {
 
           })
