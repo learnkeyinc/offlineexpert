@@ -21,8 +21,8 @@
         let details, shell;
 
         let GKanID, courseName, offlineExpertPrefix, courseID, assets, curriculum, videos2d, ISSMedia, domainIDs, videos, domainGalleries, assetGalleries, glossary, glossaryJSON, expertBios, outlineTable, files;
-
-        let categories;
+        
+        let categories, filesToZip;
 
         var Promise = window.Promise;
           if (!Promise) {
@@ -218,7 +218,7 @@
         function createZipFiles() {
           let categoriesToZip = $("#categories [id^=checkbox-]:checked").map((_,e) => $(e).val()).get();
           
-          let filesToZip = files.filter((e) => categoriesToZip.includes(e.category));
+          filesToZip = files.filter((e) => categoriesToZip.includes(e.category));
           
           console.log(categoriesToZip, filesToZip);
 
@@ -232,9 +232,14 @@
           var zip = JSZip();
 
           // Add files to table
+          $("#files").append($(`<table id="filestable" class="table table-condensed table-striped"><thead><tr></tr><th>File</th><th>Folder</th><th>HTTP status</th><th>Download status</th><th>Zip status</th></thead><tbody><tr></tr></tbody></table>`))
 
-          let threads = 3; // 1-10; add spinner
-          let retries = 3;
+          $.each(filesToZip(), (i,f) => {
+            $("#filestable tbody").append($(`<tr id="file-${i}"><td>${f.filename}</td><td>${f.folder}</td><td class="httpstatus"></td><td class="dlstatus"></td><td class="zipstatus"></tr>`))
+          })
+
+          let threads = +$("#threads").val(); // 1-10; add spinner
+          let retries = +$("#retries").val();
 
 
           for (let i = 0; i < threads; i++) {
@@ -263,10 +268,10 @@
         async function downloadAndZip(iterator, threads, retries, tries = 1) {
           let response, contents;
 
-          if (files[iterator]) {
+          if (filesToZip[iterator]) {
             if (tries <= retries) {
               try {
-                response = await fetch(files[iterator].host);
+                response = await fetch(filesToZip[iterator].host);
               } catch {
                 // update table (retrying)
                 downloadAndZip(iterator, threads, retries, tries + 1);
@@ -505,6 +510,12 @@
               <div class="panel-body">
                 <div class="form-group">
                   <fieldset id="categories" disabled>
+                  </fieldset>
+                  <fieldset id="preferences">
+                    <label for="retries">Retries</label>
+                    <input id="retries" type="number" min="1" max="10" val="3">
+                    <label for="threads">Retries</label>
+                    <input id="threads" type="number" min="1" max="10" val="3">
                   </fieldset>
                 </div>
                 <button disabled id="create" type="button" class="btn btn-primary center-block">Create</button>
