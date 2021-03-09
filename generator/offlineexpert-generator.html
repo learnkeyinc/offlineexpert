@@ -240,7 +240,7 @@
           debugger;
 
 
-          $.each(filesToZip, (i,f) => {
+          /*$.each(filesToZip, (i,f) => {
             let filename;
             
             if (f.filename) {
@@ -250,7 +250,7 @@
             }
             zip.folder(f.folder || "").file(filename, urlToPromiseBinary(f.host), {binary: true});
         
-          });
+          });*/
 
           console.log(zip);
 
