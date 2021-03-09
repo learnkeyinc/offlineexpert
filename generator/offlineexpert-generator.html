@@ -257,7 +257,7 @@
 
         }
 
-        function downloadAndZip(iterator, threads) {
+        async function downloadAndZip(iterator, threads) {
           if (files[iterator]) {
             let response = await fetch(files[iterator]);            
             if (response.ok) {
