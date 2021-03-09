@@ -268,9 +268,12 @@
               
               
             }).then(contents => {
-              // add to zip file (.folder/.filename)
               // update table
-              // get next file
+          
+            }).then(data => {                           
+              // add to zip file (.folder/.filename)    
+              // update table
+              // get next file                   
               downloadAndZip(iterator + threads, threads)
             });
           } else {}
