@@ -258,21 +258,24 @@
         }
 
         function downloadAndZip(iterator, threads) {
-          fetch(files[iterator].host, {
-            // get files[iterator].host
-          }).then(response => {
-            console.log(response)
-            // results = replaceParts(results, files[iterator])
-            // add to zip file (.folder/.filename)
-            // update table
-            // get next file
-            downloadAndZip(i + threads, threads)
-          });
+          if (files[iterator]) {
+            fetch(files[iterator].host, {
+              // get files[iterator].host
+            }).then(response => {
+              console.log(response)
+              // results = replaceParts(results, files[iterator])
+              // add to zip file (.folder/.filename)
+              // update table
+              // get next file
+              
+              downloadAndZip(iterator + threads, threads)
+            });
+          } else {}
         }
 
         function replaceParts(contents, parts) {
 
-          
+
         }
 
         function urlToPromiseBinary(url) {
