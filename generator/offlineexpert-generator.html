@@ -71,7 +71,7 @@
           });
           if (result) {
             $("#prepare").attr("disabled", false);
-            $("#shell,#details,#verify").attr("disabled",true);
+            $("#shell,#details,#verify").attr("disabled",true);            
             shell = $.parseJSON($("#shell").val());
             details = $.parseJSON($("#details").val());
           }
@@ -233,7 +233,7 @@
 
           // Add files to table
 
-          let threads = 10; // 1-10; add spinner
+          let threads = 3; // 1-10; add spinner
           for (let i = 0; i < threads; i++) {
             downloadAndZip(i, threads);
           }
@@ -259,29 +259,27 @@
 
         function downloadAndZip(iterator, threads) {
           if (files[iterator]) {
-            fetch(files[iterator].host, {
-              // get files[iterator].host
-            }).then(response => {              
-              console.log(1, response);
-              if (response.status >= 200 && response.status < 300) {
-                return Promise.resolve(response);
-              } else {
-                return Promise.reject(new Error(response.statusText));
-              }                
-              // results = replaceParts(results, files[iterator])
-              // update table                                   
-            }).then(response => {
-              console.log(2, response);
-              return response.json;
-              // update table          
-            }).then(data => {    
-              console.log(3, data)                       
-              // add to zip file (.folder/.filename)    
-              // update table
-              // get next file                   
-              downloadAndZip(iterator + threads, threads)
-            });
-          } else {}
+            let response = await fetch(files[iterator]);            
+            if (response.ok) {
+              // update table (http status)
+              let contents = await response.json();
+            } else {
+              // http error, update table (http status) and add try again link
+            }
+            
+            // update table (downloaded)
+            console.log(contents)
+            // some sort of content check
+
+            // add to zip file
+
+            // update table (zipped)
+            
+            // get next file
+            downloadAndZip(iterator + threads, threads)
+          } else {}      
+
+           
         }
 
         function replaceParts(contents, parts) {
