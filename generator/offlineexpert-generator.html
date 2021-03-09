@@ -231,6 +231,15 @@
 
           var zip = JSZip();
 
+          // Add files to table
+
+          let threads = 10; // 1-10; add spinner
+          for (let i = 0; i < threads; i++) {
+            downloadAndZip(i, threads);
+          }
+          debugger;
+
+
           $.each(filesToZip, (i,f) => {
             let filename;
             
@@ -244,9 +253,24 @@
           });
 
           console.log(zip);
-          debugger;
+
 
         }
+
+        function downloadAndZip(iterator, threads) {
+          fetch(files[iterator].host, {
+            // get files[iterator].host
+          }).then(response => {
+            console.log(response)
+            // results = replaceParts(results, files[iterator])
+            // add to zip file (.folder/.filename)
+            // update table
+            // get next file
+            downloadAndZip(i + threads, threads)
+          });
+        }
+
+        function replaceParts(contents, parts)
 
         function urlToPromiseBinary(url) {
           return new Promise(function(resolve, reject) {
