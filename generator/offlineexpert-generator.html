@@ -239,10 +239,8 @@
             } else {
               filename = f.host.replace(/.*\//,"");
             }
-            
-            if (f.binary) {
-              zip.folder(f.folder || "").file(filename, urlToPromiseBinary(f.host), {binary: true});
-            }
+            zip.folder(f.folder || "").file(filename, urlToPromiseBinary(f.host), {binary: true});
+        
           });
 
           console.log(zip);
