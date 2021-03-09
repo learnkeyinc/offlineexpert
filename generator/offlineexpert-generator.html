@@ -234,8 +234,11 @@
           // Add files to table
 
           let threads = 3; // 1-10; add spinner
+          let retries = 3;
+
+
           for (let i = 0; i < threads; i++) {
-            downloadAndZip(i, threads);
+            downloadAndZip(i, threads, retries);
           }
           // debugger;
 
@@ -257,26 +260,48 @@
 
         }
 
-        async function downloadAndZip(iterator, threads) {
+        async function downloadAndZip(iterator, threads, retries, tries = 1) {
+          let response, contents;
+
           if (files[iterator]) {
-            let response = await fetch(files[iterator].host);            
-            if (response.ok) {
-              // update table (http status)
-              let contents = await response.json();
-            } else {
-              // http error, update table (http status) and add try again link
+            if (tries <= retries) {
+              try {
+                response = await fetch(files[iterator].host);
+              } catch {
+                // update table (retrying)
+                downloadAndZip(iterator, threads, retries, tries + 1);
+              }
+
+              if (response.ok) {
+                // update table (http status)
+                try {
+                  try {
+                    contents = await response.text();
+                  } catch {
+                    contents = response.blob();
+                  }
+                } catch {
+                  // update table (retrying)
+                  downloadAndZip(iterator, threads, retries, tries + 1)
+                }
+                console.log(contents);
+
+              } else {
+                // http error, update table (http status) and add try again link
+              }
+              
+              // update table (downloaded)
+              console.log(contents)
+            
+              // some sort of content check
+
+              // add to zip file
+
+              // update table (zipped)
             }
             
-            // update table (downloaded)
-            console.log(contents)
-            // some sort of content check
-
-            // add to zip file
-
-            // update table (zipped)
-            
             // get next file
-            downloadAndZip(iterator + threads, threads)
+            downloadAndZip(iterator + threads, threads, retries)
           } else {}      
 
            
