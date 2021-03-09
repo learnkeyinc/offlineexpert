@@ -276,9 +276,9 @@
                 // update table (http status)
                 try {
                   try {
-                    contents = await response.text();
+                    contents = await response.blob();
                   } catch {
-                    contents = response.blob();
+                    // contents = response.blob();
                   }
                 } catch {
                   // update table (retrying)
