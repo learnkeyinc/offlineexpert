@@ -264,10 +264,13 @@
             }).then(response => {
               console.log(response)
               // results = replaceParts(results, files[iterator])
+              // update table        
+              
+              
+            }).then(contents => {
               // add to zip file (.folder/.filename)
               // update table
               // get next file
-              
               downloadAndZip(iterator + threads, threads)
             });
           } else {}
