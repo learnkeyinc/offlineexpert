@@ -259,7 +259,7 @@
 
         async function downloadAndZip(iterator, threads) {
           if (files[iterator]) {
-            let response = await fetch(files[iterator]);            
+            let response = await fetch(files[iterator].host);            
             if (response.ok) {
               // update table (http status)
               let contents = await response.json();
