@@ -11,6 +11,37 @@
       <!-- JSZip -->
       <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.6.0/jszip.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip-utils/0.1.0/jszip-utils.min.js"></script>
+
+      <style>
+        .glyphicon.spin {
+          -webkit-animation: glyphicon-spin-r 2s infinite linear;
+          animation: glyphicon-spin-r 2s infinite linear;
+        }
+
+        @-webkit-keyframes glyphicon-spin-r {
+          0% {
+            -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+          }
+
+          100% {
+            -webkit-transform: rotate(359deg);
+            transform: rotate(359deg);
+          }
+        }
+
+        @keyframes glyphicon-spin-r {
+          0% {
+            -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+          }
+
+          100% {
+            -webkit-transform: rotate(359deg);
+            transform: rotate(359deg);
+          }
+        }
+      </style>
       
       <script>
       // test info 
@@ -229,13 +260,13 @@
           
 
           // Add files to table
-          $("#files").append($(`<table id="filestable" class="table table-condensed table-striped" width="100%"><thead><tr><th>File</th><th>Folder</th><th>Category</th><th>HTTP status</th><th>Download status</th><th>Zip status</th></thead><tbody><tr></tr></tbody></table>`))
+          $("#files").append($(`<table id="filestable" class="table table-condensed table-striped" width="100%"><thead><tr><th>File</th><th>Folder</th><th>Category</th><th title="HTTP status"><i class="glyphicon glyphicon-transfer"></i></th><th title="Download status"><i class="glyphicon glyphicon-cloud-download"></i></th><th title="Injection status"><i class="glyphicon glyphicon-compressed"></i></th><th title="Zip status"><i class="glyphicon glyphicon-compressed"></i></th></thead><tbody><tr></tr></tbody></table>`))
 
           $.each(filesToZip, (i,f) => {
             if (!filesToZip[i].filename) {
               filesToZip[i].filename = hostToFilename(filesToZip[i].host);
             }
-            $("#filestable tbody").append($(`<tr id="file-${i}"><td>${f.filename}</td><td>${f.folder}</td><td>${f.category}</td><td id="httpstatus-${i}"></td><td id="downloadstatus-${i}"></td><td id="zipstatus-${i}"></tr>`))
+            $("#filestable tbody").append($(`<tr id="file-${i}"><td>${f.filename}</td><td>${f.folder}</td><td>${f.category}</td><td id="httpstatus-${i}"></td><td id="downloadstatus-${i}"></td><td id="injectionstatus-${i}"></td><td id="zipstatus-${i}"></tr>`))
           })
 
           let threads = +$("#threads").val(); // 1-10; add spinner
@@ -258,48 +289,49 @@
 
         async function downloadAndZip(iterator, threads, retries, tries = 1) {
           let response, contents;
-          updateTable("http", iterator, "active", "Trying");
+          updateTable("http", iterator, "active", `<i class="glyphicon spin glyphicon-repeat"></i>`);
 
           if (filesToZip[iterator]) {
             if (tries++ <= retries) {
               try {
                 response = await fetch(filesToZip[iterator].host);
               } catch {
-                updateTable("http", iterator, "warning", "Retrying");
+                updateTable("http", iterator, "warning", `<i class="glyphicon glyphicon-refresh"></i>`);
                 downloadAndZip(iterator, threads, retries, tries);
                 return;
               }
 
               if (response.ok) {
-                updateTable("http", iterator, "success", "OK");
-                updateTable("download", iterator, "active", "Downloading");
+                updateTable("http", iterator, "success", `<i class="glyphicon glyphicon-ok"></i>`);
+                updateTable("download", iterator, "active", `<i class="glyphicon spin glyphicon-repeat"></i>`);
 
                 try {
                   if (filesToZip[iterator].parts) {
                     contents = await response.text();
                     contents = replaceParts(contents, filesToZip[iterator].parts);
+                    updateTable("injection", iterator, "success", `<i class="glyphicon glyphicon-ok"></i>`);
                     contents = new Blob([contents], {type: "text/plain"});
                   } else {
                     contents = await response.blob();
                   }
                 } catch {
-                  updateTable("download", iterator, "warning", "Retrying");
+                  updateTable("download", iterator, "warning", "<i class="glyphicon glyphicon-refresh"></i>");
                   downloadAndZip(iterator, threads, retries, tries);
                   return;
                 }
 
-                updateTable("download", iterator, "success", "Complete");
+                updateTable("download", iterator, "success", `<i class="glyphicon glyphicon-ok"></i>`);
                 filesToZip[iterator].downloaded = true;                
                 console.log(filesToZip[iterator].filename, contents);
                    
                 zipFile(iterator, contents, retries);
               } else {
-                updateTable("http", iterator, "warning", "Retrying");                
+                updateTable("http", iterator, "warning", `<i class="glyphicon glyphicon-refresh"></i>`);                
                 downloadAndZip(iterator, threads, retries, tries);
                 return;
               }
             } else {
-              updateTable("download", iterator, "danger", `Failed<br><a href="${filesToZip[iterator].host}">Download manually</a>`)
+              updateTable("download", iterator, "danger", `<a class="glyphicon glyphicon-cloud-download" href="${filesToZip[iterator].host}"></a>`)
             }
             
             // update table (downloaded)
@@ -329,20 +361,20 @@
 
         async function zipFile(i, contents, retries, tries = 1) {
           if (tries++ <= retries) {
-            updateTable("zip", i, "active", "Zipping");     
+            updateTable("zip", i, "active", `<i class="glyphicon spin glyphicon-repeat"></i>`);     
             try {
               zip.folder(filesToZip[i].folder || "").file(filesToZip[i].filename, contents)
             } catch (e) {
               console.warn(e);
-              updateTable("zip", i, "warning", "Retrying");
+              updateTable("zip", i, "warning", `<i class="glyphicon glyphicon-refresh"></i>`);
               zipFile(i,contents,retries,tries);
               return;
             }
           } else {
-            updateTable("zip", i, "danger", "Failed");
+            updateTable("zip", i, "danger", `<i class="glyphicon glyphicon-remove"></i>`);
           }
           filesToZip[i].zipped = true;
-          updateTable("zip", i, "success", "Zipped");
+          updateTable("zip", i, "success", `<i class="glyphicon glyphicon-ok"></i>`);
         }
 
         function urlToPromiseBinary(url) {
