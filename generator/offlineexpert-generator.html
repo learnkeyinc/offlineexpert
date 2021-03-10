@@ -260,7 +260,7 @@
           
 
           // Add files to table
-          $("#files").append($(`<table id="filestable" class="table table-condensed table-striped" width="100%"><thead><tr><th>File</th><th>Folder</th><th>Category</th><th title="HTTP status"><i class="glyphicon glyphicon-transfer"></i></th><th title="Download status"><i class="glyphicon glyphicon-cloud-download"></i></th><th title="Injection status"><i class="glyphicon glyphicon-compressed"></i></th><th title="Zip status"><i class="glyphicon glyphicon-compressed"></i></th></thead><tbody><tr></tr></tbody></table>`))
+          $("#files").append($(`<table id="filestable" class="table table-condensed table-striped" width="100%"><thead><tr><th>File</th><th>Folder</th><th>Category</th><th title="HTTP status"><i class="glyphicon glyphicon-transfer"></i></th><th title="Download status"><i class="glyphicon glyphicon-cloud-download"></i></th><th title="Injection status"><i class="glyphicon glyphicon-pencil"></i></th><th title="Zip status"><i class="glyphicon glyphicon-compressed"></i></th></thead><tbody><tr></tr></tbody></table>`))
 
           $.each(filesToZip, (i,f) => {
             if (!filesToZip[i].filename) {
