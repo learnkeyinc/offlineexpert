@@ -372,6 +372,7 @@
             }
           } else {
             updateTable("zip", i, "danger", `<i class="glyphicon glyphicon-remove"></i>`);
+            return;
           }
           filesToZip[i].zipped = true;
           updateTable("zip", i, "success", `<i class="glyphicon glyphicon-ok"></i>`);
