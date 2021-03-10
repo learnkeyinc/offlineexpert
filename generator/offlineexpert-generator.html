@@ -55,6 +55,8 @@
         
         let categories, filesToZip, zip;
 
+        let asyncStackSize = 0;
+
         var Promise = window.Promise;
           if (!Promise) {
               Promise = JSZip.external.Promise;
@@ -289,18 +291,28 @@
 
         async function downloadAndZip(iterator, threads, retries, tries = 1) {
           let response, contents;
+          let retry = function() {
+            if (++asyncStackSize % 1000 === 0) {
+              setTimeout(function () {
+                downloadAndZip(iterator, threads, retries, tries);
+              }, 0)
+            } else {
+              downloadAndZip(iterator, threads, retries, tries);
+            }            
+          };
+
           if (filesToZip[iterator]) {
-            updateTable("http", iterator, "active", `<i class="glyphicon spin glyphicon-repeat"></i>`);
             if (tries++ <= retries) {
+              updateTable("http", iterator, "active", `<i class="glyphicon spin glyphicon-repeat"></i>`);
               try {
                 response = await fetch(filesToZip[iterator].host);
               } catch {
                 updateTable("http", iterator, "warning", `<i class="glyphicon glyphicon-refresh"></i>`);
-                downloadAndZip(iterator, threads, retries, tries);
+                retry();
                 return;
               }
 
-              if (response.ok) {
+              if (!retry && response.ok) {
                 updateTable("http", iterator, "success", `<i class="glyphicon glyphicon-ok"></i>`);
                 updateTable("download", iterator, "active", `<i class="glyphicon spin glyphicon-repeat"></i>`);
 
@@ -317,7 +329,7 @@
                   }
                 } catch {
                   updateTable("download", iterator, "warning", `<i class="glyphicon glyphicon-refresh"></i>`);
-                  downloadAndZip(iterator, threads, retries, tries);
+                  retry();
                   return;
                 }
 
@@ -327,8 +339,8 @@
                    
                 zipFile(iterator, contents, retries);
               } else {
-                updateTable("http", iterator, "warning", `<i class="glyphicon glyphicon-refresh"></i>`);                
-                downloadAndZip(iterator, threads, retries, tries);
+                updateTable("http", iterator, "warning", `<i class="glyphicon glyphicon-refresh"></i>`);  
+                retry();                
                 return;
               }
             } else {
@@ -361,6 +373,17 @@
         }
 
         async function zipFile(i, contents, retries, tries = 1) {
+
+          let retry = function() {
+            if (++asyncStackSize % 1000 === 0) {
+              setTimeout(function () {
+                zipFile(i,contents,retries,tries);
+              }, 0)
+            } else {
+              zipFile(i,contents,retries,tries);
+            }            
+          };
+
           if (tries++ <= retries) {
             updateTable("zip", i, "active", `<i class="glyphicon spin glyphicon-repeat"></i>`);     
             try {
@@ -369,7 +392,14 @@
             } catch (e) {
               console.warn(e);
               updateTable("zip", i, "warning", `<i class="glyphicon glyphicon-refresh"></i>`);
-              zipFile(i,contents,retries,tries);
+              
+              if (++asyncStackSize % 1000 === 0) {
+                setTimeout(function () {
+                  zipFile(i,contents,retries,tries);
+                }, 0)
+              } else {
+                zipFile(i,contents,retries,tries);
+              } 
               return;
             }
           } else {
