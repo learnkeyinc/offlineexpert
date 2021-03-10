@@ -279,7 +279,13 @@
 
           // Start a number (threads) of downloads
           for (let i = 0; i < threads; i++) {
-            downloadAndZip(i, threads, retries);
+            if (++asyncStackSize % 1000 === 0) {
+              setTimeout(function () {
+                downloadAndZip(i, threads, retries);
+              }, 0)
+            } else {
+              downloadAndZip(i, threads, retries);
+            }                 
           }
 
           // After all downloads have completed
