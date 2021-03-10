@@ -315,7 +315,7 @@
                     contents = await response.blob();
                   }
                 } catch {
-                  updateTable("download", iterator, "warning", "<i class="glyphicon glyphicon-refresh"></i>");
+                  updateTable("download", iterator, "warning", `<i class="glyphicon glyphicon-refresh"></i>`);
                   downloadAndZip(iterator, threads, retries, tries);
                   return;
                 }
