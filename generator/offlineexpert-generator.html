@@ -289,9 +289,8 @@
 
         async function downloadAndZip(iterator, threads, retries, tries = 1) {
           let response, contents;
-          updateTable("http", iterator, "active", `<i class="glyphicon spin glyphicon-repeat"></i>`);
-
           if (filesToZip[iterator]) {
+            updateTable("http", iterator, "active", `<i class="glyphicon spin glyphicon-repeat"></i>`);
             if (tries++ <= retries) {
               try {
                 response = await fetch(filesToZip[iterator].host);
@@ -486,7 +485,7 @@
                       fn_videos.push({
                         host: file.Url,
                         category: "videos",
-                        folder: `videos\\${domainID}\\CD\\WinFlash`
+                        folder: `videos/${domainID}/CD/WinFlash`
                       })
                       if (!fn_domainIDs.includes(domainID)) {
                         fn_domainIDs.push(domainID);
