@@ -22,7 +22,7 @@
 
         let GKanID, courseName, offlineExpertPrefix, courseID, assets, curriculum, videos2d, ISSMedia, domainIDs, videos, domainGalleries, assetGalleries, glossary, glossaryJSON, expertBios, outlineTable, files;
         
-        let categories, filesToZip;
+        let categories, filesToZip, zip;
 
         var Promise = window.Promise;
           if (!Promise) {
@@ -83,6 +83,10 @@
         
         function URLtoRel(url) {
           return url.replace(/^.*realcbt\/(\d{6})\/CD\/WinFlash\/(.*)$/,"./videos/$1/CD/WinFlash/$2")
+        }
+
+        function hostToFilename(host) {
+          return host.replace(/.*\//,"");
         }
         
         function prepareFiles() {
@@ -222,46 +226,33 @@
           
           console.log(categoriesToZip, filesToZip);
 
-          // Fill in the content when parts exist
-          $.each(filesToZip, (i,f) => {
-
-          })
-
-          // Zip the files
-
-          var zip = JSZip();
+          
 
           // Add files to table
-          $("#files").append($(`<table id="filestable" class="table table-condensed table-striped"><thead><tr></tr><th>File</th><th>Folder</th><th>HTTP status</th><th>Download status</th><th>Zip status</th></thead><tbody><tr></tr></tbody></table>`))
+          $("#files").append($(`<table id="filestable" class="table table-condensed table-striped"><thead><tr><th>File</th><th>Folder</th><th>Category</th><th>HTTP status</th><th>Download status</th><th>Zip status</th></thead><tbody><tr></tr></tbody></table>`))
 
           $.each(filesToZip, (i,f) => {
-            $("#filestable tbody").append($(`<tr id="file-${i}"><td>${f.filename}</td><td>${f.folder}</td><td class="httpstatus"></td><td class="dlstatus"></td><td class="zipstatus"></tr>`))
+            if (!filesToZip[i].filename) {
+              filesToZip[i].filename = hostToFilename(filesToZip[i].host);
+            }
+            $("#filestable tbody").append($(`<tr id="file-${i}"><td>${f.filename}</td><td>${f.folder}</td><td>${f.category}</td><td class="httpstatus"></td><td class="dlstatus"></td><td class="zipstatus"></tr>`))
           })
 
           let threads = +$("#threads").val(); // 1-10; add spinner
           let retries = +$("#retries").val();
 
+          // Make zip file
+          zip = JSZip();
 
+          // Start a number (threads) of downloads
           for (let i = 0; i < threads; i++) {
             downloadAndZip(i, threads, retries);
           }
-          // debugger;
 
-
-          /*$.each(filesToZip, (i,f) => {
-            let filename;
-            
-            if (f.filename) {
-              filename = f.filename;
-            } else {
-              filename = f.host.replace(/.*\//,"");
-            }
-            zip.folder(f.folder || "").file(filename, urlToPromiseBinary(f.host), {binary: true});
-        
-          });*/
+          // After all downloads have completed
+          // Promise.all complete          
 
           console.log(zip);
-
 
         }
 
@@ -394,7 +385,7 @@
                       category: "assets",
                       folder: "assets",
                       host: download.Url,
-                      name: download.Url.replace(/.*\//,""),
+                      name: hostToFilename(download.Url),
                     });
                   });
                   break;
