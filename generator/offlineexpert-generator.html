@@ -291,15 +291,6 @@
 
         async function downloadAndZip(iterator, threads, retries, tries = 1) {
           let response, contents;
-          let retry = function() {
-            if (++asyncStackSize % 1000 === 0) {
-              setTimeout(function () {
-                downloadAndZip(iterator, threads, retries, tries);
-              }, 0)
-            } else {
-              downloadAndZip(iterator, threads, retries, tries);
-            }            
-          };
 
           if (filesToZip[iterator]) {
             if (tries++ <= retries) {
@@ -308,11 +299,11 @@
                 response = await fetch(filesToZip[iterator].host);
               } catch {
                 updateTable("http", iterator, "warning", `<i class="glyphicon glyphicon-refresh"></i>`);
-                retry();
+                setTimeout(function () { downloadAndZip(iterator, threads, retries, tries) }, 0);
                 return;
               }
 
-              if (!retry && response.ok) {
+              if (response.ok) {
                 updateTable("http", iterator, "success", `<i class="glyphicon glyphicon-ok"></i>`);
                 updateTable("download", iterator, "active", `<i class="glyphicon spin glyphicon-repeat"></i>`);
 
@@ -329,7 +320,7 @@
                   }
                 } catch {
                   updateTable("download", iterator, "warning", `<i class="glyphicon glyphicon-refresh"></i>`);
-                  retry();
+                  setTimeout(function () { downloadAndZip(iterator, threads, retries, tries) }, 0);
                   return;
                 }
 
@@ -340,7 +331,7 @@
                 zipFile(iterator, contents, retries);
               } else {
                 updateTable("http", iterator, "warning", `<i class="glyphicon glyphicon-refresh"></i>`);  
-                retry();                
+                setTimeout(function () { downloadAndZip(iterator, threads, retries, tries) }, 0);               
                 return;
               }
             } else {
@@ -374,16 +365,6 @@
 
         async function zipFile(i, contents, retries, tries = 1) {
 
-          let retry = function() {
-            if (++asyncStackSize % 1000 === 0) {
-              setTimeout(function () {
-                zipFile(i,contents,retries,tries);
-              }, 0)
-            } else {
-              zipFile(i,contents,retries,tries);
-            }            
-          };
-
           if (tries++ <= retries) {
             updateTable("zip", i, "active", `<i class="glyphicon spin glyphicon-repeat"></i>`);     
             try {
@@ -393,13 +374,8 @@
               console.warn(e);
               updateTable("zip", i, "warning", `<i class="glyphicon glyphicon-refresh"></i>`);
               
-              if (++asyncStackSize % 1000 === 0) {
-                setTimeout(function () {
-                  zipFile(i,contents,retries,tries);
-                }, 0)
-              } else {
-                zipFile(i,contents,retries,tries);
-              } 
+              setTimeout(function () { zipFile(i,contents,retries,tries) }, 0);
+
               return;
             }
           } else {
