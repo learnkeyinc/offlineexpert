@@ -261,12 +261,12 @@
           updateTable("http", iterator, "active", "Trying");
 
           if (filesToZip[iterator]) {
-            if (tries <= retries) {
+            if (tries++ <= retries) {
               try {
                 response = await fetch(filesToZip[iterator].host);
               } catch {
                 updateTable("http", iterator, "warning", "Retrying");
-                downloadAndZip(iterator, threads, retries, tries + 1);
+                downloadAndZip(iterator, threads, retries, tries);
                 return;
               }
 
@@ -282,16 +282,20 @@
                   } else {
                     contents = await response.blob();
                   }
-                  updateTable("download", iterator, "success", "Complete");
                 } catch {
                   updateTable("download", iterator, "warning", "Retrying");
-                  downloadAndZip(iterator, threads, retries, tries + 1);
+                  downloadAndZip(iterator, threads, retries, tries);
                   return;
                 }
+
+                updateTable("download", iterator, "success", "Complete");
+                filesToZip[iterator].downloaded = true;                
                 console.log(filesToZip[iterator].filename, contents);
+                   
+                zipFile(iterator, contents, retries);
               } else {
                 updateTable("http", iterator, "warning", "Retrying");                
-                downloadAndZip(iterator, threads, retries, tries + 1);
+                downloadAndZip(iterator, threads, retries, tries);
                 return;
               }
             } else {
@@ -321,6 +325,23 @@
 
         function updateTable(idType, i, status, text) {
           $(`#${idType}status-${i}`).removeClass().addClass(status).html(text);
+        }
+
+        async function zipFile(i, contents, retries, tries = 1) {
+          if (tries++ <= retries) {
+            updateTable("zip", i, "active", "Zipping");     
+            try {
+              zip.folder(filesToZip[i].folder || "").file(filesToZip[i].filename,contents)
+            } catch {
+              updateTable("zip", i, "warning", "Retrying");
+              zipFile(i,c,retries,tries);
+              return;
+            }
+          } else {
+            updateTable("zip", i, "danger", "Failed");
+          }
+          filesToZip[i].zipped = true;
+          updateTable("zip", i, "success", "Zipped");
         }
 
         function urlToPromiseBinary(url) {
