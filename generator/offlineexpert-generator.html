@@ -267,11 +267,12 @@
               } catch {
                 updateTable("http", iterator, "warning", "Retrying");
                 downloadAndZip(iterator, threads, retries, tries + 1);
+                return;
               }
 
               if (response.ok) {
                 updateTable("http", iterator, "success", "OK");
-                updateTable("download", iterator, "active", "Trying");
+                updateTable("download", iterator, "active", "Downloading");
 
                 try {
                   if (filesToZip[iterator].parts) {
@@ -281,15 +282,16 @@
                   } else {
                     contents = await response.blob();
                   }
-                  updateTable("download", iterator, "success", "Trying");
+                  updateTable("download", iterator, "success", "Complete");
                 } catch {
                   updateTable("download", iterator, "warning", "Retrying");
-                  downloadAndZip(iterator, threads, retries, tries + 1)
+                  downloadAndZip(iterator, threads, retries, tries + 1);
+                  return;
                 }
                 console.log(filesToZip[iterator].filename, contents);
 
               } else {
-                updateTable("http", iterator, "danger", `Failed<br><a href="${filesToZip[iterator].host}">Download manually</a>`)
+                updateTable("download", iterator, "danger", `Failed<br><a href="${filesToZip[iterator].host}">Download manually</a>`)
               }
               
               // update table (downloaded)
