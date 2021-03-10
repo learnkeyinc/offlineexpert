@@ -311,7 +311,9 @@
                     updateTable("injection", iterator, "success", `<i class="glyphicon glyphicon-ok"></i>`);
                     contents = new Blob([contents], {type: "text/plain"});
                   } else {
+                    updateTable("injection", iterator, "success", `<i class="glyphicon glyphicon-ban-circle"></i>`);
                     contents = await response.blob();
+                    
                   }
                 } catch {
                   updateTable("download", iterator, "warning", `<i class="glyphicon glyphicon-refresh"></i>`);
