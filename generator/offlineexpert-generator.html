@@ -235,7 +235,7 @@
             if (!filesToZip[i].filename) {
               filesToZip[i].filename = hostToFilename(filesToZip[i].host);
             }
-            $("#filestable tbody").append($(`<tr id="file-${i}"><td>${f.filename}</td><td>${f.folder}</td><td>${f.category}</td><td class="httpstatus"></td><td class="dlstatus"></td><td class="zipstatus"></tr>`))
+            $("#filestable tbody").append($(`<tr id="file-${i}"><td>${f.filename}</td><td>${f.folder}</td><td>${f.category}</td><td id="httpstatus-${i}"></td><td id="downloadstatus-${i}"></td><td id="zipstatus-${i}"></tr>`))
           })
 
           let threads = +$("#threads").val(); // 1-10; add spinner
@@ -258,38 +258,38 @@
 
         async function downloadAndZip(iterator, threads, retries, tries = 1) {
           let response, contents;
+          updateTable("http", iterator, "active", "Trying");
 
           if (filesToZip[iterator]) {
             if (tries <= retries) {
               try {
                 response = await fetch(filesToZip[iterator].host);
               } catch {
-                // update table (retrying)
+                updateTable("http", iterator, "warning", "Retrying");
                 downloadAndZip(iterator, threads, retries, tries + 1);
               }
 
               if (response.ok) {
-                // update table (http status)
+                updateTable("http", iterator, "success", "OK");
+                updateTable("download", iterator, "active", "Trying");
+
                 try {
-                  try {
-                    if (filesToZip[iterator].parts) {
-                      contents = await response.text();
-                      contents = replaceParts(contents, filesToZip[iterator].parts);
-                      contents = new Blob([contents], {type: "text/plain"});
-                    } else {
-                      contents = await response.blob();
-                    }
-                  } catch {
-                    // contents = response.blob();
+                  if (filesToZip[iterator].parts) {
+                    contents = await response.text();
+                    contents = replaceParts(contents, filesToZip[iterator].parts);
+                    contents = new Blob([contents], {type: "text/plain"});
+                  } else {
+                    contents = await response.blob();
                   }
+                  updateTable("download", iterator, "success", "Trying");
                 } catch {
-                  // update table (retrying)
+                  updateTable("download", iterator, "warning", "Retrying");
                   downloadAndZip(iterator, threads, retries, tries + 1)
                 }
                 console.log(filesToZip[iterator].filename, contents);
 
               } else {
-                // http error, update table (http status) and add try again link
+                updateTable("http", iterator, "danger", `Failed<br><a href="${filesToZip[iterator].host}">Download manually</a>`)
               }
               
               // update table (downloaded)
@@ -314,6 +314,10 @@
             fn_contents = fn_contents.replace(`[Part ${i+1}]`,p);
           })
           return fn_contents;
+        }
+
+        function updateTable(idType, i, status, text) {
+          $(`#${idType}status-${i}`).removeClass().addClass(status).html(text);
         }
 
         function urlToPromiseBinary(url) {
