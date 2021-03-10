@@ -275,7 +275,7 @@
                     if (filesToZip[iterator].parts) {
                       contents = await response.text();
                       contents = replaceParts(contents, filesToZip[iterator].parts);
-                      contents = new Blob(contents, {type: "text/plain"});
+                      contents = new Blob([contents], {type: "text/plain"});
                     } else {
                       contents = await response.blob();
                     }
