@@ -229,7 +229,7 @@
           
 
           // Add files to table
-          $("#files").append($(`<table id="filestable" class="table table-condensed table-striped"><thead><tr><th>File</th><th>Folder</th><th>Category</th><th>HTTP status</th><th>Download status</th><th>Zip status</th></thead><tbody><tr></tr></tbody></table>`))
+          $("#files").append($(`<table id="filestable" class="table table-condensed table-striped" width="100%"><thead><tr><th>File</th><th>Folder</th><th>Category</th><th>HTTP status</th><th>Download status</th><th>Zip status</th></thead><tbody><tr></tr></tbody></table>`))
 
           $.each(filesToZip, (i,f) => {
             if (!filesToZip[i].filename) {
@@ -272,7 +272,13 @@
                 // update table (http status)
                 try {
                   try {
-                    contents = await response.blob();
+                    if (filesToZip[iterator].parts) {
+                      contents = await response.text();
+                      contents = replaceParts(contents, filesToZip[iterator].parts);
+                      contents = new Blob(contents, {type: "text/plain"});
+                    } else {
+                      contents = await response.blob();
+                    }
                   } catch {
                     // contents = response.blob();
                   }
@@ -280,7 +286,7 @@
                   // update table (retrying)
                   downloadAndZip(iterator, threads, retries, tries + 1)
                 }
-                console.log(contents);
+                console.log(filesToZip[iterator].filename, contents);
 
               } else {
                 // http error, update table (http status) and add try again link
@@ -303,9 +309,11 @@
            
         }
 
-        function replaceParts(contents, parts) {
-
-
+        function replaceParts(fn_contents, fn_parts) {
+          $.each(fn_parts, (i, p) => {
+            fn_contents = fn_contents.replace(`[Part ${i+1}]`,p);
+          })
+          return fn_contents;
         }
 
         function urlToPromiseBinary(url) {
