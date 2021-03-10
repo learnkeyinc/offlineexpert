@@ -349,7 +349,7 @@
           }
           
           // get next file
-          downloadAndZip(iterator + threads, threads, retries)           
+          setTimeout(function () { downloadAndZip(iterator + threads, threads, retries) }, 0);         
         }
 
         function replaceParts(fn_contents, fn_parts) {
