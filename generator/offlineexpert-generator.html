@@ -289,26 +289,27 @@
                   return;
                 }
                 console.log(filesToZip[iterator].filename, contents);
-
               } else {
-                updateTable("download", iterator, "danger", `Failed<br><a href="${filesToZip[iterator].host}">Download manually</a>`)
+                updateTable("http", iterator, "warning", "Retrying");                
+                downloadAndZip(iterator, threads, retries, tries + 1);
+                return;
               }
-              
-              // update table (downloaded)
-              console.log(contents)
-            
-              // some sort of content check
-
-              // add to zip file
-
-              // update table (zipped)
+            } else {
+              updateTable("download", iterator, "danger", `Failed<br><a href="${filesToZip[iterator].host}">Download manually</a>`)
             }
             
-            // get next file
-            downloadAndZip(iterator + threads, threads, retries)
-          } else {}      
+            // update table (downloaded)
+            console.log(contents)
+          
+            // some sort of content check
 
-           
+            // add to zip file
+
+            // update table (zipped)
+          }
+          
+          // get next file
+          downloadAndZip(iterator + threads, threads, retries)           
         }
 
         function replaceParts(fn_contents, fn_parts) {
