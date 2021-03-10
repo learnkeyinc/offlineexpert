@@ -331,10 +331,11 @@
           if (tries++ <= retries) {
             updateTable("zip", i, "active", "Zipping");     
             try {
-              zip.folder(filesToZip[i].folder || "").file(filesToZip[i].filename,contents)
-            } catch {
+              zip.folder(filesToZip[i].folder || "").file(filesToZip[i].filename, contents)
+            } catch (e) {
+              console.warn(e);
               updateTable("zip", i, "warning", "Retrying");
-              zipFile(i,c,retries,tries);
+              zipFile(i,contents,retries,tries);
               return;
             }
           } else {
