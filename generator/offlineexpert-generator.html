@@ -362,7 +362,7 @@
           if (tries++ <= retries) {
             updateTable("zip", i, "active", `<i class="glyphicon spin glyphicon-repeat"></i>`);     
             try {
-              zip.file((filesToZip[i].folder ? filesToZip[i].folder + "/" : "") + filesToZip[i].filename, contents, {binary: true})
+              zip.file((filesToZip[i].folder ? filesToZip[i].folder + "/" : "") + filesToZip[i].filename, contents, {binary: false})
             } catch (e) {
               console.warn(e);
               updateTable("zip", i, "warning", `<i class="glyphicon glyphicon-refresh"></i>`);
