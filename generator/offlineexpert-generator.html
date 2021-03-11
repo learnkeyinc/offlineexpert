@@ -290,12 +290,13 @@
             downloadAndZip(i, threads, retries);
           }
 
-          interval = setInterval(waitForThreads(getZipFile), 1000);
+          interval = setInterval(checkThreads(getZipFile), 1000);
 
           console.log(zip);
         }
 
-        function waitForThreads(callback) {
+        function checkThreads(callback) {
+          console.log(threadStatuses);
           if (threadStatuses.reduce((b,v) => b && v, true)) {
             clearInterval(interval);
             callback();
