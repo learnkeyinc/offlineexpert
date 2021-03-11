@@ -272,6 +272,9 @@
             }
             $("#filestable tbody").append($(`<tr id="file-${i}"><td>${f.filename}</td><td>${f.folder}</td><td>${f.category}</td><td id="httpstatus-${i}"></td><td id="downloadstatus-${i}"></td><td id="injectionstatus-${i}"></td><td id="zipstatus-${i}"></tr>`))
           })
+          
+          // Make zip file
+          zip = JSZip();
 
           startDownload();
         }
@@ -281,13 +284,10 @@
           let retries = +$("#retries").val();
           threadStatuses = [];
 
-          // Make zip file
-          zip = JSZip();
-
           // Start a number (threads) of downloads
           for (let i = 0; i < threads; i++) {
             threadStatuses.push(false);
-            downloadAndZip(i, threads, retries);                
+            downloadAndZip(i, threads, retries);
           }
 
           waitForThreads(getZipFile);
@@ -300,7 +300,7 @@
             callback();
             return;
           } else {
-            setTimeout(waitForThreads, 50);
+            setTimeout(waitForThreads(callback), 50);
             return;
           }
         }
@@ -312,8 +312,9 @@
         async function downloadAndZip(iterator, threads, retries) {
           let response, contents;
           let tries = 1;
-
+          
           if (filesToZip[iterator]) {
+            filesToZip[iterator].downloaded = false;
             while (tries++ <= retries && !filesToZip[iterator].downloaded) {
               updateTable("http", iterator, "active", `<i class="glyphicon spin glyphicon-repeat"></i>`);
               
@@ -363,13 +364,12 @@
             }                   
           } else {
             // No more files to zip in this thread
-            threadStatuses[threads-1] = true;      
+            threadStatuses[threads-1] = true;
             return 1;
           }
           
           // get next file
           setTimeout(function () { downloadAndZip(iterator + threads, threads, retries) }, 0); 
-
           return 1;        
         }
 
@@ -404,6 +404,7 @@
             updateTable("zip", i, "success", `<i class="glyphicon glyphicon-ok"></i>`);
           } else {
             updateTable("zip", i, "danger", `<i class="glyphicon glyphicon-remove"></i>`);
+            filesToZip[i].downloaded = false;
             unzipped++;
           }
 
