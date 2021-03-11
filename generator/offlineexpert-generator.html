@@ -290,7 +290,7 @@
             downloadAndZip(i, threads, retries);
           }
 
-          interval = setInterval(checkStatus(getZipFile), 1000);
+          interval = setInterval(function() { checkStatus(getZipFile); }, 1000);
 
           console.log(zip);
         }
