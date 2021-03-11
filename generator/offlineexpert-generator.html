@@ -72,7 +72,7 @@
         /* */
         
         // User can click the Reset button to clear the fields
-        $("#reset").click(reset);
+        /* $("#reset").click(reset); */
         
         // After the user enters the JSON in the fields, they click Verify to ensure it is valid JSON.
         // If valid, the "Create files" button is enabled, and the fields are disabled
@@ -84,13 +84,13 @@
         // When the user clicks "Create"
         $("#create").click(createZipFiles);
         
-        function reset() {
+        /* function reset() {
           $("#shell,#details").val("").attr("disabled",false);
           $("#verify").attr("disabled",false);
           removeValidation();
           $("#categories").empty();
           $("#prepare,#categories,#prepare,#create").attr("disabled", true);     
-        }
+        }*/ 
 
         function verify() {
             removeValidation();
@@ -566,7 +566,7 @@
                 Step 1: Paste results of GKan API calls
               </div>
               <div class="panel-body">
-                <button id="reset" type="button" class="btn btn-warning center-block">Reset</button>
+                <!-- <button id="reset" type="button" class="btn btn-warning center-block">Reset</button> -->
                 <div id="shell-container" class="form-group">
                   <label for="shell">Results of <em>GetCourseShellById</em></label>
                   <textarea id="shell" class="form-control" rows="5"></textarea>
