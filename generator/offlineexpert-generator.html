@@ -301,8 +301,9 @@
           let threadsStatus = threadStatuses.reduce((b,v) => b && v, true);
           let total = filesToZip.length;
           let downloaded = filesToZip.reduce((t,o) => t + (o.downloaded ? 1:0), 0);
+          let percentComplete = `${(downloaded/total).toFixed(1)}%`;
 
-          $("#progressbar").css("width",downloaded/total).addClass("active").attr("aria-valuenow",downloaded/total).html(`${(downloaded/total).toFixed(1)}% (${downloaded}/${total})`);
+          $("#progressbar").css("width",percentComplete).addClass("active").attr("aria-valuenow",percentComplete).html(`${percentComplete} (${downloaded}/${total})`);
 
           if (threadsStatus) {
             clearInterval(interval);
