@@ -279,7 +279,7 @@
         function startDownload() {
           let threads = +$("#threads").val(); // 1-10; add spinner
           let retries = +$("#retries").val();
-          promises = [];
+          threadStatuses = [];
 
           // Make zip file
           zip = JSZip();
