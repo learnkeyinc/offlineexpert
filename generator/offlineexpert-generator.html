@@ -292,6 +292,8 @@
         async function downloadAndZip(iterator, threads, retries, tries = 1) {
           let response, contents;
 
+          // If not downloaded, can go again. Add button to retry that just runs this function again. Or actually, it can run lines 274-283 again.
+
           if (filesToZip[iterator]) {
             if (tries++ <= retries) {
               updateTable("http", iterator, "active", `<i class="glyphicon spin glyphicon-repeat"></i>`);
