@@ -55,7 +55,9 @@
         
         let categories, filesToZip, zip;
 
-        let asyncStackSize = 0;
+        let threadStatuses;
+
+        let unzipped = 0;
 
         var Promise = window.Promise;
           if (!Promise) {
@@ -271,87 +273,104 @@
             $("#filestable tbody").append($(`<tr id="file-${i}"><td>${f.filename}</td><td>${f.folder}</td><td>${f.category}</td><td id="httpstatus-${i}"></td><td id="downloadstatus-${i}"></td><td id="injectionstatus-${i}"></td><td id="zipstatus-${i}"></tr>`))
           })
 
+          startDownload();
+        }
+
+        function startDownload() {
           let threads = +$("#threads").val(); // 1-10; add spinner
           let retries = +$("#retries").val();
+          promises = [];
 
           // Make zip file
           zip = JSZip();
 
           // Start a number (threads) of downloads
           for (let i = 0; i < threads; i++) {
+            threadStatuses.push(false);
             downloadAndZip(i, threads, retries);                
           }
 
-          // After all downloads have completed
-          // Promise.all complete          
+          waitForThreads(getZipFile);
 
           console.log(zip);
-
         }
 
-        async function downloadAndZip(iterator, threads, retries, tries = 1) {
-          let response, contents;
+        function waitForThreads(callback) {
+          if (threadStatuses.reduce((b,v) => b && v, true)) {
+            callback();
+            return;
+          } else {
+            setTimeout(waitForThreads, 50);
+            return;
+          }
+        }
 
-          // If not downloaded, can go again. Add button to retry that just runs this function again. Or actually, it can run lines 274-283 again.
+        function getZipFile() {
+          console.log("Here we are!");
+        }
+
+        async function downloadAndZip(iterator, threads, retries) {
+          let response, contents;
+          let tries = 1;
 
           if (filesToZip[iterator]) {
-            if (tries++ <= retries) {
+            while (tries++ <= retries && !filesToZip[iterator].downloaded) {
               updateTable("http", iterator, "active", `<i class="glyphicon spin glyphicon-repeat"></i>`);
+              
               try {
                 response = await fetch(filesToZip[iterator].host);
-              } catch {
+              } catch (e) {
+                console.warn(e);
                 updateTable("http", iterator, "warning", `<i class="glyphicon glyphicon-refresh"></i>`);
-                setTimeout(function () { downloadAndZip(iterator, threads, retries, tries) }, 0);
-                return;
+                continue;
               }
 
               if (response.ok) {
                 updateTable("http", iterator, "success", `<i class="glyphicon glyphicon-ok"></i>`);
+                
                 updateTable("download", iterator, "active", `<i class="glyphicon spin glyphicon-repeat"></i>`);
 
                 try {
                   if (filesToZip[iterator].parts) {
+                    // Replacements required in a template file, so post-processing required
                     contents = await response.text();
                     contents = replaceParts(contents, filesToZip[iterator].parts);
                     updateTable("injection", iterator, "success", `<i class="glyphicon glyphicon-ok"></i>`);
                     contents = new Blob([contents], {type: "text/plain"});
+                    filesToZip[iterator].downloaded = true;   
                   } else {
+                    // No replacements required, so no post-processing required
                     updateTable("injection", iterator, "success", `<i class="glyphicon glyphicon-ban-circle"></i>`);
-                    contents = await response.blob();
-                    
+                    contents = await response.blob();                  
                   }
-                } catch {
+                } catch (e) {
+                  console.warn(e);
                   updateTable("download", iterator, "warning", `<i class="glyphicon glyphicon-refresh"></i>`);
-                  setTimeout(function () { downloadAndZip(iterator, threads, retries, tries) }, 0);
-                  return;
+                  continue;
                 }
-
-                updateTable("download", iterator, "success", `<i class="glyphicon glyphicon-ok"></i>`);
-                filesToZip[iterator].downloaded = true;                
-                console.log(filesToZip[iterator].filename, contents);
-                   
-                zipFile(iterator, contents, retries);
               } else {
                 updateTable("http", iterator, "warning", `<i class="glyphicon glyphicon-refresh"></i>`);  
-                setTimeout(function () { downloadAndZip(iterator, threads, retries, tries) }, 0);               
-                return;
+                continue;
               }
-            } else {
-              updateTable("download", iterator, "danger", `<a class="glyphicon glyphicon-cloud-download" href="${filesToZip[iterator].host}"></a>`)
             }
             
-            // update table (downloaded)
-            console.log(contents)
-          
-            // some sort of content check
-
-            // add to zip file
-
-            // update table (zipped)
+            if (filesToZip[iterator].downloaded) {
+              updateTable("download", iterator, "success", `<i class="glyphicon glyphicon-ok"></i>`);
+              zipFile(iterator, contents, retries);
+            } else {
+              updateTable("download", iterator, "danger", `<a class="glyphicon glyphicon-cloud-download" href="${filesToZip[iterator].host}"></a>`);
+              unzipped++;
+            }                   
+          } else {
+            // No more files to zip in this thread
+            threadStatuses[threads-1] = true;      
+            return 1;
           }
           
           // get next file
-          setTimeout(function () { downloadAndZip(iterator + threads, threads, retries) }, 0);         
+          setTimeout(function () { downloadAndZip(iterator + threads, threads, retries) }, 0); 
+
+          return 1;        
         }
 
         function replaceParts(fn_contents, fn_parts) {
@@ -365,27 +384,30 @@
           $(`#${idType}status-${i}`).removeClass().addClass(status).html(text);
         }
 
-        async function zipFile(i, contents, retries, tries = 1) {
+        async function zipFile(i, contents, retries) {          
+          let tries = 1;
 
-          if (tries++ <= retries) {
+          while (tries++ <= retries && !filesToZip[i].zipped) {
             updateTable("zip", i, "active", `<i class="glyphicon spin glyphicon-repeat"></i>`);     
             try {
               console.log("Binary: false")
-              zip.file((filesToZip[i].folder ? filesToZip[i].folder + "/" : "") + filesToZip[i].filename, contents, {binary: false})
+              zip.file((filesToZip[i].folder ? filesToZip[i].folder + "/" : "") + filesToZip[i].filename, contents, {binary: false});
+              filesToZip[i].zipped = true;
             } catch (e) {
               console.warn(e);
               updateTable("zip", i, "warning", `<i class="glyphicon glyphicon-refresh"></i>`);
-              
-              setTimeout(function () { zipFile(i,contents,retries,tries) }, 0);
-
-              return;
+              continue;
             }
+          } 
+          
+          if (filesToZip[i].zipped) {
+            updateTable("zip", i, "success", `<i class="glyphicon glyphicon-ok"></i>`);
           } else {
             updateTable("zip", i, "danger", `<i class="glyphicon glyphicon-remove"></i>`);
-            return;
+            unzipped++;
           }
-          filesToZip[i].zipped = true;
-          updateTable("zip", i, "success", `<i class="glyphicon glyphicon-ok"></i>`);
+
+          return 1;
         }
 
         function urlToPromiseBinary(url) {
