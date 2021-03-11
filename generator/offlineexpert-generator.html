@@ -59,7 +59,9 @@
 
         let unzipped = 0;
 
-        var Promise = window.Promise;
+        let interval;
+
+        let Promise = window.Promise;
           if (!Promise) {
               Promise = JSZip.external.Promise;
           }
@@ -290,17 +292,17 @@
             downloadAndZip(i, threads, retries);
           }
 
-          waitForThreads(getZipFile);
+          interval = setInterval(waitForThreads(getZipFile), 1000);
 
           console.log(zip);
         }
 
         function waitForThreads(callback) {
           if (threadStatuses.reduce((b,v) => b && v, true)) {
+            clearInterval(interval);
             callback();
             return;
           } else {
-            setTimeout(waitForThreads(callback), 50);
             return;
           }
         }
