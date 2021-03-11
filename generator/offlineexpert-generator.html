@@ -11,8 +11,8 @@
       <!-- JSZip -->
       <script src="https://stuk.github.io/jszip/dist/jszip.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip-utils/0.1.0/jszip-utils.min.js"></script>
-      <!--FileSaver for saveAs-->
-      <script src="https://github.com/eligrey/FileSaver.js"></script>
+      <!--StreamSaver for saveAs-->
+      <script src="https://cdn.jsdelivr.net/npm/streamsaver@2.0.3/StreamSaver.min.js"></script>
 
       <style>
         .glyphicon.spin {
@@ -327,13 +327,24 @@
         }
 
         function getZipFile() {
-          zip.generateAsync({type:"base64"}).then(function (base64) {
+          let writeStream = streamSaver.createWriteStream(`${courseName} OfflineExpert.zip`).getWriter();
+
+          zip.generateInternalStream({type:"uint8array", streamFiles:true})
+            .on("data", data => writeStream.write(data))
+            .on("error", err => $("#status").append($(`<div class="alert alert-danger">${err}</div>`)))
+            .on("end", () => writeStream.close())
+            .resume();
+
+          
+          /*.then(function (base64) {
             // window.location = "data:application/zip;base64," + base64;
             // OR
-            saveAs(blob, `${courseName} OfflineExpert.zip`);            
+            // saveAs(blob, `${courseName} OfflineExpert.zip`);
+            // OR
+            
           }, function (err) {
             $("#status").append($(`<div class="alert alert-danger">${err}</div>`))
-          });
+          });*/
         }
 
         async function downloadAndZip(iterator, thread, threads, retries) {
