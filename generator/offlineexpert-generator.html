@@ -11,6 +11,8 @@
       <!-- JSZip -->
       <script src="https://stuk.github.io/jszip/dist/jszip.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip-utils/0.1.0/jszip-utils.min.js"></script>
+      <!--FileSaver for saveAs-->
+      <script src="https://github.com/eligrey/FileSaver.js"></script>
 
       <style>
         .glyphicon.spin {
@@ -325,7 +327,9 @@
         }
 
         function getZipFile() {
-          zip.generateAsync({type:"blob"}).then(function (blob) {
+          zip.generateAsync({type:"base64"}).then(function (base64) {
+            // window.location = "data:application/zip;base64," + base64;
+            // OR
             saveAs(blob, `${courseName} OfflineExpert.zip`);            
           }, function (err) {
             $("#status").append($(`<div class="alert alert-danger">${err}</div>`))
@@ -622,10 +626,12 @@
                     <input id="threads" type="number" min="1" max="10" value="3">
                   </fieldset>
                 </div>
-                <div class="btn-group center-block">
-                  <button disabled id="collect" type="button" class="btn btn-primary">Collect files</button>
-                  <button disabled id="retry" type="button" class="btn btn-warning">Retry failed downloads</button>
-                  <button disabled id="download" type="button" class="btn btn-success"><i class="glyphicon glyphicon-compressed"></i> Download .zip file</button>
+                <div class="text-center">
+                  <div class="btn-group center-block">
+                    <button disabled id="collect" type="button" class="btn btn-primary">Collect files</button>
+                    <button disabled id="retry" type="button" class="btn btn-warning">Retry failed downloads</button>
+                    <button disabled id="download" type="button" class="btn btn-success"><i class="glyphicon glyphicon-compressed"></i> Download .zip file</button>
+                  </div>
                 </div>
               </div>
             </div>
