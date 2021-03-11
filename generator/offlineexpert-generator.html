@@ -57,8 +57,6 @@
 
         let threadStatuses;
 
-        let unzipped = 0;
-
         let interval;
 
         let Promise = window.Promise;
@@ -340,12 +338,12 @@
                     contents = replaceParts(contents, filesToZip[iterator].parts);
                     updateTable("injection", iterator, "success", `<i class="glyphicon glyphicon-ok"></i>`);
                     contents = new Blob([contents], {type: "text/plain"});
-                    filesToZip[iterator].downloaded = true;   
                   } else {
                     // No replacements required, so no post-processing required
                     updateTable("injection", iterator, "success", `<i class="glyphicon glyphicon-ban-circle"></i>`);
                     contents = await response.blob();                  
                   }
+                  filesToZip[iterator].downloaded = true;
                 } catch (e) {
                   console.warn(e);
                   updateTable("download", iterator, "warning", `<i class="glyphicon glyphicon-refresh"></i>`);
@@ -362,7 +360,6 @@
               zipFile(iterator, contents, retries);
             } else {
               updateTable("download", iterator, "danger", `<a class="glyphicon glyphicon-cloud-download" href="${filesToZip[iterator].host}"></a>`);
-              unzipped++;
             }                   
           } else {
             // No more files to zip in this thread
@@ -406,7 +403,6 @@
           } else {
             updateTable("zip", i, "danger", `<i class="glyphicon glyphicon-remove"></i>`);
             filesToZip[i].downloaded = false;
-            unzipped++;
           }
 
           return 1;
