@@ -82,14 +82,14 @@
         $("#prepare").click(prepareFiles);
 
         // When the user clicks "Create"
-        $("#create").click(createZipFiles);
+        $("#collect").click(collectAndDownload);
         
         /* function reset() {
           $("#shell,#details").val("").attr("disabled",false);
           $("#verify").attr("disabled",false);
           removeValidation();
           $("#categories").empty();
-          $("#prepare,#categories,#prepare,#create").attr("disabled", true);     
+          $("#prepare,#categories,#prepare,#collect").attr("disabled", true);     
         }*/ 
 
         function verify() {
@@ -251,10 +251,10 @@
           })
           
           $("#prepare").attr("disabled",true);
-          $("#categories,#create").attr("disabled",false);
+          $("#categories,#collect").attr("disabled",false);
         }
 
-        function createZipFiles() {
+        function collectAndDownload() {
           let categoriesToZip = $("#categories [id^=checkbox-]:checked").map((_,e) => $(e).val()).get();
           
           filesToZip = files.filter((e) => categoriesToZip.includes(e.category));
@@ -287,7 +287,7 @@
           // Start a number (threads) of downloads
           for (let i = 0; i < threads; i++) {
             threadStatuses.push(false);
-            downloadAndZip(i, threads, retries);
+            downloadAndZip(i, i, threads, retries);
           }
 
           interval = setInterval(function() { checkStatus(getZipFile); }, 1000);
@@ -312,7 +312,7 @@
           console.log("Here we are!");
         }
 
-        async function downloadAndZip(iterator, threads, retries) {
+        async function downloadAndZip(iterator, thread, threads, retries) {
           let response, contents;
           let tries = 1;
           
@@ -366,12 +366,12 @@
             }                   
           } else {
             // No more files to zip in this thread
-            threadStatuses[threads-1] = true;
+            threadStatuses[thread] = true;
             return 1;
           }
           
           // get next file
-          setTimeout(function () { downloadAndZip(iterator + threads, threads, retries) }, 0); 
+          setTimeout(function () { downloadAndZip(iterator + threads, thread, threads, retries) }, 0); 
           return 1;        
         }
 
@@ -410,18 +410,6 @@
 
           return 1;
         }
-
-        function urlToPromiseBinary(url) {
-          return new Promise(function(resolve, reject) {
-              JSZipUtils.getBinaryContent(url, function (err, data) {
-                  if(err) {
-                    reject(err);
-                  } else {
-                    resolve(data);
-                  }
-              });
-          });
-      }    
         
         function generateFile(file) {
           
@@ -614,7 +602,7 @@
                     <input id="threads" type="number" min="1" max="10" value="3">
                   </fieldset>
                 </div>
-                <button disabled id="create" type="button" class="btn btn-primary center-block">Create</button>
+                <button disabled id="collect" type="button" class="btn btn-primary center-block">Collect files</button>
               </div>
             </div>
           </div>
