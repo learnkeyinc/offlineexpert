@@ -238,7 +238,7 @@
             files.push({
               host:"../templates/offlineexpert-domain.html",
               category: "main",
-              title: `${offlineExpertPrefix}-domain-${i+1}.html`,
+              filename: `${offlineExpertPrefix}-domain-${i+1}.html`,
               folder: "domains",
               parts: [courseName, i+1, domain.id, JSON.stringify(videos2d[i]), domain.name, year]
             });          
@@ -299,7 +299,6 @@
 
           interval = setInterval(checkStatus, 1000);
 
-          console.log(zip);
         }
 
         function checkStatus() {
@@ -326,7 +325,11 @@
         }
 
         function getZipFile() {
-          console.log("Here we are!");
+          zip.generateAsync({type:"blob"}).then(function (blob) {
+            saveAs(blob, `${courseName} OfflineExpert.zip`);            
+          }, function (err) {
+            $("#status").append($(`<div class="alert alert-danger">${err}</div>`))
+          });
         }
 
         async function downloadAndZip(iterator, thread, threads, retries) {
