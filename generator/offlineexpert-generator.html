@@ -297,7 +297,7 @@
 
         function checkThreads(callback) {
           console.log(threadStatuses);
-          if (threadStatuses.reduce((b,v) => b && v, true)) {
+          if (threadStatuses.reduce((b,v) => b && v ? true : false, true)) {
             clearInterval(interval);
             callback();
             return;
