@@ -329,12 +329,12 @@
         function getZipFile() {
           let writeStream = streamSaver.createWriteStream(`${courseName} OfflineExpert.zip`).getWriter();
 
-          zip.generateInternalStream({type:"uint8array", streamFiles:true})
+          zip.generateInternalStream({type:"uint8array", streamFiles:true, compression:"DEFLATE", compressionOptions:{level:1}})
             .on("data", data => writeStream.write(data))
             .on("error", err => $("#status").append($(`<div class="alert alert-danger">${err}</div>`)))
             .on("end", () => writeStream.close())
             .resume();
-
+          
           
           /*.then(function (base64) {
             // window.location = "data:application/zip;base64," + base64;
