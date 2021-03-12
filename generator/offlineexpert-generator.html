@@ -326,10 +326,10 @@
           }
         }
 
-        function getZipFile() {
+        function getZipFile() {                   
           let writeStream = streamSaver.createWriteStream(`${courseName} OfflineExpert.zip`).getWriter();
 
-          zip.generateInternalStream({type:"uint8array", streamFiles:true, compression:"DEFLATE", compressionOptions:{level:1}})
+          zip.generateInternalStream({type:"uint8array", streamFiles:$("#streamfiles").is(":checked"), compression:"DEFLATE", compressionOptions:{level:1}})
             .on("data", data => writeStream.write(data))
             .on("error", err => $("#status").append($(`<div class="alert alert-danger">${err}</div>`)))
             .on("end", () => writeStream.close())
@@ -446,10 +446,6 @@
           return 1;
         }
         
-        function generateFile(file) {
-          
-        }
-
         function secondsToHMS(seconds) {
           let s = seconds%60;
           let m = Math.floor(seconds/60)%60;
@@ -587,7 +583,7 @@
         </div>
         <div class="row">
           <div class="col-xs-12">
-            <div class="panel panel-info">
+            <div class="panel panel-primary">
               <div class="panel-heading">
                 Step 1: Paste results of GKan API calls
               </div>
@@ -608,26 +604,15 @@
         </div>
         <div class="row">
           <div class="col-xs-12">
-            <div class="panel panel-info">
+            <div class="panel panel-primary">
               <div class="panel-heading">
-                Step 2: Prepare the assets
-              </div>
-              <div class="panel-body">
-                <button disabled id="prepare" type="button" class="btn btn-primary center-block">Prepare assets</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-xs-12">
-            <div class="panel panel-info">
-              <div class="panel-heading">
-                Step 3: Download a zip file with the selected components
+                Step 2: Prepare and download a zip file with the selected components
               </div>
               <div class="panel-body">
                 <div class="form-group">
                   <fieldset id="categories" disabled>
                   </fieldset>
+                  <span class="help-block">Files in any disabled category will need to be added manually.</span>
                 </div>
                 <div class="form-group">
                   <fieldset id="preferences">
@@ -635,13 +620,18 @@
                     <input id="retries" type="number" min="1" max="10" value="3">
                     <label for="threads">Concurrent downloads</label>
                     <input id="threads" type="number" min="1" max="10" value="3">
+                    <div class="checkbox">
+                      <label><input type="checkbox" id="streamfiles" checked>CRC32 in header</label>
+                      <span class="help-block">Enabling this option may slow the download but ensures compatibility. See <a title="JSZip documentation" href="https://stuk.github.io/jszip/documentation/api_jszip/generate_async.html#streamfiles-option"><code>streamFiles</code> option</a>.</span>
+                    </div>
                   </fieldset>
                 </div>
                 <div class="text-center">
-                  <div class="btn-group center-block">
+                  <div class="btn-group">
+                    <button disabled id="prepare" type="button" class="btn btn-primary center-block">Prepare assets</button>
                     <button disabled id="collect" type="button" class="btn btn-primary">Collect files</button>
                     <button disabled id="retry" type="button" class="btn btn-warning">Retry failed downloads</button>
-                    <button disabled id="download" type="button" class="btn btn-success"><i class="glyphicon glyphicon-compressed"></i> Download .zip file</button>
+                    <button disabled id="download" type="button" class="btn btn-success"><i class="glyphicon glyphicon-compressed"></i> Download .zip file</button>                   
                   </div>
                 </div>
               </div>
@@ -656,6 +646,19 @@
                 <div class="progress">
                   <div id="progressbar" class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%"></div>
                 </div>
+                <div class="alert alert-info">See the <a href="#files">Files</a> panel below for individual file progress.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="panel panel-primary">
+              <div class="panel-heading">
+                Step 3: Create domain thumbnails
+              </div>
+              <div class="panel-body">
+                Go to <a target="_blank" href="https://learnkeyinc.github.io/videocapture.html">OfflineExpert frame extractor</a>
               </div>
             </div>
           </div>
