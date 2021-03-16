@@ -47,6 +47,7 @@ Name: "mediaonly"; Description: "Server installation (media only)"; Flags: iscus
 [Components]
 Name: "program"; Description: "Program files"; Types: full nomedia; Flags: fixed
 Name: "media"; Description: "Media files"; Types: full mediaonly; Flags: fixed
+Name: "assets"; Description: "Other course assets"; Types: full mediaonly nomedia; Flags: fixed
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; Components: program
@@ -54,7 +55,7 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 
 [Files]
 ; Common
-Source: "..\help\OfflineExpert v1.2.doc"; DestDir: "{app}\help"; Flags: ignoreversion sharedfile isreadme; Components: program media
+Source: "..\help\OfflineExpert v1.2.doc"; DestDir: "{app}\help"; Flags: ignoreversion sharedfile isreadme; Components: program media assets
 Source: "..\fonts\*"; DestDir: "{app}\fonts"; Flags: ignoreversion sharedfile; Components: program
 Source: "..\images\lk*"; DestDir: "{app}\images"; Flags: ignoreversion sharedfile; Components: program
 Source: "..\images\bg*"; DestDir: "{app}\images"; Flags: ignoreversion sharedfile; Components: program
@@ -62,13 +63,17 @@ Source: "..\images\bg*"; DestDir: "{app}\images"; Flags: ignoreversion sharedfil
 ; Course
 Source: "..\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion; Components: program
 Source: "..\{#MyAppIdentifier}*.html"; DestDir: "{app}"; Flags: ignoreversion; Components: program
+Source: "..\domains\{#MyAppIdentifier}*.html"; DestDir: "{app}\domains"; Flags: ignoreversion; Components: program
 Source: "..\images\{#MyAppIdentifier}*"; DestDir: "{app}\images"; Flags: ignoreversion; Components: program
 Source: "..\glossaries\{#MyAppIdentifier}*"; DestDir: "{app}\glossaries"; Flags: ignoreversion; Components: program
 Source: "..\outlines\{#MyAppIdentifier}*"; DestDir: "{app}\outlines"; Flags: ignoreversion; Components: program
 Source: "..\videos\{#MyAppIdentifier}*"; DestDir: "{app}\videos"; Flags: ignoreversion; Components: media
 
-; Media
+; Assets
 [Part 4]
+
+; Media
+[Part 5]
 
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
