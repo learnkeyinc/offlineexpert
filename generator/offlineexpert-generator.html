@@ -92,6 +92,8 @@
 
         $("body").on("click", ".loadvideo", function () { loadVideo(this); });
 
+        $("#capture").click(captureThumbnail);
+
         $("#commit").click(commitThumbnails);
 
         $("#define").click(defineAssets);
@@ -175,7 +177,7 @@
           assetGalleries = assets.reduce((s,v) => s + `<div class="gallery"><a href="./assets/${v.name}" title="${v.title}">${v.title}</a></div>\r`, ``);
 
           // For ISS file
-          ISSAssets = assets.reduce((s,v) => s + `Source: "..\\assets\\${v.name}"; DestDir: "{app}\assets"; Flags: ignoreversion; Components: assets\n`)
+          ISSAssets = assets.reduce((s,v) => s + `Source: "..\\assets\\${v.name}"; DestDir: "{app}\\assets"; Flags: ignoreversion; Components: assets\n`)
 
           // For offlineexpert-glossary.html
           glossary = getGlossary(GKanID);
@@ -203,8 +205,7 @@
 
         function populateThumbnailPlaylist() {
           $("#playlist").empty();
-          $.each(intros,(i,v) => {
-            
+          $.each(intros,(i,v) => {            
             $("#playlist").append($(`<tr><td id="playlist-${i+1}" class="loadvideo" data-url="${v.url}" data-domain="${i+1}">Domain ${i+1}</td></tr>`));
             $("#thumbnails").append($(`<div class="col-sm-3"><div id="thumbnail-${i+1}" class="thumbnail loadvideo" data-url="${v.url}" data-domain="${i+1}"><canvas id="canvas-${i+1}" style="width:100%;overflow:auto"></canvas><div class="caption">Domain ${i+1}</div></div></div>`));
           });
@@ -218,10 +219,29 @@
           $("[id^=thumbnail-],[id^=playlist-]").removeClass("video-selected");
           $(`#thumbnail-${domain},#playlist-${domain}`).addClass("video-selected");
           video.src = $(e).data("url");
+          $("#video").data("domain",domain);
           video.play();
         }
 
+        function captureThumbnail() {
+          let domain = $("#video").data("domain");
+          let canvas = document.getElementById(`canvas-${domain}`);
+          canvas.width = video.videoWidth;
+          canvas.height = video.videoHeight;
+          canvas.getContext('2d').drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
+          canvas.setAttribute('crossOrigin', 'anonymous');
+          $(`#canvas-${domain}`).data("dataurl", canvas.toDataURL().split("base64,")[1])
+        }
+
         function commitThumbnails() {
+          $("[id^=canvas-]").each((i,e) => {
+            let domain = e.data("domain");
+            let dataurl = e.data("dataurl");
+            let image = 
+            zip.file(`images/${offlineExpertPrefix}-domain-${domain}.jpg`, dataurl,{base64:true});
+            console.log(domain, dataurl);
+          });
+          console.log(zip);          
           $("#commit").attr("disabled",true);
           $("#define").attr("disabled",false);
         }
