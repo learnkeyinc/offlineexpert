@@ -31,8 +31,8 @@ If !FileExist(StartPage) {
 
 ; Check for .ini file
 If !FileExist(IniFile) {
-	IniWrite, ./videos, % IniFile, MediaDirectory, DefaultPath
-	IniWrite, ./videos, % IniFile, MediaDirectory, Path
+	IniWrite, ../videos, % IniFile, MediaDirectory, DefaultPath
+	IniWrite, ../videos, % IniFile, MediaDirectory, Path
 }
 
 ; Read from the .ini file
