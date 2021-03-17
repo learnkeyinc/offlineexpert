@@ -238,15 +238,15 @@
           canvas.height = video.videoHeight;
           canvas.getContext('2d').drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
           canvas.setAttribute('crossOrigin', 'anonymous');
-          $(`#canvas-${domain}`).data("dataurl", canvas.toDataURL().split("base64,")[1]).data("domain",domain)
+          $(`#canvas-${domain}`).data("dataurl", canvas.toDataURL().split("base64,")[1]);
         }
 
         function commitThumbnails() {
           $("[id^=canvas-]").each((i,e) => {
             try {
-              let domain = $(e).data("domain");
+              let domain = $(e).parent().data("domain");
               let dataurl = $(e).data("dataurl");
-              if (!dataurl) { throw domain;}
+              if (!dataurl) { throw domain; }
               let image = 
               zip.file(`images/${offlineExpertPrefix}-domain-${domain}.jpg`, dataurl,{base64:true});
             } catch(e) {
