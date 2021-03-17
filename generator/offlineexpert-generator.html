@@ -215,7 +215,7 @@
 
         function loadVideo(e) {
           let domain = $(e).data("domain");
-          let filename=`${offlineExpertPrefix}-domain-${domain}.jpg`
+          let filename=`${offlineExpertPrefix}-domain-${domain}.jpg`;
           $("[id^=thumbnail-],[id^=playlist-]").removeClass("video-selected");
           $(`#thumbnail-${domain},#playlist-${domain}`).addClass("video-selected");
           video.src = $(e).data("url");
@@ -236,8 +236,8 @@
 
         function commitThumbnails() {
           $("[id^=canvas-]").each((i,e) => {
-            let domain = e.data("domain");
-            let dataurl = e.data("dataurl");
+            let domain = $(e).data("domain");
+            let dataurl = $(e).data("dataurl");
             let image = 
             zip.file(`images/${offlineExpertPrefix}-domain-${domain}.jpg`, dataurl,{base64:true});
             console.log(domain, dataurl);
