@@ -200,7 +200,7 @@
           populateThumbnailPlaylist();
 
           $("#parse").attr("disabled",true);
-          $("#commit").attr("disabled",false);
+          $("#commit,#capture").attr("disabled",false);
         }
 
         function populateThumbnailPlaylist() {
@@ -243,7 +243,7 @@
             console.log(domain, dataurl);
           });
           console.log(zip);          
-          $("#commit").attr("disabled",true);
+          $("#capture,#commit").attr("disabled",true);
           $("#define").attr("disabled",false);
         }
 
@@ -704,7 +704,7 @@
                     <div class="thumbnail">
                       <video id="video" src="" type="video/mp4" style="width:100%" controls></video> 
                       <div class="caption">
-                        <button id="capture" class="btn btn-primary center-block">&#x2462; Capture frame</button>
+                        <button id="capture" class="btn btn-primary center-block" disabled>&#x2462; Capture frame</button>
                       </div>
                     </div>                   
                   </div>
