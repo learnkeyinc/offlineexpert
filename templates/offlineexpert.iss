@@ -22,6 +22,7 @@ AppUpdatesURL={#MyAppURL}
 DefaultDirName={pf}\OfflineExpert
 DefaultGroupName=OfflineExpert
 DisableProgramGroupPage=yes
+; Task: check to make sure that .. is the correct relative path. Could be . instead.
 LicenseFile=..\text\EULA.rtf
 InfoBeforeFile=..\text\INFO.rtf
 InfoAfterFile=..\text\SUCCESS.rtf
