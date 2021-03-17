@@ -219,6 +219,7 @@
           $("[id^=thumbnail-],[id^=playlist-]").removeClass("video-selected");
           $(`#thumbnail-${domain},#playlist-${domain}`).addClass("video-selected");
           video.src = $(e).data("url");
+          video.crossOrigin = "Anonymous";
           $("#video").data("domain",domain);
           video.play();
         }
