@@ -199,8 +199,15 @@
 
           populateThumbnailPlaylist();
 
+          createZip();
+
           $("#parse").attr("disabled",true);
           $("#commit,#capture").attr("disabled",false);
+        }
+
+        function createZip() {
+          // Make zip file
+          zip = JSZip();
         }
 
         function populateThumbnailPlaylist() {
@@ -368,9 +375,6 @@
             $("#filestable tbody").append($(`<tr id="file-${i}"><td>${f.filename}</td><td>${f.folder}</td><td>${f.category}</td><td id="httpstatus-${i}"></td><td id="downloadstatus-${i}"></td><td id="injectionstatus-${i}"></td><td id="zipstatus-${i}"></tr>`))
           })
           
-          // Make zip file
-          zip = JSZip();
-
           startDownloadAttempt();
         }
 
