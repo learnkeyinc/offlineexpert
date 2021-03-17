@@ -238,7 +238,7 @@
           canvas.height = video.videoHeight;
           canvas.getContext('2d').drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
           canvas.setAttribute('crossOrigin', 'anonymous');
-          $(`#canvas-${domain}`).data("dataurl", canvas.toDataURL().split("base64,")[1])
+          $(`#canvas-${domain}`).data("dataurl", canvas.toDataURL().split("base64,")[1]).data("domain",domain)
         }
 
         function commitThumbnails() {
