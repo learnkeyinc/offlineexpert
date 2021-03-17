@@ -177,7 +177,7 @@
           assetGalleries = assets.reduce((s,v) => s + `<div class="gallery"><a href="./assets/${v.name}" title="${v.title}">${v.title}</a></div>\r`, ``);
 
           // For ISS file
-          ISSAssets = assets.reduce((s,v) => s + `Source: "..\\assets\\${v.name}"; DestDir: "{app}\\assets"; Flags: ignoreversion; Components: assets\n`)
+          ISSAssets = assets.reduce((s,v) => s + `Source: "..\\assets\\${v.name}"; DestDir: "{app}\\assets"; Flags: ignoreversion; Components: assets\n`, "")
 
           // For offlineexpert-glossary.html
           glossary = getGlossary(GKanID);
