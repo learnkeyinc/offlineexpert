@@ -255,15 +255,18 @@
         function captureThumbnail() {
           let domain = $("#video").data("domain");
           let canvas = document.getElementById(`canvas-${domain}`);
-          canvas.width = video.videoWidth;
-          canvas.height = video.videoHeight;
-          canvas.getContext('2d').drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
+          let w = video.videoWidth;
+          let h = video.videoHeight;
+          canvas.width = w;
+          canvas.height = h;
           let ctx = canvas.getContext('2d');
+          ctx.drawImage(video, 0, 0, w, h);
           // add circle          
           ctx.strokeStyle = 'white';
-          ctx.lineWidth = canvas.width/50;
+          ctx.lineWidth = w/50;
           ctx.beginPath();
-          ctx.arc(canvas.width/2, canvas.height/2, canvas.width/3 - canvas.width/100, 0, Math.PI*2);
+          ctx.arc(w/2, h/2, w/3 - w/100, 0, Math.PI*2);
+          ctx.stroke();
           // add triangle
 
           canvas.setAttribute('crossOrigin', 'anonymous');
