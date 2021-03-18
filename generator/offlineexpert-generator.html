@@ -161,8 +161,9 @@
             var match = url.match(regExp);
             return (match&&match[7].length==11)? match[7] : false;
           }
-
           
+          // for ahk2exe
+          $("#ahk2exefilename").html(`ahk2exe-${offlineExpertPrefix}.cmd`);
           
           // For iterations of offlineexpert-domain.html
           domainGalleries = domainIDs.reduce((s,v,i) => s + `<div class="gallery"><a href="./domains/${offlineExpertPrefix}-domain-${i+1}.html"><img src="./images/${offlineExpertPrefix}-domain-${i+1}.jpg" alt="Domain ${i+1}" width="300" height="auto"></a><div class="desc">${v.name}<br><a href="./glossaries/${offlineExpertPrefix}.html">Glossary</a></div></div>\r`,``)
@@ -197,6 +198,7 @@
 
           // For ISS file
           ISSAssets = assets.reduce((s,v) => s + `Source: "..\\assets\\${v.name}"; DestDir: "{app}\\assets"; Flags: ignoreversion; Components: assets\n`, "")
+          $("#issfilename").html(`${courseName}.iss`);
 
           // For offlineexpert-glossary.html
           glossary = getGlossary(GKanID);
@@ -287,7 +289,7 @@
             },
             {
               host: "../templates/ahk2exe.cmd",
-              category: "test",
+              category: "main",
               filename: `ahk2exe-${offlineExpertPrefix}.cmd`,
               parts: [courseName,courseName]
             },
@@ -808,18 +810,27 @@
             <div class="panel panel-primary">
               <div class="panel-heading">Step 4: Perform pre-flight</div>
               <div class="panel-body">
-                <ol>
-                  <li>Unzip the file above into a temporary directory.</li>
-                  <li>Obtain the course preview/promo video shown to the right (<a id="previewlink"></a>). There are a few ways to accomplish this:
-                    <iframe width="640" height="390" class="pull-right" id="preview" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    <ul>
-                      <li>Use the video downloader feature in <a href="http://www.pcfreetime.com/formatfactory/index.php">Format Factory</a></li>
-                      <li id="9xli" hidden>Use <a id="9xbuddy" href="#">9xbuddy</a></li>
-                      <li>Find the video on pandoras-box.</li>
-                    </ul>
-                  </li>
-                  <li>Name the file <code id="previewfilename"></code> and place it in the <code>videos</code> subdirectory.</li>
-                </ol>
+                <div class="col-xs-6">
+                  <ol>
+                    <li>Unzip the .zip file from step 3 into a temporary directory.</li>
+                    <li>Obtain the course preview/promo video shown to the right (<a id="previewlink"></a>). There are a few ways to accomplish this:                                            
+                      <ul>
+                        <li>Use the video downloader feature in <a href="http://www.pcfreetime.com/formatfactory/index.php">Format Factory</a></li>
+                        <li id="9xli" hidden>Use <a id="9xbuddy" href="#">9xbuddy</a></li>
+                        <li>Find the video on pandoras-box.</li>
+                      </ul>
+                    </li>
+                    <li>Name the file <code id="previewfilename">Complete step 1</code> and place it in the <code>videos</code> subdirectory.</li>
+                    <li>Run <code id="ahk2exefilename">Complete step 1</code> to create the main executable file
+                      <ul>
+                        <li>Requires installation of <a href="https://www.autohotkey.com/">AutoHotkey</a></li>
+                      </ul>
+                    </li>
+                  </ol>
+                </div>
+                <div class="col-xs-6">
+                  <iframe width="100%" height="300px" id="preview" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
               </div>
             </div>
           </div>
@@ -830,7 +841,13 @@
               <div class="panel-heading">Step 5: Compile and distribute</div>
               <div class="panel-body">
                 <ol>
-                  <li>Download and install <a href="https://www.autohotkey.com/">AutoHotkey</a></li>
+                  <li>Open <code id="issfilename">Complete step 1</code>
+                    <ul>
+                      <li>Requires installation of <a href="https://jrsoftware.org/download.php/is.exe">Inno Setup</a></li>
+                    </ul>
+                  </li>
+                  <li>Generate GUID on line ___</li>
+                  <li>Compile</li>
                 </ol>
               </div>
             </div>

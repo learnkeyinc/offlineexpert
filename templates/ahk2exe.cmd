@@ -2,3 +2,4 @@
 @REM I swear that I had to modify the bin for these courses 
 @REM so they were compatible with older systems or something.
 @REM If necessary, refer to https://www.autohotkey.com/docs/Scripts.htm#ahk2exe
+pause
