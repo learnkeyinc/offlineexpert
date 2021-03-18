@@ -266,7 +266,7 @@
           ctx.lineWidth = w/50;
           ctx.beginPath();
           ctx.arc(w/2, h/2, w/3 - w/100, 0, Math.PI*2);
-          ctx.stroke();
+          ctx.closePath();
           // add triangle
 
           canvas.setAttribute('crossOrigin', 'anonymous');
