@@ -258,11 +258,12 @@
           canvas.width = video.videoWidth;
           canvas.height = video.videoHeight;
           canvas.getContext('2d').drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
-          // add circle
-          canvas.strokeStyle = 'white';
-          canvas.lineWidth = canvas.width/50;
-          canvas.beginPath();
-          canvas.arc(canvas.width/2, canvas.height/2, canvas.width/3 - canvas.width/100, 0, Math.PI*2);
+          let ctx = canvas.getContext('2d');
+          // add circle          
+          ctx.strokeStyle = 'white';
+          ctx.lineWidth = canvas.width/50;
+          ctx.beginPath();
+          ctx.arc(canvas.width/2, canvas.height/2, canvas.width/3 - canvas.width/100, 0, Math.PI*2);
           // add triangle
 
           canvas.setAttribute('crossOrigin', 'anonymous');
