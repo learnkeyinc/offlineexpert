@@ -262,11 +262,11 @@
           let ctx = canvas.getContext('2d');
           ctx.drawImage(video, 0, 0, w, h);
           // add circle          
-          ctx.strokeStyle = 'white';
-          ctx.lineWidth = w/50;
+          ctx.strokeStyle = '#FFFFFF';
+          ctx.lineWidth = /*w/50*/ 15;
           ctx.beginPath();
           ctx.arc(w/2, h/2, w/3 - w/100, 0, Math.PI*2);
-          ctx.closePath();
+          ctx.stroke();
           // add triangle
 
           canvas.setAttribute('crossOrigin', 'anonymous');
