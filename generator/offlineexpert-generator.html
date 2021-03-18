@@ -261,13 +261,27 @@
           canvas.height = h;
           let ctx = canvas.getContext('2d');
           ctx.drawImage(video, 0, 0, w, h);
-          // add circle          
           ctx.strokeStyle = "rgba(255,255,255,0.15)";
+          // add triangle
+          ctx.beginPath();
+          let side = w/5;
+          let centerToVertex = side * Math.sqrt(3) / 3;
+          let angle = 2 * Math.PI / 3; // 120°
+          for (let i = 0; i < 3; i++) {
+            let x = width/2 + centerToVertex*Math.cos(i * angle);
+            let y = height/2 + centerToVertex*Math.sin(i * angle);
+            if (i == 0) {
+              ctx.moveTo(x,y);            
+            } else {
+              ctx.lineTo(x,y);
+            }
+          }
+          ctx.fill();          
+          // add circle
           ctx.lineWidth = w/50;
           ctx.beginPath();
           ctx.arc(w/2, h/2, w/6 - w/100, 0, Math.PI*2);
           ctx.stroke();
-          // add triangle
 
           canvas.setAttribute('crossOrigin', 'anonymous');
           $(`#canvas-${domain}`).data("dataurl", canvas.toDataURL().split("base64,")[1]);
