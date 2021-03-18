@@ -263,8 +263,8 @@
           ctx.drawImage(video, 0, 0, w, h);
           ctx.lineWidth = w/50;
           ctx.lineCap = "round";
-          ctx.strokeStyle = "rgba(255,255,255,0.15)";
-          ctx.fillStyle = "rgba(255,255,255,0.15)";
+          ctx.strokeStyle = "rgba(255,255,255,0.25)";
+          ctx.fillStyle = "rgba(255,255,255,0.25)";
           // add triangle
           ctx.beginPath();
           let side = w/5;
@@ -764,6 +764,7 @@
                     <div class="thumbnail">
                       <video id="video" src="" type="video/mp4" style="width:100%" controls></video> 
                       <div class="caption">
+                        <p>Choose an interesting frame.</p>
                         <button id="capture" class="btn btn-primary center-block" disabled>&#x2462; Capture frame</button>
                       </div>
                     </div>                   
