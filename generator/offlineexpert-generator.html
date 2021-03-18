@@ -268,8 +268,8 @@
           let centerToVertex = side * Math.sqrt(3) / 3;
           let angle = 2 * Math.PI / 3; // 120°
           for (let i = 0; i < 3; i++) {
-            let x = width/2 + centerToVertex*Math.cos(i * angle);
-            let y = height/2 + centerToVertex*Math.sin(i * angle);
+            let x = w/2 + centerToVertex*Math.cos(i * angle);
+            let y = h/2 + centerToVertex*Math.sin(i * angle);
             if (i == 0) {
               ctx.moveTo(x,y);            
             } else {
