@@ -166,7 +166,7 @@
           $("#ahk2exefilename").html(`ahk2exe-${offlineExpertPrefix}.cmd`);
           
           // For iterations of offlineexpert-domain.html
-          domainGalleries = domainIDs.reduce((s,v,i) => s + `<div class="gallery"><a href="./domains/${offlineExpertPrefix}-domain-${i+1}.html"><img src="./images/${offlineExpertPrefix}-domain-${i+1}.jpg" alt="Domain ${i+1}" width="300" height="auto"></a><div class="desc">${v.name}<br><a href="./glossaries/${offlineExpertPrefix}.html">Glossary</a></div></div>\r`,``)
+          domainGalleries = domainIDs.reduce((s,v,i) => s + `<div class="gallery"><a href="./domains/${offlineExpertPrefix}-domain-${i+1}.html"><img src="./images/${offlineExpertPrefix}-domain-${i+1}.jpg" alt="Domain ${i+1}" width="300" height="auto"></a><div class="desc">${curriculum[i].name}<br><a href="./glossaries/${offlineExpertPrefix}.html">Glossary</a></div></div>\r`,``)
           assetGalleries = assets.reduce((s,v) => s + `<div class="gallery"><a href="./assets/${v.name}" title="${v.title}">${v.title}</a></div>\r`, ``)
 
           // For offlineexpert-glossary.html
@@ -192,31 +192,9 @@
           intros = curriculum.map((domain) => domain.modules[0].buttons[0].videos[0]);
           console.log(intros);
 
-          // For iterations of offlineexpert-domain.html
-          domainGalleries = domainIDs.reduce((s,v,i) => s + `<div class="gallery"><a href="./domains/${offlineExpertPrefix}-domain-${i+1}.html"><img src="./images/${offlineExpertPrefix}-domain-${i+1}.jpg" alt="Domain ${i+1}" width="300" height="auto"></a><div class="desc">${v.name}<br><a href="./glossaries/${offlineExpertPrefix}.html">Glossary</a></div></div>\r`,``)
-          assetGalleries = assets.reduce((s,v) => s + `<div class="gallery"><a href="./assets/${v.name}" title="${v.title}">${v.title}</a></div>\r`, ``);
-
           // For ISS file
           ISSAssets = assets.reduce((s,v) => s + `Source: "..\\assets\\${v.name}"; DestDir: "{app}\\assets"; Flags: ignoreversion; Components: assets\n`, "")
           $("#issfilename").html(`${courseName}.iss`);
-
-          // For offlineexpert-glossary.html
-          glossary = getGlossary(GKanID);
-          glossaryJSON = JSON.stringify(glossary.map((v,i) => {return {def:v.def.trim(), con:v.con.trim()}}));
-
-          // For offlineexpert-outline.html
-          expertBios = details.ExpertList.reduce((s,v) => s + `<p>${v.Bio}</p>`, "");
-          outlineTable = "<table>\n";
-          $.each(curriculum, (iDomain,domain) => {
-            outlineTable += `\t<tr class="domain"><td>${domain.name}</td><td>${secondsToHMS(domain.time)}</td></tr>\n`;
-            $.each(domain.modules, (iModule,module) => {
-              outlineTable += `\t<tr class="module"><td>${module.name}</td><td>${secondsToHMS(module.time)}</td></tr>\n`;
-              $.each(module.buttons, (iButton,button) => {
-                outlineTable += `\t<tr class="button"><td colspan="2">${button.name}</td></tr>\n`;
-              });
-            });
-          });
-          outlineTable += `<tr class="domain"><td>Total</td><td>${secondsToHMS(curriculum.time)}</td></tr></table>`;
 
           populateThumbnailPlaylist();
 
@@ -874,7 +852,8 @@
                     </ul>
                   </li>
                   <li>Use <strong>Tools &gt; Generate GUID</strong> to insert a new GUID <em>after</em> the <code>{</code> on line 13 so it looks like this:<code>AppID={{A1B2C3D4-E5F6-G7H8-I9J0-K1L2M3N4O5P6}</code> (note the doubled curly bracket).</li>
-                  <li>Press <strong>Debug &gt; Run</strong> to make an executable file.</li>
+                  <li>If the files take up more than 2 TB, you will need to remove the semicolon in front of <code>DiskSpanning=yes</code> on line 25.</li>
+                  <li>Press <strong>Debug &gt; Run</strong> to make an executable file.</li>                  
                 </ol>
               </div>
             </div>
