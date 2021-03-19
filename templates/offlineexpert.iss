@@ -14,7 +14,6 @@ AppID={
 
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
-;AppVerName={#MyAppName} {#MyAppVersion}
 AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
@@ -22,14 +21,14 @@ AppUpdatesURL={#MyAppURL}
 DefaultDirName={pf}\OfflineExpert
 DefaultGroupName=OfflineExpert
 DisableProgramGroupPage=yes
-; Task: check to make sure that .. is the correct relative path. Could be . instead.
+; Enable the following line if the files consume more than 2 TB.
+; DiskSpanning=yes
 LicenseFile=.\text\EULA.rtf
 InfoBeforeFile=.\text\INFO.rtf
 InfoAfterFile=.\text\SUCCESS.rtf
 OutputBaseFilename=offlineexpert-{#MyAppIdentifier}-setup
 SetupIconFile=.\images\lk_square_icon.ico
 UninstallDisplayIcon=.\images\lk_square_icon.ico
-;Password=lk-{#MyAppIdentifier}
 Compression=lzma
 SolidCompression=yes
 WizardSmallImageFile=..\images\lk_square_small.bmp
