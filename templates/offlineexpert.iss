@@ -23,12 +23,12 @@ DefaultDirName={pf}\OfflineExpert
 DefaultGroupName=OfflineExpert
 DisableProgramGroupPage=yes
 ; Task: check to make sure that .. is the correct relative path. Could be . instead.
-LicenseFile=..\text\EULA.rtf
-InfoBeforeFile=..\text\INFO.rtf
-InfoAfterFile=..\text\SUCCESS.rtf
+LicenseFile=.\text\EULA.rtf
+InfoBeforeFile=.\text\INFO.rtf
+InfoAfterFile=.\text\SUCCESS.rtf
 OutputBaseFilename=offlineexpert-{#MyAppIdentifier}-setup
-SetupIconFile=..\images\lk_square_icon.ico
-UninstallDisplayIcon=..\images\lk_square_icon.ico
+SetupIconFile=.\images\lk_square_icon.ico
+UninstallDisplayIcon=.\images\lk_square_icon.ico
 ;Password=lk-{#MyAppIdentifier}
 Compression=lzma
 SolidCompression=yes
@@ -56,19 +56,19 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 
 [Files]
 ; Common
-Source: "..\help\OfflineExpert v1.2.doc"; DestDir: "{app}\help"; Flags: ignoreversion sharedfile isreadme; Components: program media assets
-Source: "..\fonts\*"; DestDir: "{app}\fonts"; Flags: ignoreversion sharedfile; Components: program
-Source: "..\images\lk*"; DestDir: "{app}\images"; Flags: ignoreversion sharedfile; Components: program
-Source: "..\images\bg*"; DestDir: "{app}\images"; Flags: ignoreversion sharedfile; Components: program
+Source: ".\help\OfflineExpert v1.2.doc"; DestDir: "{app}\help"; Flags: ignoreversion sharedfile isreadme; Components: program media assets
+Source: ".\fonts\*"; DestDir: "{app}\fonts"; Flags: ignoreversion sharedfile; Components: program
+Source: ".\images\lk*"; DestDir: "{app}\images"; Flags: ignoreversion sharedfile; Components: program
+Source: ".\images\bg*"; DestDir: "{app}\images"; Flags: ignoreversion sharedfile; Components: program
 
 ; Course
-Source: "..\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion; Components: program
-Source: "..\{#MyAppIdentifier}*.html"; DestDir: "{app}"; Flags: ignoreversion; Components: program
-Source: "..\domains\{#MyAppIdentifier}*.html"; DestDir: "{app}\domains"; Flags: ignoreversion; Components: program
-Source: "..\images\{#MyAppIdentifier}*"; DestDir: "{app}\images"; Flags: ignoreversion; Components: program
-Source: "..\glossaries\{#MyAppIdentifier}*"; DestDir: "{app}\glossaries"; Flags: ignoreversion; Components: program
-Source: "..\outlines\{#MyAppIdentifier}*"; DestDir: "{app}\outlines"; Flags: ignoreversion; Components: program
-Source: "..\videos\{#MyAppIdentifier}*"; DestDir: "{app}\videos"; Flags: ignoreversion; Components: media
+Source: ".\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion; Components: program
+Source: ".\{#MyAppIdentifier}*.html"; DestDir: "{app}"; Flags: ignoreversion; Components: program
+Source: ".\domains\{#MyAppIdentifier}*.html"; DestDir: "{app}\domains"; Flags: ignoreversion; Components: program
+Source: ".\images\{#MyAppIdentifier}*"; DestDir: "{app}\images"; Flags: ignoreversion; Components: program
+Source: ".\glossaries\{#MyAppIdentifier}*"; DestDir: "{app}\glossaries"; Flags: ignoreversion; Components: program
+Source: ".\outlines\{#MyAppIdentifier}*"; DestDir: "{app}\outlines"; Flags: ignoreversion; Components: program
+Source: ".\videos\{#MyAppIdentifier}*"; DestDir: "{app}\videos"; Flags: ignoreversion; Components: media
 
 ; Assets
 [Part 4]
