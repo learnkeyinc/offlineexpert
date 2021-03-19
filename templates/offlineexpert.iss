@@ -10,7 +10,7 @@
 
 [Setup]
 
-AppID={{ABCD1234-5678-EFGH-9012-IJKL3456}
+AppID={
 
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
