@@ -68,6 +68,8 @@ Source: ".\domains\{#MyAppIdentifier}*.html"; DestDir: "{app}\domains"; Flags: i
 Source: ".\images\{#MyAppIdentifier}*"; DestDir: "{app}\images"; Flags: ignoreversion; Components: program
 Source: ".\glossaries\{#MyAppIdentifier}*"; DestDir: "{app}\glossaries"; Flags: ignoreversion; Components: program
 Source: ".\outlines\{#MyAppIdentifier}*"; DestDir: "{app}\outlines"; Flags: ignoreversion; Components: program
+
+; Preview video
 Source: ".\videos\{#MyAppIdentifier}*"; DestDir: "{app}\videos"; Flags: ignoreversion; Components: media
 
 ; Assets
