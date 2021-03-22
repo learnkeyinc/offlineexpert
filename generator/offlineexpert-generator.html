@@ -443,7 +443,7 @@
               $("#progressbar").removeClass("active").addClass("progress-bar-success");
               $("#download").attr("disabled",false);
               if (totalSize >= maxSizeISS) {
-                $("#progress").append($(`<div class="alert alert-warning">The Inno Setup limit of ${formatBytes(maxSizeISS)} has been exceeded (current size: ${formatBytes(totalSize)}). This is okay, but you will probably need to use the modified instructions in <a href="#step5">Step 5</a> below.`));
+                $("#progress").append($(`<div class="alert alert-warning">The Inno Setup limit of ${formatBytes(maxSizeISS)} has been exceeded (current size: ${formatBytes(totalSize)}). This is okay, but you will probably need to use the <span class="bg-warning">additional</span> instructions in <a href="#step5">Step 5</a> below.`));
                 $("#isswarning,#isszip").toggle();
               }
             } else {
@@ -820,13 +820,13 @@
                     <li>Unzip the .zip file from step 3 into a temporary directory.</li>
                     <li>Obtain the course preview/promo video shown to the right (<a id="previewlink"></a>) as an MP4 file. There are a few ways to accomplish this:
                       <ul>
-                        <li>Use the video downloader feature in <a href="http://www.pcfreetime.com/formatfactory/index.php">Format Factory</a></li>
-                        <li id="9xli" hidden>Use <a id="9xbuddy" href="#">9xbuddy</a></li>
+                        <li>Use the video downloader feature in <a href="http://www.pcfreetime.com/formatfactory/index.php">Format Factory</a>.</li>
+                        <li id="9xli" hidden>Use the following 9xbuddy link: <a id="9xbuddy" href="#">9xbuddy</a></li>
                         <li>Find the video on pandoras-box.</li>
                       </ul>
                     </li>
                     <li>Name the file <code id="previewfilename">Complete step 1</code> and place it in the <code>videos</code> subdirectory.</li>
-                    <li>Run <code id="ahk2exefilename">Complete step 1</code> to create the main executable file
+                    <li>Run <code id="ahk2exefilename">Complete step 1</code> to create the main executable file.
                       <ul>
                         <li>Requires installation of <a href="https://www.autohotkey.com/">AutoHotkey</a></li>
                       </ul>
@@ -848,14 +848,14 @@
                 <ol>
                   <li>Open <code id="issfilename">Complete step 1</code>
                     <ul>
-                      <li>Requires installation of <a href="https://jrsoftware.org/download.php/is.exe">Inno Setup</a></li>
+                      <li>Requires installation of <a href="https://jrsoftware.org/download.php/is.exe">Inno Setup</a>.</li>
                     </ul>
                   </li>
                   <li>Use <strong>Tools &gt; Generate GUID</strong> to insert a new GUID <em>after</em> the <code>{</code> on line 13 so it looks like this:<code>AppID={{A1B2C3D4-E5F6-G7H8-I9J0-K1L2M3N4O5P6}</code> (note the doubled curly bracket).</li>
-                  <li id="isswarning" hidden>If the files take up more than 2 TB, you will need to remove the semicolon in front of <code>DiskSpanning=yes</code> on line 25.</li>
+                  <li class="bg-warning" id="isswarning" hidden>Because the files will take up more than 2 TB, you will need to remove the semicolon in front of <code>DiskSpanning=yes</code> on line 25.</li>
                   <li>Press <strong>Debug &gt; Run</strong> to make an executable file. The output file and its accompanying .bin files (if applicable) will end up in the <code>Output</code> subdirectory.</li>
-                  <li id="isszip" hidden>Zip together the .exe and .bin files in the <code>Output</code> directory, and name the file <code id="zipfilename">Complete step 1</code>.</li>
-                  <li>Upload to <a href="https://www.dropbox.com/home/OfflineExpert">https://www.dropbox.com/home/OfflineExpert</a></li>
+                  <li class="bg-warning" id="isszip" hidden>Zip together the .exe and .bin files in the <code>Output</code> directory, and name the file <code id="zipfilename">Complete step 1</code>.</li>
+                  <li>Upload to <a href="https://www.dropbox.com/home/OfflineExpert">https://www.dropbox.com/home/OfflineExpert</a>.</li>
                 </ol>
               </div>
             </div>
