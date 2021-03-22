@@ -63,7 +63,9 @@
 
         let GKanID, courseName, previewURL, offlineExpertPrefix, courseID, assets, curriculum, videos2d, ISSMedia, ISSAssets, domainIDs, videos, domainGalleries, assetGalleries, glossary, glossaryJSON, expertBios, outlineTable, files;
         
-        let categories, filesToZip, zip;
+        let categories, filesToZip, totalSize, zip;
+
+        let maxSizeISS = 2100000000;
 
         let threadStatuses;
 
@@ -188,9 +190,8 @@
           outlineTable += `<tr class="domain"><td>Total</td><td>${secondsToHMS(curriculum.time)}</td></tr></table>`;
 
           // For intro thumbnails
-          console.log(curriculum);
+          console.log("curriculum:",curriculum);
           intros = curriculum.map((domain) => domain.modules[0].buttons[0].videos[0]);
-          console.log(intros);
 
           // For ISS file
           ISSAssets = assets.reduce((s,v) => s + `Source: "..\\assets\\${v.name}"; DestDir: "{app}\\assets"; Flags: ignoreversion; Components: assets\n`, "")
@@ -216,7 +217,6 @@
             $("#thumbnails").append($(`<div class="col-sm-3"><div id="thumbnail-${i+1}" class="thumbnail loadvideo" data-url="${v.url}" data-domain="${i+1}"><canvas id="canvas-${i+1}" style="width:100%;overflow:auto"></canvas><div class="caption">Domain ${i+1}</div></div></div>`));
           });
           video = document.getElementById("video");
-          console.log(video);
         }
 
         function loadVideo(e) {
@@ -277,8 +277,7 @@
             } catch(e) {
               console.warn(`Domain ${e} thumbnail skipped. Maybe it was empty?`);
             }
-          });
-          console.log(zip);          
+          });          
           $("#capture,#commit").attr("disabled",true);
           $("#define").attr("disabled",false);
         }
@@ -376,7 +375,7 @@
             });          
           });
 
-          console.log(files);
+          console.log("files:",files);
 
           // get unique category values from files
           categories = [...new Set(files.map((v) => v.category))].sort();
@@ -393,9 +392,10 @@
 
         function collectAndDownload() {
           $("#collect").attr("disabled", true);
-
+          
           let categoriesToZip = $("#categories [id^=checkbox-]:checked").map((_,e) => $(e).val()).get();
           
+          totalSize = 0;
           filesToZip = files.filter((e) => categoriesToZip.includes(e.category));      
 
           // Add files to table
@@ -432,22 +432,29 @@
           let downloaded = filesToZip.reduce((t,o) => t + (o.downloaded ? 1:0), 0);
           let percentComplete = `${(downloaded/total*100).toFixed(1)}%`;
 
-          $("#progressbar").css("width",percentComplete).addClass("active").attr("aria-valuenow",percentComplete).html(`${percentComplete} (${downloaded}/${total})`);
+          $("#progressbar").css("width",percentComplete).addClass("active").attr("aria-valuenow",percentComplete).html(`${percentComplete} (${downloaded}/${total}, ${formatBytes(totalSize)})`);
 
           if (threadsComplete) {
             clearInterval(interval);
             if (total == downloaded) {
               $("#progressbar").removeClass("active").addClass("progress-bar-success");
               $("#download").attr("disabled",false);
+              if (totalSize >= maxSizeISS) {
+                $("#progress").append($(`<div class="alert alert-warning">The Inno Setup limit of ${formatBytes(maxSizeISS)} has been exceeded (current size: ${formatBytes(totalSize)}). This is okay, but you will probably need to follow the third step in <a href="#step5">Step 5</a> below.`));
+                $("#isswarning").toggle();
+              }
             } else {
               $("#progressbar").removeClass("active").addClass("progress-bar-warning");
               $("#retry").attr("disabled",false);
             }
+            console.log("zip:", zip);
             return;
           } else {
             return;
           }
         }
+
+        function formatBytes(a,b=2){if(0===a)return"0 Bytes";const c=0>b?0:b,d=Math.floor(Math.log(a)/Math.log(1024));return parseFloat((a/Math.pow(1024,d)).toFixed(c))+" "+["Bytes","KB","MB","GB","TB","PB","EB","ZB","YB"][d]} // https://stackoverflow.com/questions/15900485/correct-way-to-convert-size-in-bytes-to-kb-mb-gb-in-javascript
 
         function getZipFile() {                   
           let writeStream = streamSaver.createWriteStream(`${courseName} OfflineExpert.zip`).getWriter();
@@ -457,17 +464,6 @@
             .on("error", err => $("#status").append($(`<div class="alert alert-danger">${err}</div>`)))
             .on("end", () => writeStream.close())
             .resume();
-          
-          
-          /*.then(function (base64) {
-            // window.location = "data:application/zip;base64," + base64;
-            // OR
-            // saveAs(blob, `${courseName} OfflineExpert.zip`);
-            // OR
-            
-          }, function (err) {
-            $("#status").append($(`<div class="alert alert-danger">${err}</div>`))
-          });*/
         }
 
         async function downloadAndZip(iterator, thread, threads, retries) {
@@ -502,8 +498,9 @@
                   } else {
                     // No replacements required, so no post-processing required
                     updateTable("injection", iterator, "success", `<i class="glyphicon glyphicon-ban-circle"></i>`);
-                    contents = await response.blob();                  
+                    contents = await response.blob();
                   }
+                  totalSize += contents.size;
                   filesToZip[iterator].downloaded = true;
                 } catch (e) {
                   console.warn(e);
@@ -695,7 +692,7 @@
           <h1>OfflineExpert generator</h1>
           <p>This web app will create the files required to generate an OfflineExpert course.</p>
         </div>
-        <div class="row">
+        <div class="row" id="step1">
           <div class="col-xs-12">
             <div class="panel panel-primary">
               <div class="panel-heading">
@@ -720,7 +717,7 @@
             </div>
           </div>
         </div>
-        <div class="row">
+        <div class="row" id="step2">
           <div class="col-xs-12">
             <div class="panel panel-primary">
               <div class="panel-heading">
@@ -756,7 +753,7 @@
             </div>
           </div>
         </div>
-        <div class="row">
+        <div class="row" id="step3">
           <div class="col-xs-12">
             <div class="panel panel-primary">
               <div class="panel-heading">
@@ -810,7 +807,7 @@
             </div>
           </div>
         </div>
-        <div class="row">
+        <div class="row" id="step4">
           <div class="col-xs-12">
             <div class="panel panel-primary">
               <div class="panel-heading">Step 4: Perform pre-flight</div>
@@ -840,7 +837,7 @@
             </div>
           </div>
         </div>
-        <div class="row">
+        <div class="row" id="step5">
           <div class="col-xs-12">
             <div class="panel panel-primary">
               <div class="panel-heading">Step 5: Compile and distribute</div>
@@ -852,7 +849,7 @@
                     </ul>
                   </li>
                   <li>Use <strong>Tools &gt; Generate GUID</strong> to insert a new GUID <em>after</em> the <code>{</code> on line 13 so it looks like this:<code>AppID={{A1B2C3D4-E5F6-G7H8-I9J0-K1L2M3N4O5P6}</code> (note the doubled curly bracket).</li>
-                  <li>If the files take up more than 2 TB, you will need to remove the semicolon in front of <code>DiskSpanning=yes</code> on line 25.</li>
+                  <li id="isswarning" hidden>If the files take up more than 2 TB, you will need to remove the semicolon in front of <code>DiskSpanning=yes</code> on line 25.</li>
                   <li>Press <strong>Debug &gt; Run</strong> to make an executable file.</li>                  
                 </ol>
               </div>
