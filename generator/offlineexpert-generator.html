@@ -642,7 +642,7 @@
                   case "1": // File downloads
                     $.each(module.Download, (k, download) => {
                       // update current path
-                      path.k = [k, button];
+                      path.k = [k, download];
                       ["l","m"].forEach(e => delete path[e]);
 
                       if (download.Url) {
