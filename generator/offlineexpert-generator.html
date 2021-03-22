@@ -444,7 +444,6 @@
               $("#download").attr("disabled",false);
               if (totalSize >= maxSizeISS) {
                 $("#maxsizeiss").html(formatBytes(maxSizeISS));
-                $("#currentsize").html(formatBytes(totalSize));
                 $(".isswarning").toggle();
               }
             } else {
@@ -733,7 +732,7 @@
                     <div class="well">
                       <table class="table table-striped table-hover">
                         <tbody id="playlist">
-                          <tr><td>Domains will appear here</td></tr>
+                          <tr><td><code>[Domains will appear here]</code></td></tr>
                         </tbody>                
                       </table>
                     </div>
@@ -821,7 +820,7 @@
               <div class="panel-body">
                 <div class="col-xs-6">
                   <ol>
-                    <li>Unzip the .zip file from step 3 into a temporary directory.</li>
+                    <li>Unzip the .zip file from <a href="#step3">Step 3</a> into a temporary directory.</li>
                     <li>Obtain the course preview/promo video shown to the right (<a id="previewlink"></a>) as an MP4 file. There are a few ways to accomplish this:
                       <ul>
                         <li>Use the video downloader feature in <a href="http://www.pcfreetime.com/formatfactory/index.php">Format Factory</a>.</li>
@@ -829,8 +828,8 @@
                         <li>Find the video on pandoras-box.</li>
                       </ul>
                     </li>
-                    <li>Name the file <code id="previewfilename">Complete step 1</code> and place it in the <code>videos</code> subdirectory.</li>
-                    <li>Run <code id="ahk2exefilename">Complete step 1</code> to create the main executable file.
+                    <li>Name the file <code id="previewfilename">[.mp4 filename will appear here]</code> and place it in the <code>videos</code> subdirectory.</li>
+                    <li>Run <code id="ahk2exefilename">[.cmd filename will appear here]</code> to create the main executable file.
                       <ul>
                         <li>Requires installation of <a href="https://www.autohotkey.com/">AutoHotkey</a></li>
                       </ul>
@@ -850,7 +849,7 @@
               <div class="panel-heading">Step 5: Compile and distribute</div>
               <div class="panel-body">
                 <ol>
-                  <li>Open <code id="issfilename">Complete step 1</code>
+                  <li>Open <code id="issfilename">[.iss filename will appear here]</span></code>
                     <ul>
                       <li>Requires installation of <a href="https://jrsoftware.org/download.php/is.exe">Inno Setup</a>.</li>
                     </ul>
@@ -858,7 +857,7 @@
                   <li>Use <strong>Tools &gt; Generate GUID</strong> to insert a new GUID <em>after</em> the <code>{</code> on line 13 so it looks like this:<code>AppID={{A1B2C3D4-E5F6-G7H8-I9J0-K1L2M3N4O5P6}</code> (note the doubled curly bracket).</li>
                   <li class="bg-info isswarning" hidden>Because the files will take up more than 2 TB, you will need to remove the semicolon in front of <code>DiskSpanning=yes</code> on line 25.</li>
                   <li>Press <strong>Debug &gt; Run</strong> to make an executable file. The output file and its accompanying .bin files (if applicable) will end up in the <code>Output</code> subdirectory.</li>
-                  <li class="bg-info isswarning" hidden>Zip together the .exe and .bin files in the <code>Output</code> directory, and name the file <code id="zipfilename">Complete step 1</code>.</li>
+                  <li class="bg-info isswarning" hidden>Zip together the .exe and .bin files in the <code>Output</code> directory, and name the file <code id="zipfilename">[.zip filename will appear here]</code>.</li>
                   <li>Upload to <a href="https://www.dropbox.com/home/OfflineExpert">https://www.dropbox.com/home/OfflineExpert</a>.</li>
                 </ol>
               </div>
