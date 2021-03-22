@@ -443,7 +443,7 @@
               $("#progressbar").removeClass("active").addClass("progress-bar-success");
               $("#download").attr("disabled",false);
               if (totalSize >= maxSizeISS) {
-                $("#progress").append($(`<div class="alert alert-warning">The Inno Setup limit of ${formatBytes(maxSizeISS)} has been exceeded (current size: ${formatBytes(totalSize)}). This is okay, but you will probably need to use the <span class="bg-warning">additional</span> instructions in <a href="#step5">Step 5</a> below.`));
+                $("#progress").append($(`<div class="alert alert-warning">The Inno Setup limit of ${formatBytes(maxSizeISS)} has been exceeded (current size: ${formatBytes(totalSize)}). This is okay, but you will probably need to use the <span class="bg-warning">additional</span> instructions in <a href="#step5">Step 5</a> below.</div>`));
                 $("#isswarning,#isszip").toggle();
               }
             } else {
