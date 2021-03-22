@@ -197,6 +197,9 @@
           ISSAssets = assets.reduce((s,v) => s + `Source: "..\\assets\\${v.name}"; DestDir: "{app}\\assets"; Flags: ignoreversion; Components: assets\n`, "")
           $("#issfilename").html(`${courseName}.iss`);
 
+          // For .zip file
+          $("#zipfilename").html(`offlineexpert-${offlineExpertPrefix}-setup.zip`);
+
           populateThumbnailPlaylist();
 
           initializeZip();
@@ -440,8 +443,8 @@
               $("#progressbar").removeClass("active").addClass("progress-bar-success");
               $("#download").attr("disabled",false);
               if (totalSize >= maxSizeISS) {
-                $("#progress").append($(`<div class="alert alert-warning">The Inno Setup limit of ${formatBytes(maxSizeISS)} has been exceeded (current size: ${formatBytes(totalSize)}). This is okay, but you will probably need to follow the third step in <a href="#step5">Step 5</a> below.`));
-                $("#isswarning").toggle();
+                $("#progress").append($(`<div class="alert alert-warning">The Inno Setup limit of ${formatBytes(maxSizeISS)} has been exceeded (current size: ${formatBytes(totalSize)}). This is okay, but you will probably need to use the modified instructions in <a href="#step5">Step 5</a> below.`));
+                $("#isswarning,#isszip").toggle();
               }
             } else {
               $("#progressbar").removeClass("active").addClass("progress-bar-warning");
@@ -850,11 +853,14 @@
                   </li>
                   <li>Use <strong>Tools &gt; Generate GUID</strong> to insert a new GUID <em>after</em> the <code>{</code> on line 13 so it looks like this:<code>AppID={{A1B2C3D4-E5F6-G7H8-I9J0-K1L2M3N4O5P6}</code> (note the doubled curly bracket).</li>
                   <li id="isswarning" hidden>If the files take up more than 2 TB, you will need to remove the semicolon in front of <code>DiskSpanning=yes</code> on line 25.</li>
-                  <li>Press <strong>Debug &gt; Run</strong> to make an executable file.</li>                  
+                  <li>Press <strong>Debug &gt; Run</strong> to make an executable file. The output file and its accompanying .bin files (if applicable) will end up in the <code>Output</code> subdirectory.</li>
+                  <li id="isszip" hidden>Zip together the .exe and .bin files in the <code>Output</code> directory, and name the file <code id="zipfilename">Complete step 1</code>.</li>
+                  <li>Upload to <a href="https://www.dropbox.com/home/OfflineExpert">https://www.dropbox.com/home/OfflineExpert</a></li>
                 </ol>
               </div>
             </div>
           </div>
-        </div>    
+        </div>
+      </div>
     </body>
     </html>
