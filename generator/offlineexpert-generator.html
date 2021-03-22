@@ -1,4 +1,11 @@
-
+<!--
+  To use this page:
+  1. Open your browser (instructions assume Chrome)
+  2. Go to https://www.learnkey.com/search;contentType=2 and search for the course you want to build.
+  3. Open the Developer tools (F12 or ) and view the Network tab. Filter by "getcourse."
+  4. Open the course you are building. When the page is done loading, four results will appear on the Network tab.
+  5. Copy the contents of the Response tab for each of them to the corresponding fields on this page.
+-->
 <html>
     <head>
     
@@ -613,79 +620,102 @@
           let fn_ISSMedia = [];
           let fn_domainIDs = [];
           let fn_videos = [];
-          
-          $.each(shell.Lesson, (i, domain) => {  // 1 lesson = 1 domain
-            fn_videos2d.push([]);
-            fn_curriculum.push({
-              name: domain.Name,
-              modules:[],
-              time:0
-            })            
-            $.each(domain.Section, (j, module) => { // 1 section = 1 module
-              switch (module.Type) {
-                case "1": // File downloads
-                  $.each(module.Download, (k, download) => {
-                    fn_assets.push({
-                      title: download.Title,
-                      category: "assets",
-                      folder: "assets",
-                      host: download.Url,
-                      name: hostToFilename(download.Url),
+          let path = {};
+          try {
+            $.each(shell.Lesson, (i, domain) => {  // 1 lesson = 1 domain
+              // update current path
+              path.i = [i,domain];
+              ["j","k","l","m"].forEach(e => delete path[e]);
+
+              fn_videos2d.push([]);
+              fn_curriculum.push({
+                name: domain.Name,
+                modules:[],
+                time:0
+              })            
+              $.each(domain.Section, (j, module) => { // 1 section = 1 module
+                // update current path
+                path.j = [j, module];
+                ["k","l","m"].forEach(e => delete path[e]);
+
+                switch (module.Type) {
+                  case "1": // File downloads
+                    $.each(module.Download, (k, download) => {
+                      // update current path
+                      path.k = [k, button];
+                      ["l","m"].forEach(e => delete path[e]);
+
+                      fn_assets.push({
+                        title: download.Title,
+                        category: "assets",
+                        folder: "assets",
+                        host: download.Url,
+                        name: hostToFilename(download.Url),
+                      });
                     });
-                  });
-                  break;
-                case "3": // Assessment
-                  // Do nothing for now. Future implementation of assessments.
-                  break;
-                case "4":  // Videos
-                  fn_videos2d[i].push(["",module.Name]);
-                  fn_curriculum[i].modules.push({
-                    name: module.Name,
-                    buttons:[],
-                    time:0
-                  });
-                  let m = fn_curriculum[i].modules.length - 1
-                  $.each(module.Content, (k, button) => { // 1 content = 1 button
-                    fn_curriculum[i].modules[m].buttons.push({
-                      name: button.Name,
-                      videos: [],
+                    break;
+                  case "3": // Assessment
+                    // Do nothing for now. Future implementation of assessments.
+                    break;
+                  case "4":  // Videos
+                    fn_videos2d[i].push(["",module.Name]);
+                    fn_curriculum[i].modules.push({
+                      name: module.Name,
+                      buttons:[],
                       time:0
                     });
-                    let b = fn_curriculum[i].modules[m].buttons.length - 1;
-                    $.each(button.File, (l, file) => {
-                      if (l == 0) {
-                        fn_videos2d[i].push([file.Name,button.Name]);                        
-                      } else {
-                        fn_videos2d[i].push([file.Name,""]);
-                      }
-                      let domainID = file.Url.replace(/^.*realcbt\/(\d{6})\/.*$/,"$1");
-                      fn_videos.push({
-                        host: file.Url,
-                        category: "videos",
-                        folder: `videos/${domainID}/CD/WinFlash`
-                      })
-                      if (!fn_domainIDs.includes(domainID)) {
-                        fn_domainIDs.push(domainID);
-                        fn_curriculum[i].id = domainID;
-                        fn_ISSMedia += `Source: "..\\videos\\${domainID}\\*"; DestDir: "{app}\\videos\\${domainID}"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: media\r`;
-                      }
-                      fn_curriculum[i].modules[m].buttons[b].videos.push({
-                        prefix: file.Name,
-                        time: +file.Time,
-                        url: file.Url
+                    let m = fn_curriculum[i].modules.length - 1
+                    $.each(module.Content, (k, button) => { // 1 content = 1 button
+                      // update current path
+                      path.k = [k, button];
+                      ["l","m"].forEach(e => delete path[e]);
+
+                      fn_curriculum[i].modules[m].buttons.push({
+                        name: button.Name,
+                        videos: [],
+                        time:0
                       });
-                      fn_curriculum[i].modules[m].buttons[b].time += +file.Time;
-                      fn_curriculum[i].modules[m].time += +file.Time;
-                      fn_curriculum[i].time += +file.Time;
+                      let b = fn_curriculum[i].modules[m].buttons.length - 1;
+                      $.each(button.File, (l, file) => {
+                        // update current path
+                        path.l = [l, file];
+                        ["m"].forEach(e => delete path[e]);
+
+                        if (l == 0) {
+                          fn_videos2d[i].push([file.Name,button.Name]);                        
+                        } else {
+                          fn_videos2d[i].push([file.Name,""]);
+                        }
+                        let domainID = file.Url.replace(/^.*realcbt\/(\d{6})\/.*$/,"$1");
+                        fn_videos.push({
+                          host: file.Url,
+                          category: "videos",
+                          folder: `videos/${domainID}/CD/WinFlash`
+                        })
+                        if (!fn_domainIDs.includes(domainID)) {
+                          fn_domainIDs.push(domainID);
+                          fn_curriculum[i].id = domainID;
+                          fn_ISSMedia += `Source: "..\\videos\\${domainID}\\*"; DestDir: "{app}\\videos\\${domainID}"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: media\r`;
+                        }
+                        fn_curriculum[i].modules[m].buttons[b].videos.push({
+                          prefix: file.Name,
+                          time: +file.Time,
+                          url: file.Url
+                        });
+                        fn_curriculum[i].modules[m].buttons[b].time += +file.Time;
+                        fn_curriculum[i].modules[m].time += +file.Time;
+                        fn_curriculum[i].time += +file.Time;
+                      });
                     });
-                  });
-                  break;
-              }
+                    break;
+                }
+              });
             });
-          });
-          return ([fn_assets, fn_curriculum, fn_videos2d, fn_ISSMedia, fn_domainIDs, fn_videos])
-        }    
-          
+            return ([fn_assets, fn_curriculum, fn_videos2d, fn_ISSMedia, fn_domainIDs, fn_videos])
+          } catch (e) {
+            console.error(e,"path:",path);
+          }
+        }  
       });
       </script>
     </head>
