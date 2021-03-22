@@ -67,9 +67,6 @@
 
         let maxSizeISS = 2100000000;
 
-        // testing
-        maxSizeISS = 2100;
-
         let threadStatuses;
 
         let interval;
@@ -446,8 +443,9 @@
               $("#progressbar").removeClass("active").addClass("progress-bar-success");
               $("#download").attr("disabled",false);
               if (totalSize >= maxSizeISS) {
-                $("#progress").append($(`<div class="alert alert-warning">The Inno Setup limit of ${formatBytes(maxSizeISS)} has been exceeded (current size: ${formatBytes(totalSize)}). This is okay, but you will probably need to use the <span class="bg-warning">additional</span> instructions in <a href="#step5">Step 5</a> below.</div>`));
-                $("#isswarning,#isszip").toggle();
+                $("#maxsizeiss").html(formatBytes(maxSizeISS));
+                $("#currentsize").html(formatBytes(totalSize));
+                $(".isswarning").toggle();
               }
             } else {
               $("#progressbar").removeClass("active").addClass("progress-bar-warning");
@@ -800,6 +798,9 @@
                       <div class="progress"> 
                         <div id="progressbar" class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%"></div>
                       </div>
+                      <div class="alert alert-warning isswarning" hidden>
+                        The course files exceed the Inno Setup limit of <span id="maxsizeiss"></span>; therefore, when you compile the setup program in <a href="#step5">Step 5</a> below, you will need to follow the <span class="bg-info">extra instructions</span> that will allow Inno Setup to split the file into multiple files. This is not an error message.
+                      </div>
                       <div class="panel panel-info">
                         <div class="panel-heading"><a data-toggle="collapse" href="#filespanel">Files</a></div>
                         <div id="filespanel" class="panel-collapse collapse">
@@ -855,9 +856,9 @@
                     </ul>
                   </li>
                   <li>Use <strong>Tools &gt; Generate GUID</strong> to insert a new GUID <em>after</em> the <code>{</code> on line 13 so it looks like this:<code>AppID={{A1B2C3D4-E5F6-G7H8-I9J0-K1L2M3N4O5P6}</code> (note the doubled curly bracket).</li>
-                  <li class="bg-warning" id="isswarning" hidden>Because the files will take up more than 2 TB, you will need to remove the semicolon in front of <code>DiskSpanning=yes</code> on line 25.</li>
+                  <li class="bg-info isswarning" hidden>Because the files will take up more than 2 TB, you will need to remove the semicolon in front of <code>DiskSpanning=yes</code> on line 25.</li>
                   <li>Press <strong>Debug &gt; Run</strong> to make an executable file. The output file and its accompanying .bin files (if applicable) will end up in the <code>Output</code> subdirectory.</li>
-                  <li class="bg-warning" id="isszip" hidden>Zip together the .exe and .bin files in the <code>Output</code> directory, and name the file <code id="zipfilename">Complete step 1</code>.</li>
+                  <li class="bg-info isswarning" hidden>Zip together the .exe and .bin files in the <code>Output</code> directory, and name the file <code id="zipfilename">Complete step 1</code>.</li>
                   <li>Upload to <a href="https://www.dropbox.com/home/OfflineExpert">https://www.dropbox.com/home/OfflineExpert</a>.</li>
                 </ol>
               </div>
