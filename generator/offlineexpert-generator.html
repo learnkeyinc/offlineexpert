@@ -645,13 +645,15 @@
                       path.k = [k, button];
                       ["l","m"].forEach(e => delete path[e]);
 
-                      fn_assets.push({
-                        title: download.Title,
-                        category: "assets",
-                        folder: "assets",
-                        host: download.Url,
-                        name: hostToFilename(download.Url),
-                      });
+                      if (download.Url) {
+                        fn_assets.push({
+                          title: download.Title,
+                          category: "assets",
+                          folder: "assets",
+                          host: download.Url,
+                          name: hostToFilename(download.Url),
+                        });
+                      }
                     });
                     break;
                   case "3": // Assessment
