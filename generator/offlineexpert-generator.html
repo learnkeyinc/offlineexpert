@@ -175,7 +175,7 @@
           $("#ahk2exefilename").html(`ahk2exe-${offlineExpertPrefix}.cmd`);
           
           // For iterations of offlineexpert-domain.html
-          domainGalleries = domainIDs.reduce((s,v,i) => s + `<div class="gallery"><a href="./domains/${offlineExpertPrefix}-domain-${i+1}.html"><img src="./images/${offlineExpertPrefix}-domain-${i+1}.jpg" alt="Domain ${i+1}" width="300" height="auto"></a><div class="desc">${curriculum[i].name}<br><a href="./glossaries/${offlineExpertPrefix}-glossary.html">Glossary</a></div></div>\r`,``)
+          domainGalleries = domainIDs.reduce((s,v,i) => s + `<div class="gallery"><a href="./domains/${offlineExpertPrefix}-domain-${i+1}.html"><img src="./images/${offlineExpertPrefix}-domain-${i+1}.png" alt="Domain ${i+1}" width="300" height="auto"></a><div class="desc">${curriculum[i].name}<br><a href="./glossaries/${offlineExpertPrefix}-glossary.html">Glossary</a></div></div>\r`,``)
           assetGalleries = assets.reduce((s,v) => s + `<div class="gallery"><a href="./assets/${v.name}" title="${v.title}">${v.title}</a></div>\r`, ``)
 
           // For offlineexpert-glossary.html
@@ -231,7 +231,7 @@
 
         function loadVideo(e) {
           let domain = $(e).data("domain");
-          let filename=`${offlineExpertPrefix}-domain-${domain}.jpg`;
+          let filename=`${offlineExpertPrefix}-domain-${domain}.png`;
           $("[id^=thumbnail-],[id^=playlist-]").removeClass("video-selected");
           $(`#thumbnail-${domain},#playlist-${domain}`).addClass("video-selected");
           video.src = $(e).data("url");
@@ -283,7 +283,7 @@
               let dataurl = $(e).data("dataurl");
               if (!dataurl) { throw domain; }
               let image = 
-              zip.file(`images/${offlineExpertPrefix}-domain-${domain}.jpg`, dataurl,{base64:true});
+              zip.file(`images/${offlineExpertPrefix}-domain-${domain}.png`, dataurl,{base64:true});
             } catch(e) {
               console.warn(`Domain ${e} thumbnail skipped. Maybe it was empty?`);
             }
