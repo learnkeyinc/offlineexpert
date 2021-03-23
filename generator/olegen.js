@@ -16,6 +16,8 @@ let interval;
 
 let thumbnails, intros, video;
 
+video = document.getElementById("video");
+
 let Promise = window.Promise;
   if (!Promise) {
       Promise = JSZip.external.Promise;
@@ -162,7 +164,6 @@ function populateThumbnailPlaylist() {
     $("#playlist").append($(`<tr><td id="playlist-${i+1}" class="loadvideo" data-url="${v.url}" data-domain="${i+1}">Domain ${i+1}</td></tr>`));
     $("#thumbnails").append($(`<div class="col-sm-3"><div id="thumbnail-${i+1}" class="thumbnail loadvideo" data-url="${v.url}" data-domain="${i+1}"><canvas id="canvas-${i+1}" style="width:100%;overflow:auto"></canvas><div class="caption">Domain ${i+1}</div></div></div>`));
   });
-  video = document.getElementById("video");
 }
 
 function loadVideo(e) {
