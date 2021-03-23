@@ -194,7 +194,7 @@
               });
             });
           });
-          outlineTable += `<tr class="domain"><td>Total</td><td>${secondsToHMS(curriculum.time)}</td></tr></table>`;
+          outlineTable += `<tr class="domain"><td>Total</td><td>${secondsToHMS(curriculum.reduce((t,v) => t + v.time))}</td></tr></table>`;
 
           // For intro thumbnails
           console.log("curriculum:",curriculum);
