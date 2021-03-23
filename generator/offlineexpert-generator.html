@@ -672,6 +672,11 @@
                       path.k = [k, button];
                       ["l","m"].forEach(e => delete path[e]);
 
+                      if (k.Type !== 1) {
+                        return;
+                        // It's a lab or test or something else
+                      }
+
                       fn_curriculum[i].modules[m].buttons.push({
                         name: button.Name,
                         videos: [],
@@ -681,7 +686,7 @@
                       $.each(button.File, (l, file) => {
                         // update current path
                         path.l = [l, file];
-                        ["m"].forEach(e => delete path[e]);
+                        delete path.m;
 
                         if (l == 0) {
                           fn_videos2d[i].push([file.Name,button.Name]);                        
