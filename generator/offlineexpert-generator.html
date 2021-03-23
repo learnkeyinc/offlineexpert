@@ -149,8 +149,8 @@
         
         function parseResults() {
           GKanID = details.Id;
-          courseName = details.Name;
-          offlineExpertPrefix = courseName.toLowerCase().replace(/[\(\)\+]/g,"").split(" ").join("-");
+          courseName = details.Name.trim();
+          offlineExpertPrefix = courseName.toLowerCase().replace(/[`@$^&()+={}[\]|\\:;,/?]/g,"").split(/\W/).join("-").replace(/-{2,}/,"-");
           courseID = details.CourseNumber;
           [assets, curriculum, videos2d, ISSMedia, domainIDs, videos] = parseShell();
 
