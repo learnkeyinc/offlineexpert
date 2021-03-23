@@ -179,12 +179,12 @@ function loadVideo(e) {
 
 video.onkeydown = (e) => { // hack the video player to only move short distance https://www.codespeedy.com/forward-and-backward-html5-video-player-javascript/
   switch (e.key) {
-    case "d":
+    case "a":
       video.currentTime -= 1/29;
       e.stopImmediatePropagation()
       e.preventDefault();
       break;
-    case "a":
+    case "d":
       video.currentTime += 1/29;
       e.stopImmediatePropagation()
       e.preventDefault();              
