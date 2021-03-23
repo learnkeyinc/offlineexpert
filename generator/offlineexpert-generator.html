@@ -175,7 +175,7 @@
           $("#ahk2exefilename").html(`ahk2exe-${offlineExpertPrefix}.cmd`);
           
           // For iterations of offlineexpert-domain.html
-          domainGalleries = domainIDs.reduce((s,v,i) => s + `<div class="gallery"><a href="./domains/${offlineExpertPrefix}-domain-${i+1}.html"><img src="./images/${offlineExpertPrefix}-domain-${i+1}.jpg" alt="Domain ${i+1}" width="300" height="auto"></a><div class="desc">${curriculum[i].name}<br><a href="./glossaries/${offlineExpertPrefix}.html">Glossary</a></div></div>\r`,``)
+          domainGalleries = domainIDs.reduce((s,v,i) => s + `<div class="gallery"><a href="./domains/${offlineExpertPrefix}-domain-${i+1}.html"><img src="./images/${offlineExpertPrefix}-domain-${i+1}.jpg" alt="Domain ${i+1}" width="300" height="auto"></a><div class="desc">${curriculum[i].name}<br><a href="./glossaries/${offlineExpertPrefix}-glossary.html">Glossary</a></div></div>\r`,``)
           assetGalleries = assets.reduce((s,v) => s + `<div class="gallery"><a href="./assets/${v.name}" title="${v.title}">${v.title}</a></div>\r`, ``)
 
           // For offlineexpert-glossary.html
