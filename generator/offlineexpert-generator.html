@@ -672,7 +672,7 @@
                       path.k = [k, button];
                       ["l","m"].forEach(e => delete path[e]);
 
-                      if (button.Type != 1 || !([3,16].includes(button.ContentType)) {
+                      if (button.Type != 1 || ![3,16].includes(button.ContentType)) {
                         return;
                         // It's a lab, label, test, or something else
                       }
