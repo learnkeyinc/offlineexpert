@@ -130,7 +130,7 @@ function parseResults() {
   intros = curriculum.map((domain) => domain.modules[0].buttons[0].videos[0]);
 
   // For ISS file
-  ISSAssets = assets.reduce((s,v) => s + `Source: "..\\assets\\${v.name}"; DestDir: "{app}\\assets"; Flags: ignoreversion; Components: assets\n`, "")
+  ISSAssets = assets.reduce((s,v) => s + `Source: ".\\assets\\${v.name}"; DestDir: "{app}\\assets"; Flags: ignoreversion; Components: assets\n`, "")
   $("#issfilename").html(`${courseName}.iss`);
 
   // For .zip file
@@ -645,7 +645,7 @@ function parseShell() {
                 if (!fn_domainIDs.includes(domainID)) {
                   fn_domainIDs.push(domainID);
                   fn_curriculum[i].id = domainID;
-                  fn_ISSMedia += `Source: "..\\videos\\${domainID}\\*"; DestDir: "{app}\\videos\\${domainID}"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: media\r`;
+                  fn_ISSMedia += `Source: ".\\videos\\${domainID}\\*"; DestDir: "{app}\\videos\\${domainID}"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: media\r`;
                 }
                 fn_curriculum[i].modules[m].buttons[b].videos.push({
                   prefix: file.Name,
