@@ -176,8 +176,8 @@ function loadVideo(e) {
   video.play();
 }
 
-window.onkeydown = (e) => { // hack the video player to only move short distance https://www.codespeedy.com/forward-and-backward-html5-video-player-javascript/
-  switch (e.code) {
+video.onkeydown = (e) => { // hack the video player to only move short distance https://www.codespeedy.com/forward-and-backward-html5-video-player-javascript/
+  switch (e.key) {
     case "d":
       video.currentTime -= 1/29;
       e.stopImmediatePropagation()
