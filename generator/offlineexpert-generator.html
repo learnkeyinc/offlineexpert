@@ -7,197 +7,197 @@
   5. Copy the contents of the Response tab for each of them to the corresponding fields on this page.
 -->
 <html>
-    <head>    
-    <!-- Latest compiled and minified CSS -->
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-      <!-- jQuery library -->
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-      <!-- Latest compiled JavaScript -->
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-      <!-- JSZip -->
-      <script src="https://stuk.github.io/jszip/dist/jszip.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip-utils/0.1.0/jszip-utils.min.js"></script>
-      <!--StreamSaver for saveAs-->
-      <script src="https://cdn.jsdelivr.net/npm/streamsaver@2.0.3/StreamSaver.min.js"></script>
-      <!--Specific to this page-->
-      <link rel="stylesheet" href="olegen.css">
-      <script src="olegen.js" defer></script>
-    </head>
-    <body>
-      <div class="container">
-        <div class="jumbotron">
-          <h1>OfflineExpert generator</h1>
-          <p>This web app will create the files required to generate an OfflineExpert course.</p>
-        </div>
-        <div class="row" id="step1">
-          <div class="col-xs-12">
-            <div class="panel panel-primary">
-              <div class="panel-heading">
-                Step 1: Paste results of GKan API calls
-              </div>
-              <div class="panel-body">
-                <div id="shell-container" class="form-group">
-                  <label for="shell">Results of <em>GetCourseShellById</em></label>
-                  <textarea id="shell" class="form-control" rows="5"></textarea>
-                </div>
-                <div id="details-container" class="form-group">
-                  <label for="details">Results of <em>GetCourseDetailsById</em></label>
-                  <textarea id="details" class="form-control" rows="5"></textarea>
-                </div>
-                <div class="text-center">
-                  <div class="btn-group">
-                    <button id="verify" type="button" class="btn btn-primary center-block">&#x2460; Verify JSON</button>
-                    <button disabled id="parse" type="button" class="btn btn-primary center-block">&#x2461; Parse JSON</button>
-                  </div>
-                </div>
-              </div>
+  <head>    
+  <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <!-- JSZip -->
+    <script src="https://stuk.github.io/jszip/dist/jszip.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip-utils/0.1.0/jszip-utils.min.js"></script>
+    <!--StreamSaver for saveAs-->
+    <script src="https://cdn.jsdelivr.net/npm/streamsaver@2.0.3/StreamSaver.min.js"></script>
+    <!--Specific to this page-->
+    <link rel="stylesheet" href="olegen.css">
+    <script src="olegen.js" defer></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="jumbotron">
+        <h1>OfflineExpert generator</h1>
+        <p>This web app will create the files required to generate an OfflineExpert course.</p>
+      </div>
+      <div class="row" id="step1">
+        <div class="col-xs-12">
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              Step 1: Paste results of GKan API calls
             </div>
-          </div>
-        </div>
-        <div class="row" id="step2">
-          <div class="col-xs-12">
-            <div class="panel panel-primary">
-              <div class="panel-heading">
-                Step 2: Choose thumbnails for each domain
+            <div class="panel-body">
+              <div id="shell-container" class="form-group">
+                <label for="shell">Results of <em>GetCourseShellById</em></label>
+                <textarea id="shell" class="form-control" rows="5"></textarea>
               </div>
-              <div class="panel-body">
-                <div class="row">
-                  <div class="col-sm-4">
-                    <div class="well">
-                      <table class="table table-striped table-hover">
-                        <tbody id="playlist">
-                          <tr><td><code>[Domains will appear here]</code></td></tr>
-                        </tbody>                
-                      </table>
-                    </div>
-                  </div>
-                  <div class="col-sm-8">
-                    <div class="thumbnail">
-                      <video id="video" src="" type="video/mp4" style="width:100%" controls></video> 
-                      <div class="caption">
-                        <p>Choose an interesting frame.</p>
-                        <button id="capture" class="btn btn-primary center-block" disabled>&#x2462; Capture frame</button>
-                      </div>
-                    </div>                   
-                  </div>
-                </div>
-                <div class="row" id="thumbnails">                  
-                </div>
-                <div class="row">
-                  <button id="commit" type="button" class="btn btn-primary center-block" disabled>&#x2463; Commit thumbnails</button>
-                </div>
+              <div id="details-container" class="form-group">
+                <label for="details">Results of <em>GetCourseDetailsById</em></label>
+                <textarea id="details" class="form-control" rows="5"></textarea>
               </div>
-            </div>
-          </div>
-        </div>
-        <div class="row" id="step3">
-          <div class="col-xs-12">
-            <div class="panel panel-primary">
-              <div class="panel-heading">
-                Step 3: Prepare and download a zip file with the selected components
-              </div>
-              <div class="panel-body">
-                <div class="form-group">
-                  <button type="button" class="btn btn-primary center-block" id="define" disabled>&#x2464; Define assets</button>
+              <div class="text-center">
+                <div class="btn-group">
+                  <button id="verify" type="button" class="btn btn-primary center-block">&#x2460; Verify JSON</button>
+                  <button disabled id="parse" type="button" class="btn btn-primary center-block">&#x2461; Parse JSON</button>
                 </div>
-                <div class="form-group">
-                  <fieldset id="categories" disabled>
-                  </fieldset>
-                  <span class="help-block">Files in any disabled category will need to be added manually.</span>
-                </div>
-                <div class="form-group">
-                  <fieldset id="preferences">
-                    <label for="retries">Retries</label>
-                    <input id="retries" type="number" min="1" max="10" value="3">
-                    <label for="threads">Concurrent downloads</label>
-                    <input id="threads" type="number" min="1" max="10" value="3">
-                    <div class="checkbox">
-                      <label><input type="checkbox" id="streamfiles" checked>CRC32 in header</label>
-                      <span class="help-block">Enabling this option may slow the download but ensures compatibility. See <a title="JSZip documentation" href="https://stuk.github.io/jszip/documentation/api_jszip/generate_async.html#streamfiles-option"><code>streamFiles</code> option</a>.</span>
-                    </div>
-                  </fieldset>
-                </div>
-                <div class="form-group text-center">
-                  <div class="btn-group">
-                    <button disabled id="collect" type="button" class="btn btn-primary">&#x2465; Collect files</button>
-                    <button disabled id="retry" type="button" class="btn btn-warning">Retry failed downloads</button>
-                    <button disabled id="download" type="button" class="btn btn-success">&#x2466; <i class="glyphicon glyphicon-compressed"></i> Download .zip file</button>
-                  </div>
-                </div>
-                <div class="panel-group">
-                  <div class="panel panel-info">
-                    <div class="panel-heading">Progress</div>
-                    <div class="panel-body">
-                      <div class="progress"> 
-                        <div id="progressbar" class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%"></div>
-                      </div>
-                      <div class="alert alert-warning isswarning" hidden>
-                        The course files exceed the Inno Setup limit of <span id="maxsizeiss"></span>; therefore, when you compile the setup program in <a href="#step5">Step 5</a> below, you will need to follow the <span class="bg-info">extra instructions</span> that will allow Inno Setup to split the file into multiple files. This is not an error message.
-                      </div>
-                      <div class="panel panel-info">
-                        <div class="panel-heading"><a data-toggle="collapse" href="#filespanel">Files</a></div>
-                        <div id="filespanel" class="panel-collapse collapse">
-                          <div class="panel-body" id="files"></div>
-                        </div>
-                      </div>              
-                    </div>
-                  </div>                  
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row" id="step4">
-          <div class="col-xs-12">
-            <div class="panel panel-primary">
-              <div class="panel-heading">Step 4: Perform pre-flight</div>
-              <div class="panel-body">
-                <div class="col-xs-6">
-                  <ol>
-                    <li>Unzip the .zip file from <a href="#step3">Step 3</a> into a temporary directory.</li>
-                    <li>Obtain the course preview/promo video shown to the right (<a id="previewlink"></a>) as an MP4 file. There are a few ways to accomplish this:
-                      <ul>
-                        <li>Use the video downloader feature in <a href="http://www.pcfreetime.com/formatfactory/index.php">Format Factory</a>.</li>
-                        <li id="9xli" hidden>Use the following 9xbuddy link: <a id="9xbuddy" href="#">9xbuddy</a></li>
-                        <li>Find the video on pandoras-box.</li>
-                      </ul>
-                    </li>
-                    <li>Name the file <code id="previewfilename">[.mp4 filename will appear here]</code> and place it in the <code>videos</code> subdirectory.</li>
-                    <li>Run <code id="ahk2exefilename">[.cmd filename will appear here]</code> to create the main executable file.
-                      <ul>
-                        <li>Requires installation of <a href="https://www.autohotkey.com/">AutoHotkey</a></li>
-                      </ul>
-                    </li>
-                  </ol>
-                </div>
-                <div class="col-xs-6">
-                  <iframe width="100%" height="300px" id="preview" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row" id="step5">
-          <div class="col-xs-12">
-            <div class="panel panel-primary">
-              <div class="panel-heading">Step 5: Compile and distribute</div>
-              <div class="panel-body">
-                <ol>
-                  <li>Open <code id="issfilename">[.iss filename will appear here]</span></code>
-                    <ul>
-                      <li>Requires installation of <a href="https://jrsoftware.org/download.php/is.exe">Inno Setup</a>.</li>
-                    </ul>
-                  </li>
-                  <li>Use <strong>Tools &gt; Generate GUID</strong> to insert a new GUID <em>after</em> the <code>{</code> on line 13 so it looks like this:<code>AppID={{A1B2C3D4-E5F6-G7H8-I9J0-K1L2M3N4O5P6}</code> (note the doubled curly bracket).</li>
-                  <li class="bg-info isswarning" hidden>Because the files will take up more than 2 TB, you will need to remove the semicolon in front of <code>DiskSpanning=yes</code> on line 25.</li>
-                  <li>Press <strong>Debug &gt; Run</strong> to make an executable file. The output file and its accompanying .bin files (if applicable) will end up in the <code>Output</code> subdirectory.</li>
-                  <li class="bg-info isswarning" hidden>Zip together the .exe and .bin files in the <code>Output</code> directory, and name the file <code id="zipfilename">[.zip filename will appear here]</code>.</li>
-                  <li>Upload to <a href="https://www.dropbox.com/home/OfflineExpert">https://www.dropbox.com/home/OfflineExpert</a>.</li>
-                </ol>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </body>
-    </html>
+      <div class="row" id="step2">
+        <div class="col-xs-12">
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              Step 2: Choose thumbnails for each domain
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-sm-4">
+                  <div class="well">
+                    <table class="table table-striped table-hover">
+                      <tbody id="playlist">
+                        <tr><td><code>[Domains will appear here]</code></td></tr>
+                      </tbody>                
+                    </table>
+                  </div>
+                </div>
+                <div class="col-sm-8">
+                  <div class="thumbnail">
+                    <video id="video" src="" type="video/mp4" style="width:100%" controls></video> 
+                    <div class="caption">
+                      <p>Choose an interesting frame.</p>
+                      <button id="capture" class="btn btn-primary center-block" disabled>&#x2462; Capture frame</button>
+                    </div>
+                  </div>                   
+                </div>
+              </div>
+              <div class="row" id="thumbnails">                  
+              </div>
+              <div class="row">
+                <button id="commit" type="button" class="btn btn-primary center-block" disabled>&#x2463; Commit thumbnails</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" id="step3">
+        <div class="col-xs-12">
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              Step 3: Prepare and download a zip file with the selected components
+            </div>
+            <div class="panel-body">
+              <div class="form-group">
+                <button type="button" class="btn btn-primary center-block" id="define" disabled>&#x2464; Define assets</button>
+              </div>
+              <div class="form-group">
+                <fieldset id="categories" disabled>
+                </fieldset>
+                <span class="help-block">Files in any disabled category will need to be added manually.</span>
+              </div>
+              <div class="form-group">
+                <fieldset id="preferences">
+                  <label for="retries">Retries</label>
+                  <input id="retries" type="number" min="1" max="10" value="3">
+                  <label for="threads">Concurrent downloads</label>
+                  <input id="threads" type="number" min="1" max="10" value="3">
+                  <div class="checkbox">
+                    <label><input type="checkbox" id="streamfiles" checked>CRC32 in header</label>
+                    <span class="help-block">Enabling this option may slow the download but ensures compatibility. See <a title="JSZip documentation" href="https://stuk.github.io/jszip/documentation/api_jszip/generate_async.html#streamfiles-option"><code>streamFiles</code> option</a>.</span>
+                  </div>
+                </fieldset>
+              </div>
+              <div class="form-group text-center">
+                <div class="btn-group">
+                  <button disabled id="collect" type="button" class="btn btn-primary">&#x2465; Collect files</button>
+                  <button disabled id="retry" type="button" class="btn btn-warning">Retry failed downloads</button>
+                  <button disabled id="download" type="button" class="btn btn-success">&#x2466; <i class="glyphicon glyphicon-compressed"></i> Download .zip file</button>
+                </div>
+              </div>
+              <div class="panel-group">
+                <div class="panel panel-info">
+                  <div class="panel-heading">Progress</div>
+                  <div class="panel-body">
+                    <div class="progress"> 
+                      <div id="progressbar" class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%"></div>
+                    </div>
+                    <div class="alert alert-warning isswarning" hidden>
+                      The course files exceed the Inno Setup limit of <span id="maxsizeiss"></span>; therefore, when you compile the setup program in <a href="#step5">Step 5</a> below, you will need to follow the <span class="bg-info">extra instructions</span> that will allow Inno Setup to split the file into multiple files. This is not an error message.
+                    </div>
+                    <div class="panel panel-info">
+                      <div class="panel-heading"><a data-toggle="collapse" href="#filespanel">Files</a></div>
+                      <div id="filespanel" class="panel-collapse collapse">
+                        <div class="panel-body" id="files"></div>
+                      </div>
+                    </div>              
+                  </div>
+                </div>                  
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" id="step4">
+        <div class="col-xs-12">
+          <div class="panel panel-primary">
+            <div class="panel-heading">Step 4: Perform pre-flight</div>
+            <div class="panel-body">
+              <div class="col-xs-6">
+                <ol>
+                  <li>Unzip the .zip file from <a href="#step3">Step 3</a> into a temporary directory.</li>
+                  <li>Obtain the course preview/promo video shown to the right (<a id="previewlink"></a>) as an MP4 file. There are a few ways to accomplish this:
+                    <ul>
+                      <li>Use the video downloader feature in <a href="http://www.pcfreetime.com/formatfactory/index.php">Format Factory</a>.</li>
+                      <li id="9xli" hidden>Use the following 9xbuddy link: <a id="9xbuddy" href="#">9xbuddy</a></li>
+                      <li>Find the video on pandoras-box.</li>
+                    </ul>
+                  </li>
+                  <li>Name the file <code id="previewfilename">[.mp4 filename will appear here]</code> and place it in the <code>videos</code> subdirectory.</li>
+                  <li>Run <code id="ahk2exefilename">[.cmd filename will appear here]</code> to create the main executable file.
+                    <ul>
+                      <li>Requires installation of <a href="https://www.autohotkey.com/">AutoHotkey</a></li>
+                    </ul>
+                  </li>
+                </ol>
+              </div>
+              <div class="col-xs-6">
+                <iframe width="100%" height="300px" id="preview" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" id="step5">
+        <div class="col-xs-12">
+          <div class="panel panel-primary">
+            <div class="panel-heading">Step 5: Compile and distribute</div>
+            <div class="panel-body">
+              <ol>
+                <li>Open <code id="issfilename">[.iss filename will appear here]</span></code>
+                  <ul>
+                    <li>Requires installation of <a href="https://jrsoftware.org/download.php/is.exe">Inno Setup</a>.</li>
+                  </ul>
+                </li>
+                <li>Use <strong>Tools &gt; Generate GUID</strong> to insert a new GUID <em>after</em> the <code>{</code> on line 13 so it looks like this:<code>AppID={{A1B2C3D4-E5F6-G7H8-I9J0-K1L2M3N4O5P6}</code> (note the doubled curly bracket).</li>
+                <li class="bg-info isswarning" hidden>Because the files will take up more than 2 TB, you will need to remove the semicolon in front of <code>DiskSpanning=yes</code> on line 25.</li>
+                <li>Press <strong>Debug &gt; Run</strong> to make an executable file. The output file and its accompanying .bin files (if applicable) will end up in the <code>Output</code> subdirectory.</li>
+                <li class="bg-info isswarning" hidden>Zip together the .exe and .bin files in the <code>Output</code> directory, and name the file <code id="zipfilename">[.zip filename will appear here]</code>.</li>
+                <li>Upload to <a href="https://www.dropbox.com/home/OfflineExpert">https://www.dropbox.com/home/OfflineExpert</a>.</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
