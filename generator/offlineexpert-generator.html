@@ -241,13 +241,13 @@
         }
 
         document.onkeydown = (e) => { // hack the video player to only move short distance https://www.codespeedy.com/forward-and-backward-html5-video-player-javascript/
-          switch (e.keyCode) {
-            case 37:
+          switch (e.code) {
+            case "d":
               video.currentTime -= 1/29;
               e.stopImmediatePropagation()
               e.preventDefault();
               break;
-            case 39:
+            case "a":
               video.currentTime += 1/29;
               e.stopImmediatePropagation()
               e.preventDefault();              
