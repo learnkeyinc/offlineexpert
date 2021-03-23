@@ -273,9 +273,9 @@ h4
 {
   font-weight: 700;
 }
-/* Create three unequal columns that floats next to each other */
+
+/* Equal columns */
 .column {
-  float: left;
   padding: 10px;
 }
 
@@ -303,10 +303,14 @@ h4
 }
 
 /* Clear floats after the columns */
-.row:after {
-  content: "";
+.row {
   display: table;
+  width: 100%;
   clear: both;
+}
+
+.column {
+  display: table-cell;
 }
 
 .right table {
@@ -335,9 +339,6 @@ h4
 .right .button td:first-child {
   padding-left: 4em;
 }
-
-
-
 </style>
 <script>
   function windowClose() {
@@ -382,7 +383,7 @@ h4
         <footer class="footer">
           <div id="footer-content">
           
-            <p>&#169; Copyright [Part 7] LearnKey, a Better Learning Systems company. All rights reserved.</p>
+            <p>&#169; Copyright [Part 6] LearnKey, a Better Learning Systems company. All rights reserved.</p>
       
           </div>
         </footer>
