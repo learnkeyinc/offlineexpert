@@ -1,0 +1,160 @@
+<head>
+
+<style>
+img.icon {
+  height: 1.25rem;
+  width: auto;
+  max-width: 1.25rem;
+  margin-right: 0.5rem;
+}
+</style>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(document).ready(function() {
+
+  let categories = [{
+      name: "Hosting",
+      class: "primary",
+      icon: "fa-globe"
+    },
+    {
+    	name: "Support",
+      class: "light",
+      icon: "fa-tools"
+    },
+    {
+      name: "Communication",
+      class: "secondary",
+      icon: "fa-envelope"
+    },
+    {
+      name: "Accounting",
+      class: "success",
+      icon: "fa-money-check-alt"
+    },
+    {
+      name: "Course production",
+      class: "info",
+      icon: "fa-photo-video"
+    },
+    {
+      name: "Security",
+      class: "warning",
+      icon: "fa-shield-alt"
+    }
+  ];
+
+  let services = [{name:"AWS", url:"aws.amazon.com", icon:"upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg", categories:["Hosting"]},
+{name:"G*Kan", url:"www.gkan.com", icon:"gkan.com/Content/img/favicon.ico?v=d5cdb6c7-e2b7-4108-b49f-c83f3b537644", categories:["Hosting"]},
+{name:"OptimumHQ", url:"www.optimumhq.com", icon:"www.optimumhq.com/assets/favicon.png", categories:["Hosting","Support"]},
+{name:"InMotion", url:"www.inmotionhosting.com", icon:"www.inmotionhosting.com/images/favicon.png", categories:["Hosting"]},
+{name:"OneDrive for Business/SharePoint", url:"portal.microsoft.com", icon:"https://upload.wikimedia.org/wikipedia/commons/3/3c/Microsoft_Office_OneDrive_%282019%E2%80%93present%29.svg", categories:["Course production","Support","Communication","Hosting","Accounting"]},
+{name:"Certiport", url:"www.certiport.com", icon:"certiport.com/favicon.ico", categories:["Support"]},
+{name:"Digium", url:"www.digium.com", icon:"cdn.sangoma.com/wp-content/uploads/cropped-favicon-s-192x192.png", categories:["Communication"]},
+{name:"MAS", url:"www.sage.com", icon:"www.sage.com/favicon.ico", categories:["Accounting"]},
+{name:"Rytel", url:"rytel.io", icon:"rytelhosted.com/wp-content/uploads/2018/09/cropped-Red-and-Black-Use-this-1-e1581542202525-192x192.png", categories:["Communication"]},
+{name:"Verizon", url:"www.verizon.com", icon:"go.verizon.com/resources/wp-content/uploads/2018/06/cropped-verizon-1.ico", categories:["Communication"]},
+{name:"Authorize.net", url:"www.authorize.net", icon:"www.authorize.net/etc/clientlibs/anet/main/favicon.ico", categories:["Support","Accounting"]},
+{name:"CenturyLink", url:"www.centurylink.com", icon:"www.centurylink.com/favicon.ico", categories:["Communication"]},
+{name:"Dropbox", url:"www.dropbox.com", icon:"cfl.dropboxstatic.com/static/images/logo_catalog/dropbox_webclip_152_m1.png", categories:["Course production","Support","Hosting"]},
+{name:"Acrobat", url:"www.adobe.com", icon:"www.adobe.com/content/dam/shared/images/product-icons/svg/acrobat.svg", categories:["Support","Course production","Communication"]},
+{name:"After Effects", url:"www.adobe.com", icon:"www.adobe.com/content/dam/shared/images/product-icons/svg/after-effects.svg", categories:["Course production"]},
+{name:"Audition", url:"www.adobe.com", icon:"www.adobe.com/content/dam/shared/images/product-icons/svg/audition.svg", categories:["Course production"]},
+{name:"Captivate", url:"www.adobe.com", icon:"www.adobe.com/content/dam/shared/images/product-icons/svg/captivate.svg", categories:["Course production"]},
+{name:"Excel", url:"portal.microsoft.com", icon:"upload.wikimedia.org/wikipedia/commons/3/34/Microsoft_Office_Excel_%282019%E2%80%93present%29.svg", categories:["Course production","Accounting","Support"]},
+{name:"Forms", url:"forms.microsoft.com", icon:"upload.wikimedia.org/wikipedia/commons/0/09/Microsoft_Forms_%282019-present%29.svg", categories:["Hosting","Support","Communication"]},
+{name:"Illustrator", url:"www.adobe.com", icon:"www.adobe.com/content/dam/shared/images/product-icons/svg/illustrator.svg", categories:["Course production"]},
+{name:"Outlook", url:"portal.microsoft.com", icon:"upload.wikimedia.org/wikipedia/commons/d/df/Microsoft_Office_Outlook_%282018%E2%80%93present%29.svg", categories:["Course production","Accounting","Communication","Support"]},
+{name:"Photoshop", url:"www.adobe.com", icon:"www.adobe.com/content/dam/shared/images/product-icons/svg/photoshop.svg", categories:["Course production"]},
+{name:"Premiere", url:"www.adobe.com", icon:"www.adobe.com/content/dam/shared/images/product-icons/svg/premiere.svg", categories:["Course production"]},
+{name:"Word", url:"portal.microsoft.com", icon:"upload.wikimedia.org/wikipedia/commons/f/fd/Microsoft_Office_Word_%282019%E2%80%93present%29.svg", categories:["Course production","Accounting","Communication"]},
+{name:"Comcast", url:"www.comcast.com", icon:"cdn.comcast.com/learn/-/media/common/favicon/apple-touch-icon.png", categories:["Communication"]},
+{name:"GoDaddy", url:"www.godaddy.com", icon:"img6.wsimg.com/ux/favicon/apple-icon-152x152.png", categories:["Hosting"]},
+{name:"Google Sheets", url:"sheets.google.com", icon:"upload.wikimedia.org/wikipedia/commons/a/ae/Google_Sheets_2020_Logo.svg", categories:["Course production"]},
+{name:"PEAK Alarm", url:"www.peakalarm.com", icon:"www.peakalarm.com/favicon.ico", categories:["Security"]},
+{name:"Sectigo", url:"www.sectigo.com", icon:"www.sectigo.com/favicon.ico", categories:["Security"]},
+{name:"Microsoft Teams", url:"teams.microsoft.com", icon:"upload.wikimedia.org/wikipedia/commons/1/13/Teams_hi-res_icon_%282019%29.svg", categories:["Communication"]},
+{name:"Skype for Business", url:"www.skype.com/en/business/", icon:"upload.wikimedia.org/wikipedia/commons/0/05/Skype-for-Business.svg", categories:["Communication"]},
+{name:"InfoWest", url:"www.infowest.com", icon:"www.infowest.com/wp-content/uploads/cropped-favicon-192x192.png", categories:["Hosting"]},
+{name:"Stripe", url:"www.strype.com", icon:"images.ctfassets.net/fzn2n1nzq965/2EOOpI2mMZgHYBlbO44zWV/5a6c5d37402652c80567ec942c733a43/favicon.png?w=180&h=180", categories:["Support","Accounting"]},
+{name:"Adobe Stock", url:"www.adobe.com", icon:"www.adobe.com/content/dam/shared/images/product-icons/svg/stock.svg", categories:["Course production"]},
+{name:"Dreamweaver", url:"www.adobe.com", icon:"www.adobe.com/content/dam/shared/images/product-icons/svg/dreamweaver.svg", categories:["Hosting"]},
+{name:"InDesign", url:"www.adobe.com", icon:"www.adobe.com/content/dam/shared/images/product-icons/svg/indesign.svg", categories:["Course production"]},
+{name:"OneNote", url:"onenote.microsoft.com", icon:"upload.wikimedia.org/wikipedia/commons/1/10/Microsoft_Office_OneNote_%282019%E2%80%93present%29.svg", categories:["Course production","Accounting"]},
+{name:"Power Automate", url:"flow.microsoft.com", icon:"store-images.s-microsoft.com/image/apps.24472.5327e164-9595-41b5-94b6-dc524c42d5f6.318749ea-0f55-45b9-aee5-b89aae584a0c.73475625-266a-4866-b041-d9536d4673bb.png", categories:["Hosting","Support","Communication"]},
+{name:"PowerPoint", url:"portal.microsoft.com", icon:"upload.wikimedia.org/wikipedia/commons/0/0d/Microsoft_Office_PowerPoint_%282019%E2%80%93present%29.svg", categories:["Accounting","Support"]},
+{name:"GoToMeeting", url:"www.gotomeeting.com", icon:"www.gotomeeting.com/-/media/project/global/favicon-gtm.png", categories:["Communication"]},
+{name:"iStockPhoto", url:"www.istockphoto.com", icon:"www.istockphoto.com/favicon.ico", categories:["Course production"]},
+{name:"Robly", url:"www.robly.com", icon:"img.robly.com/assets/favicon-fd000c3bde33765962949ffa0eaf8466.ico", categories:["Communication"]},
+{name:"WebsiteToolbox", url:"www.websitetoolbox.com", icon:"www.clipartmax.com/png/middle/87-877595_computer-icons-gear-clip-art-blue-cog-icon.png", categories:["Hosting","Communication"]},
+{name:"FoxyCart", url:"www.foxy.io", icon:"www.foxy.io/user/themes/default/images/favicon2.png", categories:["Support","Accounting"]},
+{name:"Google Docs", url:"docs.google.com", icon:"upload.wikimedia.org/wikipedia/commons/6/66/Google_Docs_2020_Logo.svg", categories:["Course production"]},
+{name:"Google Forms", url:"forms.google.com", icon:"upload.wikimedia.org/wikipedia/commons/5/5b/Google_Forms_2020_Logo.svg", categories:["Hosting","Communication"]},
+{name:"LiveChat", url:"www.livechat.com", icon:"www.livechat.com/favicon.ico", categories:["Hosting","Communication"]},
+{name:"QuickBooks", url:"quickbooks.intuit.com", icon:"quickbooks.intuit.com/content/dam/intuit/quickbooks/common/qb_thumb.png", categories:["Support"]},
+{name:"Wells Fargo merchant", url:"www.wellsfargo.com", icon:"www.wellsfargo.com/assets/images/icons/icon-hires-192x192.png", categories:["Support","Accounting"]},
+{name:"WorldShip", url:"ups.com/us/en/services/shipping/worldship.page", icon:"www.ups.com/favicon.ico", categories:["Support"]},
+{name:"Apple", url:"www.apple.com", icon:"www.apple.com/favicon.ico", categories:["Course production"]},
+{name:"ZyWall", url:"www.zyxel.com", icon:"www.zyxel.com/favicon.ico", categories:["Security"]},
+{name:"Publisher", url:"portal.microsoft.com", icon:"upload.wikimedia.org/wikipedia/commons/f/fb/Microsoft_Office_Publisher_%282019-present%29.svg", categories:["Course production"]},
+{name:"Counterpath", url:"www.counterpath.com", icon:"www.counterpath.com/wp-content/uploads/2019/10/cropped-counterpath-logo-512x512-192x192.png", categories:["Communication"]},
+{name:"Dazzle", url:"www.endicia.com", icon:"www.endicia.com/android-homescreen.png", categories:["Accounting"]},
+{name:"Discord", url:"www.discord.com", icon:"discord.com/assets/f8389ca1a741a115313bede9ac02e2c0.svg", categories:["Hosting","Communication"]},
+{name:"SquareTrade", url:"www.squaretrade.com", icon:"www.squaretrade.com/sites/all/themes/st_bootstrap/favicon.ico", categories:["Support"]},
+{name:"YouTube", url:"www.youtube.com", icon:"www.youtube.com/s/desktop/a386e432/img/favicon_96.png", categories:["Hosting"]},
+{name:"SoundCloud", url:"www.soundcloud.com", icon:"developers.soundcloud.com/assets/logo_big_black-4fbe88aa0bf28767bbfc65a08c828c76.png", categories:["Hosting"]},
+{name:"Amazon", url:"www.amazon.com", icon:"www.amazon.com/favicon.ico", categories:["Support"]},
+{name:"B&H", url:"www.bhphotovideo.com", icon:"www.bhphotovideo.com/favicon.ico", categories:["Support"]},
+{name:"BestBuy", url:"bestbuy.com", icon:"bestbuy.com/favicon.ico", categories:["Support"]},
+{name:"Dell", url:"www.dell.com", icon:"www.dell.com/apple-touch-icon.png", categories:["Support"]},
+{name:"HP", url:"www.hp.com", icon:"www8.hp.com/favicon.ico", categories:["Support"]},
+{name:"Lenovo", url:"www.lenovo.com", icon:"www.lenovo.com/favicon.ico", categories:["Support"]},
+{name:"NewEgg", url:"www.newegg.com", icon:"www.newegg.com/favicon.ico", categories:["Support"]},
+{name:"Sharp Printer", url:"business.sharpusa.com", icon:"business.sharpusa.com/favicon.ico", categories:["Accounting"]},
+{name:"Staples", url:"www.staples.com", icon:"www.staples.com/sbd/img/ico/favicon.ico", categories:["Support"]},
+{name:"Walmart", url:"www.walmart.com", icon:"www.walmart.com/apple-touch-icon.png", categories:["Support"]},
+{name:"Windows Server 2008", url:"portal.microsoft.com", icon:"upload.wikimedia.org/wikipedia/commons/0/0a/Unofficial_Windows_logo_variant_-_2002%E2%80%932012_%28Multicolored%29.svg", categories:["Security"]},
+{name:"Windows Server 2016", url:"portal.microsoft.com", icon:"upload.wikimedia.org/wikipedia/commons/5/5f/Windows_logo_-_2012.svg", categories:["Hosting","Accounting"]}
+];
+
+  $.each(categories, function(ci, cv) {
+    let tr = `<tr class="table-${cv.class}"><td><i class="fas ${cv.icon}"></i></td><td>${cv.name}</td><td><div class="d-flex align-content-start flex-wrap">`;
+    $.each(services, function(si, sv) {
+      if (sv.categories.includes(cv.name)) {
+        tr += `<div class="d-inline-flex p-2"><a title="${sv.name}" href="//${sv.url}"><img class="figure-img icon" alt="${sv.name} logo" src="//${sv.icon}">${sv.name}</a></div>`
+        
+        // tr += `<figure class="figure border text-center"><a title="${sv.name}" href="//${sv.url}"><img class="figure-img icon" alt="${sv.name} logo" src="//${sv.icon}"><figcaption class="figure-caption">${sv.name}</figcaption></a></figure>`
+      }
+    });
+    tr += `</div></td></tr>`;
+    $("#stack").append(tr);
+  });
+
+})
+</script>
+
+</head>
+
+
+<!-- Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://kit.fontawesome.com/f86d1e5766.js" crossorigin="anonymous"></script>
+
+<body>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <div class="jumbotron">
+    <a href="//learnkey.com"><img style="max-height:72px" src="https://about.learnkey.com/images/LKlogo.png"></a>
+    <h1>
+      Technology stack
+    </h1>
+
+  </div>
+  <table class="table table-hover">
+    <tbody id="stack"></tbody>
+  </table>
+</body>
